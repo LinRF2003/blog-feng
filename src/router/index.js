@@ -7,139 +7,144 @@ Vue.use(VueRouter)
 const routes = [
     {
         path: '/',
-        component: () => import('@/views/framework.vue'), //页面框架
-        children: [
-            {
-                path: '/',
-                // name: '博客',
-                meta: { activePath: "/" }, //参数
-                component: () => import('@/views/blog/blog.vue'),
-                children: [
-
-                    {
-                        path: 'likeblog',
-                        name: '我赞',
-                        meta: { activePath: "/" }, //参数
-                        component: () => import('@/views/blog/myLike.vue'),
-                    },
-                    {
-                        path: 'commentblog',
-                        name: '我评',
-                        meta: { activePath: "/" }, //参数
-                        component: () => import('@/views/blog/myComment.vue'),
-                    },
-                ]
-            },
-            {
-                path: 'search',
-                name: '搜索',
-                meta: { activePath: "/" }, //参数
-                component: () => import('@/views/search/search.vue'),
-            },
-            {
-                path: '/editblog',
-                name: '编辑博客',
-                meta: { activePath: "/" }, //参数
-                component: () => import('@/views/blog/editBlog.vue'),
-            },
-            {
-                path: '/myblog',
-                name: '我的博客',
-                meta: { activePath: "/" }, //参数
-                component: () => import('@/views/blog/myBlog.vue'),
-            },
-            // {
-            //     path: '/blogdetail/:blogId',
-            //     name: '博客详情',
-            //     meta: { activePath: "/" }, //参数
-            //     component: () => import('@/views/blog/blogDetail.vue'),
-            // },
-            {
-                path: '/category',
-                name: '专栏分栏',
-                meta: { activePath: "/category" },
-                component: () => import('@/views/category/category.vue'),
-            },
-            {
-                path: '/categorydetail/:categoryId',
-                name: '分类详情',
-                meta: { activePath: "/category" }, //参数
-                component: () => import('@/views/category/categoryDetail.vue'),
-            },
-            {
-                path: '/question',
-                name: '问答',
-                meta: { activePath: "/question" },
-                component: () => import('@/views/question/question.vue'),
-            },
-            {
-                path: '/dynamic',
-                name: '动态',
-                meta: { activePath: "/dynamic" },
-                component: () => import('@/views/dynamic/dynamic.vue'),
-            },
-            {
-                path: '/my',
-                meta: { activePath: "/my" },
-                component: () => import('@/views/my/my.vue'),
-                children: [
-                    {
-                        path: '/',
-                        name: '个人信息',
-                        meta: { activePath: "/my", activePath2: "/myinfo" },
-                        component: () => import('@/views/my/myInfo.vue'),
-                    },
-                    {
-                        path: 'recovery',
-                        name: '回收站',
-                        meta: { activePath: "/my", activePath2: "/recovery" },
-                        component: () => import('@/views/my/recovery.vue'),
-                    },
-                    {
-                        path: 'accountsettings',
-                        name: '账号设置',
-                        meta: { activePath: "/my", activePath2: "/AS" },
-                        component: () => import('@/views/my/accountSettings.vue'),
-                        children: [
-                            {
-                                path: 'password',
-                                name: '修改密码',
-                                meta: { activePath: "/my", activePath2: "/AS", title: "修改密码" },
-                                component: () => import('@/views/my/account/password.vue'),
-                            },
-                            {
-                                path: 'phone',
-                                name: '修改手机',
-                                meta: {
-                                    activePath: "/my", activePath2: "/AS", title: "修改手机"
-                                },
-                                component: () => import('@/views/my/account/phone.vue'),
-                            }
-                        ]
-                    }
-                ]
-            },
-
-        ]
+            component: () => import('@/layout/basicLayout.vue'), //页面框架
     },
-    {
-        path: '/blogdetail/:blogId',
-        name: '博客详情',
-        meta: { activePath: "/" }, //参数
-        component: () => import('@/views/blog/blogDetail.vue'),
-    },
+
+    // {
+    //     path: '/',
+    //     component: () => import('@/views/framework.vue'), //页面框架
+    //     children: [
+    //         {
+    //             path: '/',
+    //             // name: '博客',
+    //             meta: { activePath: "/" }, //参数
+    //             component: () => import('@/views/blog/blog.vue'),
+    //             children: [
+    //
+    //                 {
+    //                     path: 'likeblog',
+    //                     name: '我赞',
+    //                     meta: { activePath: "/" }, //参数
+    //                     component: () => import('@/views/blog/myLike.vue'),
+    //                 },
+    //                 {
+    //                     path: 'commentblog',
+    //                     name: '我评',
+    //                     meta: { activePath: "/" }, //参数
+    //                     component: () => import('@/views/blog/myComment.vue'),
+    //                 },
+    //             ]
+    //         },
+    //         {
+    //             path: 'search',
+    //             name: '搜索',
+    //             meta: { activePath: "/" }, //参数
+    //             component: () => import('@/views/search/search.vue'),
+    //         },
+    //         {
+    //             path: '/editblog',
+    //             name: '编辑博客',
+    //             meta: { activePath: "/" }, //参数
+    //             component: () => import('@/views/blog/editBlog.vue'),
+    //         },
+    //         {
+    //             path: '/myblog',
+    //             name: '我的博客',
+    //             meta: { activePath: "/" }, //参数
+    //             component: () => import('@/views/blog/myBlog.vue'),
+    //         },
+    //         // {
+    //         //     path: '/blogdetail/:blogId',
+    //         //     name: '博客详情',
+    //         //     meta: { activePath: "/" }, //参数
+    //         //     component: () => import('@/views/blog/blogDetail.vue'),
+    //         // },
+    //         {
+    //             path: '/category',
+    //             name: '专栏分栏',
+    //             meta: { activePath: "/category" },
+    //             component: () => import('@/views/category/category.vue'),
+    //         },
+    //         {
+    //             path: '/categorydetail/:categoryId',
+    //             name: '分类详情',
+    //             meta: { activePath: "/category" }, //参数
+    //             component: () => import('@/views/category/categoryDetail.vue'),
+    //         },
+    //         {
+    //             path: '/question',
+    //             name: '问答',
+    //             meta: { activePath: "/question" },
+    //             component: () => import('@/views/question/question.vue'),
+    //         },
+    //         {
+    //             path: '/dynamic',
+    //             name: '动态',
+    //             meta: { activePath: "/dynamic" },
+    //             component: () => import('@/views/dynamic/dynamic.vue'),
+    //         },
+    //         {
+    //             path: '/my',
+    //             meta: { activePath: "/my" },
+    //             component: () => import('@/views/my/my.vue'),
+    //             children: [
+    //                 {
+    //                     path: '/',
+    //                     name: '个人信息',
+    //                     meta: { activePath: "/my", activePath2: "/myinfo" },
+    //                     component: () => import('@/views/my/myInfo.vue'),
+    //                 },
+    //                 {
+    //                     path: 'recovery',
+    //                     name: '回收站',
+    //                     meta: { activePath: "/my", activePath2: "/recovery" },
+    //                     component: () => import('@/views/my/recovery.vue'),
+    //                 },
+    //                 {
+    //                     path: 'accountsettings',
+    //                     name: '账号设置',
+    //                     meta: { activePath: "/my", activePath2: "/AS" },
+    //                     component: () => import('@/views/my/accountSettings.vue'),
+    //                     children: [
+    //                         {
+    //                             path: 'password',
+    //                             name: '修改密码',
+    //                             meta: { activePath: "/my", activePath2: "/AS", title: "修改密码" },
+    //                             component: () => import('@/views/my/account/password.vue'),
+    //                         },
+    //                         {
+    //                             path: 'phone',
+    //                             name: '修改手机',
+    //                             meta: {
+    //                                 activePath: "/my", activePath2: "/AS", title: "修改手机"
+    //                             },
+    //                             component: () => import('@/views/my/account/phone.vue'),
+    //                         }
+    //                     ]
+    //                 }
+    //             ]
+    //         },
+    //
+    //     ]
+    // },
+    // {
+    //     path: '/blogdetail/:blogId',
+    //     name: '博客详情',
+    //     meta: { activePath: "/" }, //参数
+    //     component: () => import('@/views/blog/blogDetail.vue'),
+    // },
     {
         path: '/login', // 登录
-        component: () => import('@/views/login.vue'),
+        component: () => import('@/views/login/index.vue'),
     },
-    {
-        path: '/register',    // 注册
-        component: () => import('@/views/register.vue')
-    },
-    {
-        path: '/test',    // 注册
-        component: () => import('@/components/EditorMarkdown.vue')
-    }
+    // {
+    //     path: '/register',    // 注册
+    //     component: () => import('@/views/register.vue')
+    // },
+    // {
+    //     path: '/test',    // 注册
+    //     component: () => import('@/components/EditorMarkdown.vue')
+    // }
 ]
 
 /* 实例化路由 */

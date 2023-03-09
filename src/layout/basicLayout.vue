@@ -1,13 +1,17 @@
 <template>
   <div>
-    <router-view></router-view>
+    <el-button type="warning">1231231</el-button>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'App',
+  name: 'BasicLayout',
+  data(){
+    return {
+
+    }
+  },
   methods:{
 
   }

@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <router-view></router-view>
@@ -7,7 +8,7 @@
 <script>
 
 export default {
-  name: 'App',
+  name: '',
   methods:{
 
   }
