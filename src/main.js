@@ -15,6 +15,9 @@ import '@/assets/base.scss'
 // 引入封装axios的请求
 import Request from "@/utils/Request";
 Vue.prototype.$Request = Request;
+// 引入封装的message
+import Message from '@/utils/Message';
+Vue.prototype.$Message = Message;
 
 new Vue({
   render: h => h(App),

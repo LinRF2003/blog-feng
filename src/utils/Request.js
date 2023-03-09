@@ -3,7 +3,7 @@ import axios from 'axios'
 //创建axios的一个实例
 
 let request = axios.create({
-    baseURL: 'http://127.0.0.1:3000/',//接口统一域名
+    baseURL: 'http://127.0.0.1:3030/api',//接口统一域名
     timeout: 5000,//设置超时
     withCredentials: true,//关键
     headers: {
@@ -34,5 +34,5 @@ request.interceptors.response.use(function (response) {
     return new Promise(error);
 });
 
-export default request;
+export default request.post;
 

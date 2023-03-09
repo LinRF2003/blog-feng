@@ -137,10 +137,10 @@ const routes = [
         path: '/login', // 登录
         component: () => import('@/views/login/index.vue'),
     },
-    // {
-    //     path: '/register',    // 注册
-    //     component: () => import('@/views/register.vue')
-    // },
+    {
+        path: '/register',    // 注册
+        component: () => import('@/views/register/index.vue')
+    },
     // {
     //     path: '/test',    // 注册
     //     component: () => import('@/components/EditorMarkdown.vue')

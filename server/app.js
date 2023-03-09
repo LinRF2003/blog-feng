@@ -6,7 +6,10 @@ const app = express();
 // 导入 cors 中间件
 const cors = require('cors')
 // 将 cors 注册为全局中间件
-app.use(cors())
+app.use(cors({
+  origin: ['http://localhost:8080','http://localhost:8081'],//可设置多个跨域
+  credentials: true//允许客户端携带验证信息
+}))
 
 // 解析表单的中间件
 app.use(express.urlencoded({ extended: false }))
@@ -27,16 +30,22 @@ app.use(express.static('public'))
 // app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api\//] }))
 app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: ['/api/login', '/api/register', '/api/imgUpload'] }))
 // , /^\/api\/question\//
-
-
+// 响应数据的中间件
+app.use(require('./utils/respond.js'));
 // 错误中间件
 app.use(function (err, req, res, next) {
   // 捕获身份认证失败的错误
-  if (err.name === 'UnauthorizedError') return res.err(NO_LOGIN, '身份验证失败');
+  if (err.name === 'UnauthorizedError') return res.send({...NO_LOGIN});
+  // google需要配置，否则报错cors error
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  // 允许的地址 http://127.0.0.1:9000 这样的格式
+  res.setHeader('Access-Control-Allow-Origin', req.get('Origin'));
+  // 允许跨域请求的方法
+  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE, PUT');
+  next();
 })
 
-// 响应数据的中间件
-app.use(require('./utils/respond.js'));
+
 
 // 导入并注路由模块
 app.use('/api', require('./router/index'))

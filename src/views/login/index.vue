@@ -2,16 +2,15 @@
   <div class="login">
     <div class="content">
       <div class="title">登录</div>
-      <el-form ref="formData" :model="formData" :rules="rules">
-        <el-form-item prop="email">
+      <el-form :model="formData">
+        <el-form-item>
           <el-input
               placeholder="请输入邮箱"
               v-model="formData.email"
               @keyup.enter.native="login"
-              :validate-event='false'
           ></el-input>
         </el-form-item>
-        <el-form-item prop="password">
+        <el-form-item>
           <el-input
               placeholder="请输入密码"
               v-model="formData.password"
@@ -19,20 +18,22 @@
               show-password
               @keyup.enter.native="login"
               clearable
-              :validate-event='false'
           ></el-input>
         </el-form-item>
         <router-link to="/register" class="register"
-        >还没有账号？立即注册</router-link
+        >还没有账号？立即注册
+        </router-link
         >
         <el-form-item>
           <el-checkbox v-model="formData.rememberMe" :true-label="1"
-          >记住我</el-checkbox
+          >记住我
+          </el-checkbox
           >
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :style="{ width: '100%' }" @click="login"
-          >登录</el-button
+          >登录
+          </el-button
           >
         </el-form-item>
       </el-form>
@@ -41,60 +42,57 @@
 </template>
 
 <script>
-import {emailReg, passwordReg} from "@/utils/Regular";
+import {emailReg} from "@/utils/Regular";
 
 export default {
-  name:"Login",
+  name: "Login",
   data() {
     return {
       // 表单数据
       formData: {
+        //
         email: "",
         password: "",
         rememberMe: "",
       },
-      // 表单验证规程
-      rules: {
-        email: [
-          {
-            required: true,
-            message: "邮箱不能为空",
-          },
-          {
-            pattern: emailReg,
-            message: "邮箱格式不正确",
-          },
-        ],
-        password: [
-          {
-            required: true,
-            message: "密码不能为空",
-          },
-          {
-            pattern:  passwordReg,
-            message: "密码至少8位且必有数字+特殊字符+字母",
-          },
-
-        ],
-      },
     };
   },
   methods: {
-    login(){
-      this.$refs["formData"].validate(async (valid) => {
-        console.log(1)
-      })
+    async login() {
+      if (!this.formData.email || !this.formData.password) {
+        return this.$Message.warning('账号密码不能为空');
+      }
+      if (!emailReg.test(this.formData.email)) {
+        return this.$Message.warning('请输入正确的邮箱');
+      }
+      if (this.formData.password.length < 8 || this.formData.password.length > 20) {
+        return this.$Message.warning('密码在8-20位之间');
+      }
+      let result = await this.$Request('/login',{
+        email:'597964726@qq.com',
+        password:'20030711.a'
+      });
+      if (result.code !== 200) {
+        return this.$Message.warning('账号或密码错误',);
+      }else{
+        // 登录成功
+        this.$Message.success('登录成功');
+        // 判断是否需要记住密码
+        // 返回路由
+      }
     }
+
   }
 };
 </script>
 
-<style lang="scss" scoped >
+<style lang="scss" scoped>
 .login {
   width: 100%;
   height: 100vh;
   background: url("../../assets/login-bg.jpg");
   background-size: cover;
+
   .content {
     position: absolute;
     right: 100px;
@@ -104,11 +102,13 @@ export default {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 2px 2px 10px #ddd;
+
     .title {
       font-size: 20px;
       margin-bottom: 20px;
       text-align: center;
     }
+
     .register {
       color: #333;
       position: absolute;
@@ -119,7 +119,7 @@ export default {
   }
 }
 </style>
-<style >
+<style>
 /*html {*/
 /*  overflow-y: hidden !important;*/
 /*}*/
