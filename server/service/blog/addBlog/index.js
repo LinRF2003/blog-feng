@@ -84,9 +84,7 @@ exports.main = async (req, res) => {
 
     // 定义增加博客数据的sql语句
     const sql = `insert into blog set ?;`
-    console.log(1);
     await db.query(sql, data, (err, results) => {
-        console.log(3);
         // 执行 SQL 语句失败
         if (err) { return res.err(SYSTEM_ERROR) };
         if (results.affectedRows != 1) { return res.err(SYSTEM_ERROR, '发布失败') };
@@ -100,7 +98,5 @@ exports.main = async (req, res) => {
 
             return res.sm('发布博客成功');
         })
-
     })
-    console.log(2);
 }

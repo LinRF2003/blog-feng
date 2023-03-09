@@ -23,53 +23,57 @@ exports.main = async (req, res) => {
         if (results.length == 1) {
             return res.success('邮箱已注册');
         }
+        const sendEamil = ()=>{
+             // 未注册发送验证码
+             let text = "您好，您的邮箱验证码是：" + captcha + "，15分钟有效";
+             // 597964726@qq.com 
+             let options = {
+                 from: '2673760057@qq.com',
+                 to: `${email}`,
+                 // bcc: '密送',
+                 subject: '登录验证码',
+                 text
 
+             };
+             mailTransport.sendMail(options, function (err, msg) {
+                 if (err) {
+                     console.log(err);
+                     res.send(err);
+                 } else {
+                     res.send('success');
+                 }
+             })
+        }
         // 邮箱未注册
         // 查询未注册的邮箱表中有没有此邮箱
         const esql = `select * from temporary_email where email = ?`;
         db.query(esql, email, (err, results) => {
             if (err) return false;
             // 60秒内只能发送一次
-            if (results[0].time) {
-                if ((Date.now() - results[0].time) / 1000 < 60) {
-                    return res.err(NO_AUTH, '60秒内只能发送一次请求')
-                };
-                // 未注册发送验证码
-                let text = "您好，您的邮箱验证码是：" + captcha + "，15分钟有效";
-                // 597964726@qq.com 
-                let options = {
-                    from: '2673760057@qq.com',
-                    to: `${email}`,
-                    // bcc: '密送',
-                    subject: '登录验证码',
-                    text
-
-                };
-                mailTransport.sendMail(options, function (err, msg) {
-                    if (err) {
-                        console.log(err);
-                        res.send(err);
-                    } else {
-                        res.send('success');
-                    }
-                })
-
-            }
+            
             // 向数据库加入邮箱、验证码、时间戳信息 
             // 需要插入的数据
             if (results.length == 0) {
+                sendEamil();
                 const data = {
                     email,
                     captcha,
                     time: Date.now(),
                 }
-                const sql = `insert into email set ?`
+                const sql = `insert into temporary_email set ?`
                 db.query(sql, data, (err, results) => {
+                    console.log(results);
                     if (err) return false;
                     return true;
                 })
             } else {
-
+                if (results[0].time) {
+                    if ((Date.now() - results[0].time) / 1000 < 60) {
+                        res.err(NO_AUTH, '60秒内只能发送一次请求')
+                    }
+                    sendEamil();
+    
+                }
                 const data = {
                     captcha,
                     time: Date.now(),
