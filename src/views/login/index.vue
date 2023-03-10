@@ -77,11 +77,32 @@ export default {
       }else{
         // 登录成功
         this.$Message.success('登录成功');
+        // 存储token
+        localStorage.setItem("token",result.token);
+        localStorage.setItem("tokenStartTime",Date.now());
         // 判断是否需要记住密码
+        if(this.formData.rememberMe==1){
+          const account = {
+            email: this.formData.email,
+            password: this.formData.password,
+          }
+          localStorage.setItem("account",JSON.stringify(account));
+        }else{
+          localStorage.removeItem("account")
+        }
         // 返回路由
+        this.$router.push('/');
       }
     }
-
+  },
+  mounted() {
+    // 判断用户是否选择的记住账号
+    let account = JSON.parse(localStorage.getItem("account"));
+    if(account){
+      this.formData.email = account.email;
+      this.formData.password = account.password;
+      this.formData.rememberMe = 1;
+    }
   }
 };
 </script>
@@ -95,7 +116,7 @@ export default {
 
   .content {
     position: absolute;
-    right: 100px;
+    right: 120px;
     top: 150px;
     width: 350px;
     background: rgba(255, 255, 255, 0.7);

@@ -21,9 +21,9 @@ exports.main = async (req, res) => {
         if (err) return res.err(SYSTEM_ERROR);
         // 邮箱已注册
         if (results.length == 1) {
-            return res.success('邮箱已注册');
+            return res.sm2('邮箱已注册');
         }
-        const sendEamil = ()=>{
+        const sendEmail = ()=>{
              // 未注册发送验证码
              let text = "您好，您的邮箱验证码是：" + captcha + "，15分钟有效";
              // 597964726@qq.com 
@@ -40,7 +40,7 @@ exports.main = async (req, res) => {
                      console.log(err);
                      res.send(err);
                  } else {
-                     res.send('success');
+                     res.sm('success');
                  }
              })
         }
@@ -54,7 +54,7 @@ exports.main = async (req, res) => {
             // 向数据库加入邮箱、验证码、时间戳信息 
             // 需要插入的数据
             if (results.length == 0) {
-                sendEamil();
+                sendEmail();
                 const data = {
                     email,
                     captcha,
@@ -71,7 +71,7 @@ exports.main = async (req, res) => {
                     if ((Date.now() - results[0].time) / 1000 < 60) {
                         res.err(NO_AUTH, '60秒内只能发送一次请求')
                     }
-                    sendEamil();
+                    sendEmail();
     
                 }
                 const data = {

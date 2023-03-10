@@ -153,34 +153,32 @@ const router = new VueRouter({
     mode: "history",  // 去掉网站里的#/
 })
 
-//全局守卫:前置守卫（在路由跳转之间进行判断）
-// router.beforeEach((to, from, next) => {
-//
-//     // 获取存储localStorage的token
-//     let token = window.localStorage.getItem('token') || ''
-//     // 获取存储token的开始时间
-//     const tokenStartTime = window.localStorage.getItem('tokenStartTime')
-//     // 后台给出的token有效时间，一个星期 单位 是秒
-//     // 我们自己定义6天过期，让用户重新登录一下， 用户总不可能在一个页面挂机一天吧
-//     const timeOver = 10 * 60 * 10 * 1000
-//     // 当前时间
-//     let date = new Date().getTime()
-//     // 如果大于说明是token过期了
-//     if (date - tokenStartTime > timeOver) {
-//         token = null
-//     }
-//
-//     if (!token) {
-//         // 如果去登录注册页，不用token
-//         if (to.path == '/register' || to.path == '/login') {
-//             next()
-//         } else {
-//             next('/login')
-//         }
-//     } else {
-//         next()
-//     }
-//
-// })
+// 全局守卫:前置守卫（在路由跳转之间进行判断）
+router.beforeEach((to, from, next) => {
+    // 获取存储localStorage的token
+    let token = window.localStorage.getItem('token') || ''
+    // 获取存储token的开始时间
+    const tokenStartTime = window.localStorage.getItem('tokenStartTime')
+    // 定义token过期时间 后端时间为30天 单位秒 前端定义15天
+    const timeOver = 15 * 24 * 60 * 60 * 1000
+    // 当前时间
+    let date = new Date().getTime()
+    // 如果大于说明是token过期了
+    if (date - tokenStartTime > timeOver) {
+        token = null
+    }
+
+    if (!token) {
+        // 如果去登录注册页，不用token
+        if (to.path == '/register' || to.path == '/login') {
+            next()
+        } else {
+            next('/login')
+        }
+    } else {
+        next()
+    }
+
+})
 /* 导出路由模块 */
 export default router

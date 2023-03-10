@@ -3,11 +3,20 @@
     <div class="content">
       <div class="title">注册</div>
       <el-form ref="formData" :model="formData" :rules="rules">
-        <el-form-item prop="phone">
+        <el-form-item prop="email">
           <el-input
-              placeholder="请输入手机号"
-              v-model="formData.phone"
+              placeholder="请输入邮箱"
+              v-model="formData.email"
           ></el-input>
+        </el-form-item>
+        <el-form-item prop="captcha">
+          <el-input
+              placeholder="请输入验证码"
+              v-model="formData.captcha"
+              style="width: 260px;"
+          ></el-input>
+          <div class="send size" v-if="canSend" @click="sendCaptcha">发送验证码</div>
+          <div v-show="!canSend" class="ban size">剩余{{ captchaSecond }}秒</div>
         </el-form-item>
         <el-form-item prop="password">
           <el-input
@@ -28,11 +37,13 @@
           ></el-input>
         </el-form-item>
         <router-link to="/login" class="register"
-        >已有账号？立即登录</router-link
+        >已有账号？立即登录
+        </router-link
         >
         <el-form-item>
           <el-button type="primary" :style="{ width: '100%' }" @click="register"
-          >注册</el-button
+          >注册
+          </el-button
           >
         </el-form-item>
       </el-form>
@@ -41,8 +52,10 @@
 </template>
 
 <script>
+import {captchaReg, emailReg, passwordReg} from "@/utils/Regular";
+
 export default {
-  name:'Register',
+  name: 'Register',
   data() {
     // 密码两次输入对比
     var rePass = (rule, value, callback) => {
@@ -57,21 +70,34 @@ export default {
     return {
       // 表单数据
       formData: {
-        phone: "",
+        email: "",
+        captcha: "",
         password: "",
         rePassword: "",
       },
-
+      canSend: true, // 是否可以发送验证码请求
+      captchaSecond: 0,// 倒计时剩余秒数
+      timer: null, // 定时器
       // 表单验证规程
       rules: {
-        phone: [
+        email: [
           {
             required: true,
-            message: "手机号不能为空",
+            message: "邮箱不能为空",
           },
           {
-            pattern: /^1[3456789]\d{9}$/,
-            message: "手机号码不正确",
+            pattern: emailReg,
+            message: "邮箱格式不正确",
+          },
+        ],
+        captcha: [
+          {
+            required: true,
+            message: "验证码不能为空",
+          },
+          {
+            pattern: captchaReg,
+            message: "验证需为6位整数",
           },
         ],
         password: [
@@ -80,9 +106,8 @@ export default {
             message: "密码不能为空",
           },
           {
-            min: 6,
-            max: 20,
-            message: "密码在6 - 20位之间",
+            pattern: passwordReg,
+            message: "密码至少8位且必有数字+特殊字符+字母",
           },
         ],
         rePassword: [
@@ -101,54 +126,109 @@ export default {
         if (!valid) {
           return;
         }
+
         // 调用注册接口
-        let result = await this.$request({
-          url: "/reguser",
-          method: "post",
-          data: {
-            phone: this.formData.phone,
-            password: this.formData.password,
-          },
+        let result = await this.$Request('/register', {
+          email: this.formData.email,
+          password: this.formData.password,
+          repassword: this.formData.rePassword,
+          captcha: this.formData.captcha,
         });
-        // console.log(result);
-        if (result.data.status === 0) {
-          this.$message.success(result.data.message);
+        if (result.code === 200) {
+          this.$Message.success('注册成功');
           this.$router.push("/login");
         } else {
-          this.$message.warning(result.data.message);
+          this.$Message.warning(result.message);
         }
       });
+
     },
+    // 发送验证码
+    async sendCaptcha() {
+      let result = await this.$Request('/email/send',{email:this.formData.email});
+      if (result.code === 200) {
+        this.captchaSecond = 60;
+        this.canSend = false;
+        this.timer = setInterval(() => {
+          this.captchaSecond -= 1;
+        }, 1000);
+      }else{
+        console.log(result)
+        this.$Message.warning(result.desc);
+      }
+
+    },
+  },
+  watch: {
+    captchaSecond: function () {
+      if (this.captchaSecond == 0) {
+        clearInterval(this.timer);
+        this.timer = null;
+        this.canSend = true;
+        this.captchaSecond = 60;
+      }
+
+    }
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
   },
 };
 </script>
 
-<style lang="scss" scoped >
+<style lang="scss" scoped>
 .login {
   width: 100%;
   height: 100vh;
   background: url("../../assets/login-bg.jpg");
   background-size: cover;
+
   .content {
     position: absolute;
-    right: 200px;
+    right: 120px;
     top: 150px;
     width: 350px;
     background: rgba(255, 255, 255, 0.7);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 2px 2px 10px #ddd;
+
     .title {
       font-size: 20px;
       margin-bottom: 20px;
       text-align: center;
     }
+
     .register {
       color: #333;
       position: absolute;
-      top: 235px;
+      top: 300px;
       right: 20px;
       font-size: 12px;
+    }
+
+    .size {
+      flex: 1;
+
+      margin: 0 8px;
+      font-size: 12px;
+      text-align: center;
+      color: #fff;
+      height: 40px;
+    }
+
+    .send {
+      cursor: pointer;
+      background: #409EFF;
+    }
+
+    .ban {
+      background: #aaa;
+      cursor: no-drop;
+    }
+
+    :deep(.el-form-item__content) {
+      display: flex;
     }
   }
 }
