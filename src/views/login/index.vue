@@ -69,11 +69,11 @@ export default {
         return this.$Message.warning('密码在8-20位之间');
       }
       let result = await this.$Request('/login',{
-        email:'597964726@qq.com',
-        password:'20030711.a'
+        email: this.formData.email,
+        password: this.formData.password
       });
       if (result.code !== 200) {
-        return this.$Message.warning('账号或密码错误',);
+        return this.$Message.warning(result.message,);
       }else{
         // 登录成功
         this.$Message.success('登录成功');

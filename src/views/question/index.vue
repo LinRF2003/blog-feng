@@ -1,17 +1,13 @@
-
 <template>
   <div>
-    <router-view></router-view>
+    问答
   </div>
 </template>
 
 <script>
 
 export default {
-  name: '',
-  methods:{
-
-  }
+  name: 'Question',
 }
 </script>
 

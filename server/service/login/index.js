@@ -20,8 +20,8 @@ exports.main = (req, res) => {
         return res.err(PARAMS_ERROR, '邮箱错误');
     }
     // 判断密码是否正确
-    if (password.length < 8) {
-        return res.err(PARAMS_ERROR, '密码不小于8位');
+    if (password.length < 8||password.length>20) {
+        return res.err(PARAMS_ERROR, '密码大于8位且小于20位');
     }
     // 判断数据库中是否存在此用户
     const sql = 'select * from users where email = ?'
