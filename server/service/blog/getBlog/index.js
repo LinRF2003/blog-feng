@@ -7,20 +7,8 @@ const {
 // order 排序类型
 exports.main = async (req, res) => {
     const {
-        pageSize = 10, pageNo = 1, order = 'new'
+        pageSize = 10, pageNo = 1, order = 'new', tags = '', fatherTags = ''
     } = req.body;
-
-    if (order === 'hot') {
-        const sql = `select * from blog where isDelete = 0 order by views desc, createTime desc limit ?,?;
-                     select count(*) count from blog where isDelete = 0;`
-        execute(sql);
-
-    } else {
-        const sql = `select * from blog where isDelete = 0 order by createTime desc limit ?,?;
-        select count(*) count from blog where isDelete = 0`
-        execute(sql);
-    }
-
     // 执行sql语句方法
     const execute = async (sql) => {
         await db.query(sql, [(pageNo - 1) * pageSize, pageSize], (err, results) => {
@@ -28,12 +16,16 @@ exports.main = async (req, res) => {
             if (err) {
                 return res.err(SYSTEM_ERROR);
             }
-            let pageTotal = parseInt(results[1][0].count / pageSize) + 1;
-            res.successs({
+            let totalCount = results[1][0].count;// 符合条件的总条数
+            if (totalCount === 0) {
+                return res.success({list: []});
+            }
+            let pageTotal = parseInt(totalCount / pageSize) + 1;
+            return res.successs({
                 data: {
                     pageNo,
                     pageSize,
-                    totalCount: results[1][0].count,
+                    totalCount,
                     pageTotal,
                     list: results[0],
                 },
@@ -41,4 +33,16 @@ exports.main = async (req, res) => {
             })
         })
     }
+    if (order === 'hot') {
+        const sql = `select * from blog where isDelete = 0 and tags like '%${tags}%' and fatherTags like '%${fatherTags}%' order by views desc, createTime desc limit ?,?;
+                     select count(*) count from blog where isDelete = 0 and tags like '%${tags}%' and fatherTags like '%${fatherTags}%';`
+        execute(sql);
+
+    } else {
+        const sql = `select * from blog where isDelete = 0 and tags like '%${tags}%' and fatherTags like '%${fatherTags}%' order by createTime desc limit ?,?;
+        select count(*) count from blog where isDelete = 0 and tags like '%${tags}%' and fatherTags like '%${fatherTags}%'`
+        execute(sql);
+    }
+
+
 }
