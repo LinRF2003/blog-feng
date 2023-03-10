@@ -1,8 +1,50 @@
-body{
+body {
+  background: #f7f3f5;
   padding: 0;
   margin: 0;
 }
+
+* {
+  box-sizing: border-box;
+}
+
 a {
   color: #494949;
   text-decoration: none;
+  cursor: pointer;
+}
+
+:root {
+  --main-color: #18b8be;
+  --bg-color: #ccd9e2;
+}
+
+// 显示颜色
+.active {
+  color: var(--main-color);
+
+}
+
+// 导航条样式
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(239, 239, 239);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #bfbfbf;
+  border-radius: 10px;
+}
+
+:-webkit-scrollbar-thumb:hover {
+  background: #bfbfbf;
+}
+
+:-webkit-scrollbar-corner {
+  background: #bfbfbf;
 }

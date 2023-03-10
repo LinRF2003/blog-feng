@@ -20,13 +20,13 @@
               placeholder="请输入内容"
               v-model="content"
               class="input-with-select"
-              @keyup.enter.native="search"
+
               clearable
           >
             <el-button
                 slot="append"
                 icon="el-icon-search"
-                @click="search"
+
             ></el-button>
           </el-input>
         </div>
@@ -141,12 +141,18 @@ export default {
         }
 
         .navitem {
-          padding: 0 15px;
+          padding: 15px 10px;
+          margin: 0 5px;
+          min-height: 54px;
         }
 
-        .navitem:hover,
+
+        .navitem:hover{
+          background: #f4f4f4;
+        }
         .active {
-          color: #c94646;
+          border-bottom: 3px var(--main-color) solid;
+          color: #000;
         }
       }
 
@@ -155,6 +161,9 @@ export default {
         display: flex;
         align-items: center;
         padding: 0 30px;
+        :deep(.el-input__inner){
+          min-width: 150px;
+        }
       }
 
       .user {
@@ -189,6 +198,7 @@ export default {
     padding-top: 78px;
     width: 88%;
     min-height: calc(100vh - 60px);
+    //box-sizing: border-box;
   }
 
   // 底部
