@@ -23,10 +23,10 @@ request.interceptors.request.use(function (config) {
 //----------------- 二、响应拦截器 忽略
 request.interceptors.response.use(function (response) {
     // console.log(response.data)
-    // if (response.data.code === 302) {
-    //     window.location.href = '/login';
-    // }
-    console.log(response)
+    if (response.data.code === 302) {
+        window.location.href = '/login';
+    }
+    console.log(response.data)
     return response.data;
 }, function (error) {
     // 对响应错误做点什么

@@ -28,6 +28,10 @@ const routes = [
         ]
     },
     {
+        path:'/addblog',
+        component:()=>import('@/views/blog/addBlog/index.vue')
+    },
+    {
         path: '/login', // 登录
         component: () => import('@/views/login/index.vue'),
     },
@@ -49,7 +53,7 @@ router.beforeEach((to, from, next) => {
     let token = window.localStorage.getItem('token') || ''
     // 获取存储token的开始时间
     const tokenStartTime = window.localStorage.getItem('tokenStartTime')
-    // 定义token过期时间 后端时间为30天 单位秒 前端定义15天
+    // 定义token过期时间 后端时间为30天  前端定义15天
     const timeOver = 15 * 24 * 60 * 60 * 1000
     // 当前时间
     let date = new Date().getTime()

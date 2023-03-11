@@ -79,9 +79,9 @@ export default {
         this.$Message.success('登录成功');
         // 存储token
         localStorage.setItem("token",result.token);
-        localStorage.setItem("tokenStartTime",Date.now());
+        localStorage.setItem("tokenStartTime",''+Date.now());
         // 判断是否需要记住密码
-        if(this.formData.rememberMe==1){
+        if(this.formData.rememberMe===1){
           const account = {
             email: this.formData.email,
             password: this.formData.password,

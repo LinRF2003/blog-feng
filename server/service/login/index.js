@@ -41,7 +41,7 @@ exports.main = (req, res) => {
             const user = { userId: results[0].userId, userName: results[0].userName, avatar: results[0].avatar }
             // 生成 Token 字符串
             const tokenStr = jwt.sign(user, config.jwtSecretKey, {
-                expiresIn: '10h', // token 有效期为 10 个小时
+                expiresIn: '720h', // token 有效期为 10 个小时
             })
             // 登录成功
            

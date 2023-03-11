@@ -1,20 +1,20 @@
 <template>
   <div class="blog">
     <div class="tags">
-      <a :class="['tag',currentFatherTag=='推荐'?'active':'']" @click="changeFatherTag('推荐')">
+      <a :class="['tag',currentFatherTag==='推荐'?'active':'']" @click="changeFatherTag('推荐')">
         推荐
       </a>
-      <a :class="['tag',currentFatherTag==tag?'active':'']" v-for="tag in fatherTags" @click="changeFatherTag(tag)">
+      <a :class="['tag',currentFatherTag===tag?'active':'']" v-for="tag in fatherTags" @click="changeFatherTag(tag)">
         {{ tag }}
       </a>
     </div>
-    <div class="son-tags" v-show="currentFatherTag!='推荐'">
+    <div class="son-tags" v-show="currentFatherTag!=='推荐'">
       <a :class="['son-tag', currentTag==='全部'?'son-active':'']" @click="changeTag('全部')">全部</a>
       <a v-for="tag in tags" :class="['son-tag', currentTag===tag?'son-active':'']" @click="changeTag(tag)">
         {{ tag }}
       </a>
     </div>
-
+    {{blogData}}
   </div>
 </template>
 
@@ -27,7 +27,14 @@ export default {
       tags: [], // 二级标签
       currentFatherTag: "推荐", // 当前父标签
       currentTag: "全部",// 当前子标签
-      categoryTags: {} // 分类标签
+      categoryTags: {}, // 分类标签
+      blogData:{
+        pageSize: 10, // 每页页数
+        pageNo: 1, // 当前页数
+        list:[],
+        pageTotal:0,
+        totalCount:0,
+      },
     }
   },
   methods: {
@@ -46,12 +53,18 @@ export default {
         if (currentFatherTag && currentTag) {
           this.currentFatherTag = currentFatherTag;
           this.currentTag = currentTag;
-          this.tags = [];
-          let tags = this.categoryTags[currentFatherTag].tags;
-          for (const Tag in tags) {
-            this.tags.push(tags[Tag]);
+          if (currentFatherTag !== '推荐') {
+            this.tags = [];
+            let tags = this.categoryTags[currentFatherTag].tags;
+            for (const Tag in tags) {
+              this.tags.push(tags[Tag]);
+            }
+            // 获取当前标签内容
+            return this.getBlogByTag(this.currentTag, this.currentFatherTag);
           }
         }
+        // 获取当前标签内容
+        this.getBlogByTag(this.currentTag, '');
         // 页面刷新保留之前信息，防止刷新位置变化
         window.onbeforeunload = () => {
           console.log('页面刷新之前触发');
@@ -60,23 +73,44 @@ export default {
         }
       }
     },
+    // 获取标签内容
+    async getBlogByTag(tag, fatherTag) {
+      let result = await this.$Request('/blog/get', {
+        pageSize: this.pageSize,
+        pageNo: this.pageNo,
+        tag,
+        fatherTag,
+      })
+      if (result.code === 200) {
+        this.blogData = result.data;
+    }
+    },
     // 改变当前父标签
     changeFatherTag(tag) {
+      // 更改标签内容
       this.currentFatherTag = tag;
-      console.log(this.currentFatherTag);
       this.currentTag = '全部'
-      if (tag != '推荐') {
+      if (tag !== '推荐') {
         this.tags = [];
         let tags = this.categoryTags[tag].tags;
         for (const Tag in tags) {
           this.tags.push(tags[Tag]);
         }
+        // 获取当前标签内容
+        this.getBlogByTag(this.currentTag, this.currentFatherTag);
+      } else {
+        // 获取当前标签内容
+        this.getBlogByTag(this.currentTag, '');
       }
+
     },
     // 改变子标签
     changeTag(tag) {
       this.currentTag = tag;
-    }
+      // 获取当前标签内容
+      this.getBlogByTag(this.currentTag, this.currentFatherTag);
+    },
+
   },
   mounted() {
     this.getTags();
@@ -89,7 +123,6 @@ export default {
     tags.onmouseout = () => {
       tags.style.height = '55px';
     }
-
   }
 }
 </script>

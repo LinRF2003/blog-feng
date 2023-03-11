@@ -31,15 +31,15 @@ exports.saveBlog = (req, res) => {
     const body = req.body
     // console.log(body);
     // 判断参数是否错误
-    if (!(body.title && body.content && body.categoryId && body.editorType == '' && body.type == '')) {
+    if (!(body.title && body.content && body.categoryId && body.editorType === '' && body.type === '')) {
         return res.status(500).send('必填参数不能为空')
     }
     // 编辑器为markdwon判断是否传了markdown内容
-    if (body.editorType == 1 && !body.markdownContent) {
+    if (body.editorType === 1 && !body.markdownContent) {
         return res.status(500).send('markdwon编辑器markdown内容不能为空')
     }
     // 判断类型未转载时转载地址是否为空
-    if (body.type == 1 && !body.reprintUrl) {
+    if (body.type === 1 && !body.reprintUrl) {
         return res.status(500).send('类型为转载时转载地址不能为空')
     }
 

@@ -57,6 +57,7 @@
 <!--            <img src="@/assets/default.png" v-else/>-->
 <!--          </router-link>-->
 <!--        </div>-->
+        <router-link to="/addblog">发布博客</router-link>
       </div>
     </div>
     <div class="content">
