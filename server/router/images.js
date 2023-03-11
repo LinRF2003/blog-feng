@@ -21,8 +21,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 //路由接口
 router.post("/imgUpload", upload.array("img", 1), (req, res) => {
-
-    // 返回图片的地址 
+    // 返回图片的地址
+    console.log(req.files)
     let file = req.files;
     // console.log(req.params);
     //====此时，图片已经保存至我们的服务端了====
@@ -34,7 +34,7 @@ router.post("/imgUpload", upload.array("img", 1), (req, res) => {
     // fileInfo.path = 'http://43.136.121.120:3030/images/' + file[0].filename;
     fileInfo.path = 'http://127.0.0.1:3030/images/' + file[0].filename;
     res.send({
-        code: 0,
+        code:200,
         value: "图片上传成功",
         data: fileInfo
     })

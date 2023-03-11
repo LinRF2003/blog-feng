@@ -1,5 +1,14 @@
 <template>
-  <v-md-editor v-model="text" height="700px"></v-md-editor>
+  <v-md-editor
+      v-model="text"
+      height="700px"
+      @change="changeContent"
+      @upload-image="handleUploadImage"
+      :disabled-menus="[]"
+      :toc-nav-position-right="true"
+      @fullscreen-change="changeFull"
+
+  ></v-md-editor>
 </template>
 
 <script>
@@ -34,6 +43,7 @@ import 'codemirror/addon/scroll/simplescrollbars';
 import 'codemirror/addon/scroll/simplescrollbars.css';
 // style
 import 'codemirror/lib/codemirror.css';
+import axios from "axios";
 
 VMdEditor.Codemirror = Codemirror;
 
@@ -46,50 +56,64 @@ Vue.use(VMdEditor);
 export default {
   data() {
     return {
-      text: '',
+      text: "",
+      editor: "",
     };
   },
+  props: ["markdownText"],
+  methods: {
+    changeContent(text, html) {
+      console.log(text, html)
+      this.$emit("changeMarkdownText", text);
+      this.$emit("changeHtml", html);
+    },
+    async handleUploadImage(event, insertImage, files) {
+      // 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
+
+      let data = new FormData();
+      data.append("img", files[0]);
+      data.append("type", "1");
+
+      let result = await this.$Request(
+          "/imgUpload",
+          data,
+          {
+            headers: {
+              'Content-Type': "multipart/form-data",
+            },
+          }
+      );
+      // 返回的数据
+      insertImage({
+        url: result.data.path,
+        desc: result.data.name,
+      });
+
+
+    }
+    ,
+    // 切换全屏状态时触发的事件
+    changeFull(isFullscreen) {
+      if (isFullscreen) {
+        this.editor.style.width = '100vw';
+      } else {
+        this.editor.style.width = '88vw';
+      }
+    }
+  },
+  mounted() {
+    if (this.markdownText) {
+      this.text = this.markdownText;
+    }
+    this.editor = document.querySelector('.v-md-editor');
+  },
+
 };
-// export default {
-//   data() {
-//     return {
-//       text: "",
-//     };
-//   },
-//   props: ["height", "markdown"],
-//   methods: {
-//     changeContent(text, html) {
-//       this.$emit("changeM", text);
-//       this.$emit("change", html);
-//     },
-//     // async handleUploadImage(event, insertImage, files) {
-//     //   // 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
-/*    //*/
-/*    //   let data = new FormData();*/
-/*    //   data.append("img", files[0]);*/
-/*    //   data.append("type", "1");*/
-/*    //*/
-/*    //   let result = await this.$request({*/
-/*    //     method: "POST",*/
-/*    //     url: "/imgUpload",*/
-/*    //     data: data,*/
-/*    //     headers: {*/
-/*    //       enctype: "multipart/form-data",*/
-/*    //     },*/
-/*    //   });*/
-/*    //*/
-/*    //   // 返回的数据*/
-//     //   insertImage({
-//     //     url: result.data.data.path,
-//     //     desc: result.data.data.name,
-//     //   });
-//     // },
-//   },
-// };
 </script>
 
 <style>
-.CodeMirror-scroll {
-  padding-bottom: 10px !important;
+.v-md-editor {
+  /*width: 100vw!important;*/
 }
+
 </style>
