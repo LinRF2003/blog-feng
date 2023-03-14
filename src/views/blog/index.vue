@@ -14,11 +14,16 @@
         {{ tag }}
       </a>
     </div>
-    {{blogData}}
+    <div class="blog-content">
+      <BlogItem :blogInfo="blogInfo"  v-for="blogInfo in blogData.list"></BlogItem>
+    </div>
+    <Null v-if="blogData.list.length==0"></Null>
   </div>
 </template>
 
 <script>
+import BlogItem from "@/components/BlogItem";
+
 export default {
   name: 'Blog',
   data() {
@@ -28,14 +33,19 @@ export default {
       currentFatherTag: "推荐", // 当前父标签
       currentTag: "全部",// 当前子标签
       categoryTags: {}, // 分类标签
-      blogData:{
+      blogData: {
         pageSize: 10, // 每页页数
         pageNo: 1, // 当前页数
-        list:[],
-        pageTotal:0,
-        totalCount:0,
+        list: [],
+        pageTotal: 0,
+        totalCount: 0,
       },
+      blog:null, // 博客元素
+      blogContent:null// 博客内热元素
     }
+  },
+  components: {
+    BlogItem
   },
   methods: {
     // 获取标签
@@ -65,12 +75,7 @@ export default {
         }
         // 获取当前标签内容
         this.getBlogByTag(this.currentTag, '');
-        // 页面刷新保留之前信息，防止刷新位置变化
-        window.onbeforeunload = () => {
-          console.log('页面刷新之前触发');
-          window.sessionStorage.setItem('currentFatherTag', this.currentFatherTag);
-          window.sessionStorage.setItem('currentTag', this.currentTag);
-        }
+
       }
     },
     // 获取标签内容
@@ -83,13 +88,16 @@ export default {
       })
       if (result.code === 200) {
         this.blogData = result.data;
-    }
+      }
     },
     // 改变当前父标签
     changeFatherTag(tag) {
+
       // 更改标签内容
       this.currentFatherTag = tag;
       this.currentTag = '全部'
+      window.sessionStorage.setItem('currentFatherTag', this.currentFatherTag);
+      window.sessionStorage.setItem('currentTag', '全部');
       if (tag !== '推荐') {
         this.tags = [];
         let tags = this.categoryTags[tag].tags;
@@ -106,7 +114,10 @@ export default {
     },
     // 改变子标签
     changeTag(tag) {
+      // window.sessionStorage.setItem('currentFatherTag', this.currentFatherTag);
+
       this.currentTag = tag;
+      window.sessionStorage.setItem('currentTag', this.currentTag);
       // 获取当前标签内容
       this.getBlogByTag(this.currentTag, this.currentFatherTag);
     },
@@ -123,6 +134,26 @@ export default {
     tags.onmouseout = () => {
       tags.style.height = '55px';
     }
+    this.blog = document.querySelector('.blog');
+    this.blogContent = document.querySelector('.blog-content');
+    // 页面刷新保留之前信息，防止刷新位置变化
+    window.onbeforeunload = () => {
+      console.log('页面刷新之前触发');
+      alert(1)
+      window.sessionStorage.setItem('currentFatherTag', this.currentFatherTag);
+      window.sessionStorage.setItem('currentTag', this.currentTag);
+    }
+  },
+  watch:{
+    currentFatherTag:function(val,oldval){
+      if(val == '推荐'){
+        this.blog.style.paddingTop='30px';
+        this.blogContent.style.marginTop = '45px';
+      }else{
+        this.blog.style.paddingTop='0';
+        this.blogContent.style.marginTop = '20px';
+      }
+    }
   }
 }
 </script>
@@ -130,7 +161,7 @@ export default {
 <style lang="scss" scoped>
 .blog {
   position: relative;
-
+  padding-top: 30px;
   .tags {
     position: absolute;
     top: 0;
@@ -168,6 +199,10 @@ export default {
       color: #000;
       background: var(--bg-color);
     }
+
+  }
+  .blog-content{
+    margin-top: 45px;
   }
 }
 </style>

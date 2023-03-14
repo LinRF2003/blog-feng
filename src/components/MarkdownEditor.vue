@@ -63,7 +63,6 @@ export default {
   props: ["markdownText"],
   methods: {
     changeContent(text, html) {
-      console.log(text, html)
       this.$emit("changeMarkdownText", text);
       this.$emit("changeHtml", html);
     },

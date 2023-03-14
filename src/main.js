@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 
 Vue.config.productionTip = false
-import { Button,Form,FormItem,Input,Checkbox,Radio,RadioGroup,Select,Option,Upload,Tag,Dialog} from 'element-ui';
+import { Button,Form,FormItem,Input,Checkbox,Radio,RadioGroup,Select,Option,Upload,Tag,Dialog,Divider} from 'element-ui';
 Vue.use(Button);
 Vue.use(Form);
 Vue.use(FormItem);
@@ -15,6 +15,7 @@ Vue.use(Option);
 Vue.use(Upload);
 Vue.use(Tag);
 Vue.use(Dialog);
+Vue.use(Divider);
 // 引入路由
 import router from './router/index.js'
 // 引入vuex
@@ -31,8 +32,9 @@ Vue.prototype.$Message = Message;
 
 // 引入上传图片的全局组件
 import UploadPic from '@/components/UploadPic';
-
+import Null from "@/components/Null";
 Vue.component('UploadPic', UploadPic)
+Vue.component('Null', Null)
 
 
 new Vue({

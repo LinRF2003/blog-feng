@@ -1,19 +1,17 @@
 <template>
   <div class="add-blog">
-    <div>
-      <input
-          type="text"
-          placeholder="请输入文章标题"
-          class="title"
-          v-model="blogInfo.title"
-          autofocus
-      />
+    <input
+        type="text"
+        placeholder="请输入文章标题"
+        class="title"
+        v-model="blogInfo.title"
+        autofocus
+    />
 
-      <MarkdownEditor
-          @changeMarkdownText="changeMarkdownText"
-          @changeHtml="changeHtml"
-      ></MarkdownEditor>
-    </div>
+    <MarkdownEditor
+        @changeMarkdownText="changeMarkdownText"
+        @changeHtml="changeHtml"
+    ></MarkdownEditor>
     <div class="detail">
       <div class="ti">
         文章设置
@@ -90,19 +88,24 @@
               </el-radio-group>
             </div>
           </el-form-item>
-          <el-form-item label="博客摘要" prop="summary">
+          <el-form-item label="博客摘要" prop="summary" class="summary">
             <el-input
                 v-model="blogInfo.summary"
                 type="textarea"
                 placeholder="请输入摘要"
                 :autosize="{ minRows: 4, maxRows: 4 }"
+                resize="none"
             >
             </el-input>
+            <a class="get" @click="getSummary">
+              获取文章前150个字
+            </a>
           </el-form-item>
         </el-form>
       </div>
+      <el-button type="primary" @click="addBlog" class="add">提交</el-button>
     </div>
-    <el-button type="primary" @click="addBlog">提交</el-button>
+
   </div>
 </template>
 
@@ -141,7 +144,7 @@ export default {
           {
             max: 200,
             min: 20,
-            message: "字数在20-300之间",
+            message: "字数在20-200之间",
           },
         ],
         tags: [{required: true, message: "不能为空"}]
@@ -208,11 +211,19 @@ export default {
     },
     // 添加博客
     addBlog() {
-
       // 判断标题和内容是否为空
       if (!this.blogInfo.title || !this.blogInfo.content) {
         return this.$Message.warning('标题和内容不能为空');
       }
+      if (this.blogInfo.title.length < 5) {
+        return this.$Message.warning('标题不能少于五位');
+      }
+      let str = this.blogInfo.content.replace(/<[^<>]+>/g, "");
+      str = str.replace(/\s*/g, "");
+      if (str.length < 20) {
+        return this.$Message.warning('内容不能少于20位');
+      }
+      // 判断博客详情是否正确
       this.$refs["blogInfo"].validate(async (valid) => {
         if (!valid) {
           return false;
@@ -227,18 +238,21 @@ export default {
         let result = await this.$Request('/blog/add', {
           ...this.blogInfo, tags, fatherTags
         })
-        if(result.code === 200) {
+        if (result.code === 200) {
           this.$Message.success('发布成功');
           location.reload();
           // 跳转路由
         }
       })
+    },
+    // 获取文章前150个字
+    getSummary() {
+      let str = this.blogInfo.content.replace(/<[^<>]+>/g, "");
+      str = str.replace(/\s*/g, "");
+      this.blogInfo.summary = str.substring(0, 150);
     }
   },
-
-
   mounted() {
-
     if (!this.$store.state.categoryTags) {
       this.$store.dispatch('getTags');
     }
@@ -291,22 +305,37 @@ export default {
   min-width: 1000px;
 
   .title {
-    width: 100%;
+    display: block;
+    min-width: 1000px;
+    //width: 60%;
     border: 0;
     outline: none;
     background: #f4f4f4;
     padding: 20px;
     border-bottom: 1px solid #ccc;
-    margin-bottom: 16px;
+    margin: 0 auto 16px;
     font-size: 25px;
     color: #333;
   }
 
   .detail {
+    position: relative;
     width: 1000px;
-    margin: 50px auto 0;
+    margin: 50px auto;
     background: #fff;
     padding: 40px;
+
+    .ti {
+      padding-bottom: 10px;
+      font-size: 18px;
+      font-weight: 550;
+    }
+
+    .add {
+      position: absolute;
+      bottom: -40px;
+      right: 40px;
+    }
 
     .content {
       padding: 40px;
@@ -385,6 +414,17 @@ export default {
           }
         }
 
+      }
+
+      .summary {
+        position: relative;
+
+        .get {
+          position: absolute;
+          right: 5px;
+          top: 65px;
+          font-size: 13px;
+        }
       }
     }
   }
