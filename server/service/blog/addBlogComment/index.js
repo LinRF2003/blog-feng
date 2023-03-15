@@ -1,5 +1,5 @@
 // 引入数据库文件   
-const { PARAMS_ERROR, SYSTEM_ERROR } = require('../../../common/errorCode');
+const {PARAMS_ERROR, SYSTEM_ERROR} = require('../../../common/errorCode');
 const db = require('../../../db/index')
 
 
@@ -34,7 +34,10 @@ exports.main = (req, res) => {
         avatar
     }
     db.query(sql, [data, blogId], (err, results) => {
-        if (err) return res.err(SYSTEM_ERROR);
+        if (err) {
+            console.log(err);
+            return res.err(SYSTEM_ERROR);
+        }
 
         // 执行 SQL 语句成功，但是影响行数不等于 1
         if (results[0].affectedRows !== 1 || results[1].affectedRows !== 1) return res.sm2('添加失败！');

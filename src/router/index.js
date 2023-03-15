@@ -24,12 +24,47 @@ const routes = [
                 path: '/user',
                 meta: {activePath: "/user"}, //参数
                 component: () => import('@/views/user/index.vue'),
+                children: [
+                    {
+                        path: '/',
+                        name: '个人信息',
+                        meta: {activePath: "/my", activePath2: "/myinfo"},
+                        component: () => import('@/views/user/myInfo/index.vue'),
+                    },
+                    {
+                        path: 'account',
+                        name: '账号设置',
+                        meta: {activePath: "/my", activePath2: "/AS"},
+                        component: () => import('@/views/user/account/index.vue'),
+                        children: [
+                            {
+                                path: 'password',
+                                name: '修改密码',
+                                meta: {activePath: "/my", activePath2: "/AS", title: "修改密码"},
+                                component: () => import('@/views/user/account/password/index.vue'),
+                            },
+                            {
+                                path: 'email',
+                                name: '修改邮箱',
+                                meta: {
+                                    activePath: "/my", activePath2: "/AS", title: "修改邮箱"
+                                },
+                                component: () => import('@/views/user/account/email/index.vue'),
+                            }
+                        ]
+                    }
+                ]
             },
         ]
     },
     {
-        path:'/addblog',
-        component:()=>import('@/views/blog/addBlog/index.vue')
+        path: '/addblog',
+        component: () => import('@/views/blog/addBlog/index.vue')
+    },
+    {
+        path: '/blogdetail/:id',
+        name: '博客详情',
+        component: () => import('@/views/blog/blogDetail/index.vue'),
     },
     {
         path: '/login', // 登录
@@ -39,24 +74,25 @@ const routes = [
         path: '/register',  // 注册
         component: () => import('@/views/register/index.vue')
     },
+
 ]
 
 /* 实例化路由 */
 const router = new VueRouter({
-    routes,            // （简写）相当于 routes: routes
+    routes,
     mode: "history",  // 去掉网站里的#/
 })
 
 // 全局守卫:前置守卫（在路由跳转之间进行判断）
 router.beforeEach((to, from, next) => {
     // 获取存储localStorage的token
-    let token = window.localStorage.getItem('token') || ''
+    let token = window.localStorage.getItem('token') || '';
     // 获取存储token的开始时间
-    const tokenStartTime = window.localStorage.getItem('tokenStartTime')
-    // 定义token过期时间 后端时间为30天  前端定义15天
-    const timeOver = 15 * 24 * 60 * 60 * 1000
+    const tokenStartTime = window.localStorage.getItem('tokenStartTime');
+    // 定义token过期时间 后端时间为30天  前端定义3天
+    const timeOver = 3 * 24 * 60 * 60 * 1000;
     // 当前时间
-    let date = new Date().getTime()
+    let date = new Date().getTime();
     // 如果大于说明是token过期了
     if (date - tokenStartTime > timeOver) {
         token = null
@@ -65,14 +101,14 @@ router.beforeEach((to, from, next) => {
     if (!token) {
         // 如果去登录注册页，不用token
         if (to.path == '/register' || to.path == '/login') {
-            next()
+            next();
         } else {
-            next('/login')
+            next('/login');
         }
     } else {
-        next()
+        next();
     }
 
 })
 /* 导出路由模块 */
-export default router
+export default router;

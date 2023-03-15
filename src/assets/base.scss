@@ -21,17 +21,18 @@ a {
   --main-color: #18b8be;
   --bg-color: #ccd9e2;
 }
-
+.bg-color{
+  background-color: var(--bg-color)!important;
+}
 // 显示颜色
 .active {
   color: var(--main-color);
-
 }
 
 // 导航条样式
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -44,10 +45,25 @@ a {
   border-radius: 10px;
 }
 
-:-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
   background: #bfbfbf;
 }
 
-:-webkit-scrollbar-corner {
+::-webkit-scrollbar-corner {
   background: #bfbfbf;
+}
+
+
+table {
+  border: 1px solid #ccc;
+
+  border-collapse: collapse;
+
+  td,
+  th {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+
+
 }

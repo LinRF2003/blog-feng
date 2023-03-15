@@ -2,8 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 
 Vue.config.productionTip = false
-import { Button,Form,FormItem,Input,Checkbox,Radio,RadioGroup,Select,Option,Upload,Tag,Dialog,Divider} from 'element-ui';
+import { Button,Form,FormItem,Input,Checkbox,Radio,RadioGroup,Image,Select,Option,Upload,Tag,Dialog,Divider,Loading} from 'element-ui';
 Vue.use(Button);
+Vue.use(Image);
 Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Input);
@@ -15,6 +16,7 @@ Vue.use(Option);
 Vue.use(Upload);
 Vue.use(Tag);
 Vue.use(Dialog);
+Vue.use(Loading);
 Vue.use(Divider);
 // 引入路由
 import router from './router/index.js'

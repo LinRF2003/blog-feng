@@ -98,7 +98,7 @@
             >
             </el-input>
             <a class="get" @click="getSummary">
-              获取文章前150个字
+              获取文章前200个字
             </a>
           </el-form-item>
         </el-form>
@@ -249,7 +249,7 @@ export default {
     getSummary() {
       let str = this.blogInfo.content.replace(/<[^<>]+>/g, "");
       str = str.replace(/\s*/g, "");
-      this.blogInfo.summary = str.substring(0, 150);
+      this.blogInfo.summary = str.substring(0, 200);
     }
   },
   mounted() {

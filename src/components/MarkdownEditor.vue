@@ -43,7 +43,6 @@ import 'codemirror/addon/scroll/simplescrollbars';
 import 'codemirror/addon/scroll/simplescrollbars.css';
 // style
 import 'codemirror/lib/codemirror.css';
-import axios from "axios";
 
 VMdEditor.Codemirror = Codemirror;
 
@@ -109,10 +108,3 @@ export default {
 
 };
 </script>
-
-<style>
-.v-md-editor {
-  /*width: 100vw!important;*/
-}
-
-</style>

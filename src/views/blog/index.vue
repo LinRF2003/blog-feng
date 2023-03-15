@@ -15,7 +15,8 @@
       </a>
     </div>
     <div class="blog-content">
-      <BlogItem :blogInfo="blogInfo"  v-for="blogInfo in blogData.list"></BlogItem>
+      <BlogItem :blogInfo="blogInfo" v-for="blogInfo in blogData.list"
+                :like="likeBlogList.indexOf(blogInfo.id)!=-1" class="blog-item"></BlogItem>
     </div>
     <Null v-if="blogData.list.length==0"></Null>
   </div>
@@ -40,8 +41,9 @@ export default {
         pageTotal: 0,
         totalCount: 0,
       },
-      blog:null, // 博客元素
-      blogContent:null// 博客内热元素
+      blog: null, // 博客元素
+      blogContent: null,// 博客内热元素
+      likeBlogList: [], // 喜欢的博客列表
     }
   },
   components: {
@@ -121,9 +123,18 @@ export default {
       // 获取当前标签内容
       this.getBlogByTag(this.currentTag, this.currentFatherTag);
     },
-
+    // 获取用喜欢的博客id列表
+    async getBlogLikeList() {
+      let result = await this.$Request('/blog/getLikeList');
+      if (result.code === 200) {
+        this.likeBlogList = result.data[0].likeBlog;
+      }
+    }
   },
   mounted() {
+    // 获取用喜欢的博客id列表
+    this.getBlogLikeList();
+    // 获取标签
     this.getTags();
     // 给父标签添加事件
     let tags = document.querySelector('.tags');
@@ -144,13 +155,13 @@ export default {
       window.sessionStorage.setItem('currentTag', this.currentTag);
     }
   },
-  watch:{
-    currentFatherTag:function(val,oldval){
-      if(val == '推荐'){
-        this.blog.style.paddingTop='30px';
+  watch: {
+    currentFatherTag: function (val, oldval) {
+      if (val == '推荐') {
+        this.blog.style.paddingTop = '30px';
         this.blogContent.style.marginTop = '45px';
-      }else{
-        this.blog.style.paddingTop='0';
+      } else {
+        this.blog.style.paddingTop = '0';
         this.blogContent.style.marginTop = '20px';
       }
     }
@@ -162,6 +173,7 @@ export default {
 .blog {
   position: relative;
   padding-top: 30px;
+
   .tags {
     position: absolute;
     top: 0;
@@ -201,8 +213,10 @@ export default {
     }
 
   }
-  .blog-content{
+
+  .blog-content {
     margin-top: 45px;
+
   }
 }
 </style>

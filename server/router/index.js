@@ -30,10 +30,14 @@ router.post('/blog/addComment', require('../service/blog/addBlogComment/index').
 router.post('/blog/delComment', require('../service/blog/deleteBlogComment/index').main)
 // 获取点赞列表
 router.post('/blog/getLikeList', require('../service/blog/getLikeList/index').main)
+// 获取喜欢状态
+router.post('/blog/getLikeState', require('../service/blog/getBlogLikeState/index').main)
 // 改变点赞数
 router.post('/blog/changeLikeNum', require('../service/blog/changeLikeNum/index').main)
 // 获取我的博客
 router.post('/blog/getMy', require('../service/blog/getMyBlog/index').main)
+// 增加浏览量
+router.post('/blog/addViews', require('../service/blog/addBlogViews/index').main)
 
 
 // 问题
