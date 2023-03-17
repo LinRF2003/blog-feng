@@ -135,6 +135,10 @@ export default {
     // 获取用喜欢的博客id列表
     this.getBlogLikeList();
     // 获取标签
+    if (!this.$store.state.categoryTags) {
+      this.$store.dispatch('getTags');
+    }
+    // 获取标签
     this.getTags();
     // 给父标签添加事件
     let tags = document.querySelector('.tags');
@@ -211,7 +215,6 @@ export default {
       color: #000;
       background: var(--bg-color);
     }
-
   }
 
   .blog-content {

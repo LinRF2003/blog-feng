@@ -102,6 +102,7 @@ export default {
     },
   },
   mounted() {
+
     this.activePath = this.$route.path;
   }
 }
@@ -198,6 +199,7 @@ export default {
     margin: 0 auto;
     padding-top: 78px;
     width: 88%;
+    min-width: 1000px;
     min-height: calc(100vh - 60px);
     //box-sizing: border-box;
   }

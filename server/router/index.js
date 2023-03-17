@@ -39,7 +39,8 @@ router.post('/blog/changeLikeNum', require('../service/blog/changeLikeNum/index'
 router.post('/blog/getMy', require('../service/blog/getMyBlog/index').main)
 // 增加浏览量
 router.post('/blog/addViews', require('../service/blog/addBlogViews/index').main)
-
+// 模糊搜索博客
+router.post('/blog/search', require('../service/blog/searchBlog/index').main)
 
 // 用户相关
 // 获取用户信息

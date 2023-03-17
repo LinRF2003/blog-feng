@@ -1,23 +1,50 @@
 // 引入数据库文件   
 const db = require('../../../db/index')
+const {NULL_ERROR, SYSTEM_ERROR} = require("../../../common/errorCode");
 
 
 exports.main = (req, res) => {
-    if (!req.body.content) return res.status(500).send('请求参数不能为空')
-    const sql = `select * from blog where concat(title,content,summary,cate_name) like concat('%',?,'%') and is_delete = 0 order by create_time desc limit ?,?;
-    select count(*) count from blog where concat(title,content,summary,cate_name) like concat('%',?,'%') and is_delete = 0;`
-    const pageSize = parseInt(req.body.pageSize) || PAGESIZE;
-    const pageNo = parseInt(req.body.pageNo) || PAGENO;
-    db.query(sql, [req.body.content, pageNo, pageSize, req.body.content], (err, results) => {
+    let {
+        pageSize = 10, pageNo = 1, content
+    } = req.body;
+    if (!content) return res.err(NULL_ERROR);
+    pageSize = parseInt(pageSize);
+    pageNo = parseInt(pageNo);
+    console.log(content)
+    // 定义sql
+    const sql = `select * from blog where concat(title,content,summary,fatherTags,tags) like concat('%${content}%') and isDelete = 0 order by createTime desc limit ?,?;
+    select count(*) count from blog where concat(title,content,summary,fatherTags,tags) like concat('%',?,'%') and isDelete = 0;`
 
-        if (err) return res.status(500).send(err)
+    db.query(sql, [ (pageNo - 1) * pageSize, pageSize, content], (err, results) => {
 
-        res.send({
-            pageNo: pageNo,
-            pageSize: pageSize,
-            totalCount: results[1][0].count,
-            pageTotal: parseInt(results[1][0].count / pageSize) + 1,
-            list: results[0],
+        if (err) {
+            console.log(err)
+            return res.err(SYSTEM_ERROR);
+        }
+
+        let totalCount = results[1][0].count;// 符合条件的总条数
+        if (totalCount === 0) {
+            return res.successs({
+                data: {
+                    pageNo,
+                    pageSize,
+                    totalCount: 0,
+                    pageTotal: 0,
+                    list: [],
+                },
+                move: false
+            })
+        }
+        let pageTotal = Math.ceil(totalCount / pageSize);
+        return res.successs({
+            data: {
+                pageNo,
+                pageSize,
+                totalCount,
+                pageTotal,
+                list: results[0],
+            },
+            move: (pageNo + 1) * pageSize <= pageTotal
         })
     })
 }

@@ -111,6 +111,7 @@
 
 <script>
 import MarkdownEditor from '@/components/MarkdownEditor.vue'
+import {getFatherTags} from "@/utils/methods";
 
 export default {
   name: 'AddBlog',
@@ -262,9 +263,12 @@ export default {
     }
   },
   mounted() {
+    console.log(this.$store.state.categoryTags)
     if (!this.$store.state.categoryTags) {
       this.$store.dispatch('getTags');
     }
+
+
   },
   computed: {
     categoryTags() {

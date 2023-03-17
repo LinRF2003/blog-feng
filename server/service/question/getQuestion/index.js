@@ -38,7 +38,6 @@ exports.main = async (req, res) => {
                     move: false
                 })
             }
-            // let pageTotal = parseInt(totalCount / pageSize) + 1;
             let pageTotal = Math.ceil(totalCount / pageSize);
             return res.successs({
                 data: {
