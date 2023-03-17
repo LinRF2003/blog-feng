@@ -207,6 +207,15 @@ export default {
       }
       // 设置标签map 利于查找父标签
       this.tagsMap.set(tag, this.currentFatherTag);
+      let ft = new Set();
+      // 转换下父标签数据
+      for (const item of this.tagsMap.values()) {
+        ft.add(item);
+      }
+      // 父标签不能大于3个
+      if(ft.size>=3){
+        return this.$Message.warning('父标签不能大于三个');
+      }
       this.blogInfo.tags.push(tag);
     },
     // 添加博客

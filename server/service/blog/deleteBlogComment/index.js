@@ -32,7 +32,6 @@ exports.main = (req, res) => {
             // 执行 SQL 语句失败
             if (err) return res.err(SYSTEM_ERROR)
             if (results.affectedRows != 1) {
-                db.callback();
                 return res.err(SYSTEM_ERROR);
             }
             res.sm('删除成功');

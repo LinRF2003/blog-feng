@@ -5,23 +5,6 @@ const db = require('../db/index')
 const PAGESIZE = 10 // 默认每页条数 
 const PAGENO = 1    // 默认第几页 
 
-// 获取博客列表
-exports.blogList = require('../service/blog/getBlog/index.js').main;
-// 获取博客详情
-exports.blogDetail = (req, res) => {
-    let blogId = req.body.blogId
-    const sql = 'select * from blog where blog_id = ?'
-    db.query(sql, blogId, (err, results) => {
-        // 执行 SQL 语句失败
-        if (err) return res.status(500).send(err)
-
-        if (results.length !== 1) {
-            return res.send({ status: 1, message: '博客不存在' })
-        }
-        res.send(results)
-    })
-
-}
 
 // 保存博客
 exports.saveBlog = (req, res) => {

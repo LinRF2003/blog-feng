@@ -1,19 +1,22 @@
 import axios from 'axios';
 
 //创建axios的一个实例
-const token = window.localStorage.getItem("token") || '';
 let request = axios.create({
     baseURL: 'http://127.0.0.1:3030/api',//接口统一域名
     timeout: 5000,//设置超时
     withCredentials: true,//关键
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-        "Authorization": token,
     },
 })
 
 //------------------- 一、请求拦截器 忽略
 request.interceptors.request.use(function (config) {
+    // 取出token
+    const token = window.localStorage.getItem("token");
+    if(token){
+        config.headers.Authorization = token;
+    }
     return config;
 }, function (error) {
     // 对请求错误做些什么

@@ -68,27 +68,27 @@ export default {
       if (this.formData.password.length < 8 || this.formData.password.length > 20) {
         return this.$Message.warning('密码在8-20位之间');
       }
-      let result = await this.$Request('/login',{
+      let result = await this.$Request('/login', {
         email: this.formData.email,
         password: this.formData.password
       });
       if (result.code !== 200) {
         return this.$Message.warning(result.message,);
-      }else{
+      } else {
         // 登录成功
         this.$Message.success('登录成功');
         // 存储token
-        localStorage.setItem("token",result.token);
-        localStorage.setItem("tokenStartTime",''+Date.now());
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("tokenStartTime", '' + Date.now());
         // 判断是否需要记住密码
-        if(this.formData.rememberMe===1){
+        if (this.formData.rememberMe === 1) {
           const account = {
             email: this.formData.email,
             password: this.formData.password,
           }
-          localStorage.setItem("account",JSON.stringify(account));
-        }else{
-          localStorage.removeItem("account")
+          localStorage.setItem("account", JSON.stringify(account));
+        } else {
+          localStorage.removeItem("account");
         }
         // 返回路由
         this.$router.push('/');
@@ -98,7 +98,7 @@ export default {
   mounted() {
     // 判断用户是否选择的记住账号
     let account = JSON.parse(localStorage.getItem("account"));
-    if(account){
+    if (account) {
       this.formData.email = account.email;
       this.formData.password = account.password;
       this.formData.rememberMe = 1;

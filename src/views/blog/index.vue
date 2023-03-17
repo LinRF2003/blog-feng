@@ -127,7 +127,7 @@ export default {
     async getBlogLikeList() {
       let result = await this.$Request('/blog/getLikeList');
       if (result.code === 200) {
-        this.likeBlogList = result.data[0].likeBlog;
+        this.likeBlogList = result.data.likeBlog;
       }
     }
   },
@@ -148,12 +148,12 @@ export default {
     this.blog = document.querySelector('.blog');
     this.blogContent = document.querySelector('.blog-content');
     // 页面刷新保留之前信息，防止刷新位置变化
-    window.onbeforeunload = () => {
-      console.log('页面刷新之前触发');
-      alert(1)
-      window.sessionStorage.setItem('currentFatherTag', this.currentFatherTag);
-      window.sessionStorage.setItem('currentTag', this.currentTag);
-    }
+    // window.onbeforeunload = () => {
+    //   console.log('页面刷新之前触发');
+    //   alert(1)
+    //   window.sessionStorage.setItem('currentFatherTag', this.currentFatherTag);
+    //   window.sessionStorage.setItem('currentTag', this.currentTag);
+    // }
   },
   watch: {
     currentFatherTag: function (val, oldval) {

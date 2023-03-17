@@ -5,6 +5,7 @@ const router = express.Router()
 router.post('/register', require('../service/register/index').main);
 // 登录
 router.post('/login', require('../service/login/index').main);
+
 // 获取分类标签
 router.post('/tags/get', require('../service/tags/getTags/index').main);
 // 发送邮箱验证码
@@ -40,9 +41,21 @@ router.post('/blog/getMy', require('../service/blog/getMyBlog/index').main)
 router.post('/blog/addViews', require('../service/blog/addBlogViews/index').main)
 
 
+// 用户相关
+// 获取用户信息
+router.post('/user/get', require('../service/user/getUserInfo/index').main)
+// 修改用户信息
+router.post('/user/update', require('../service/user/updateUserInfo/index').main)
+
+
+
 // 问题
 // 获取问题列表
 router.post('/question/get', require('../service/question/getQuestion/index.js').main)
+// 添加问题
+router.post('/question/add', require('../service/question/addQuestion/index.js').main)
+// 删除问题
+router.post('/question/del', require('../service/question/deleteQuestion/index.js').main)
 
 
 module.exports = router

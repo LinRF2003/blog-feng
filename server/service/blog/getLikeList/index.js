@@ -10,7 +10,9 @@ exports.main = (req, res) => {
     const sql = `select likeBlog from users where userId = ?`
     db.query(sql, [req.user.userId], (err, results) => {
         if (err) return res.err(SYSTEM_ERROR);
+        if (!results[0].likeBlog) return res.success({likeBlog: []});
+        console.log();
         // 返回点赞列表
-        res.success(results);
+        res.success(results[0]);
     })
 }

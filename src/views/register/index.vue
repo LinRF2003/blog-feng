@@ -209,8 +209,8 @@ export default {
 
     .size {
       flex: 1;
-
-      margin: 0 8px;
+      min-width: 70px;
+      margin: 0 0 0 8px;
       font-size: 12px;
       text-align: center;
       color: #fff;
