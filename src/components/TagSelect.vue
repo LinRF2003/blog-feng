@@ -1,0 +1,171 @@
+<template>
+  <div>
+    <!--  :visible.sync="dialogVisibleTags"-->
+    <el-dialog
+        title="标签"
+        :visible.sync="dialogVisibleTags"
+        width="30%"
+        :before-close="closeDialog"
+        center
+        :modal="false"
+        class="dialog">
+      <div class="dialog-content">
+        <div class="left">
+          <div :class="['ft',currentFatherTag===tag?'active':'']" v-for="tag in fatherTagsList"
+               @click="changeFatherTag(tag)">{{ tag }}
+          </div>
+
+        </div>
+        <div class="right">
+<!--          <el-tag-->
+<!--              v-for="tag in sonTagsList"-->
+<!--              :class="['tag',tags.indexOf(tag)!==-1?'tag-active':'']"-->
+<!--              @click="clickTags(tag)">-->
+<!--            {{ tag }}-->
+<!--          </el-tag>-->
+          <el-tag
+              v-for="tag in tags"
+              :class="['tag',tagsMap.get(tag)===currentFatherTag?'tag-active':'']"
+              @click="clickTags(tag)">
+            {{ tag }}
+          </el-tag>
+        </div>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+
+import {getSonTags} from "@/utils/methods";
+
+export default {
+  name: 'TagSelect',
+  props:{
+    categoryTags:{
+      type:Object,
+      required:true
+    }
+  },
+  data() {
+    return {
+      currentFatherTag: 'python',
+      dialogVisibleTags: true,
+      tags: [], // 标签列表
+      tagsMap:new Map(),
+    }
+  },
+  methods: {
+    // 关闭标签对话框
+    closeDialog() {
+      this.dialogVisibleTags = false;
+    },
+    // 改变当前父标签
+    changeFatherTag(tag) {
+      // 更改标签内容
+      this.currentFatherTag = tag;
+      this.tags = getSonTags(this.categoryTags, tag);
+    },
+    // 点击子标签
+    clickTags(tag) {
+      // 判断tags中是否已有此标签
+      if (this.tagsMap.has(tag)) {
+        this.tagsMap.delete(tag);
+        // 刷新数据，防止页面不变化
+        this.changeFatherTag(this.currentFatherTag);
+        this.$emit("changeTags", this.tagsMap);
+        // 删除数据
+        return;
+      }
+      // 判断标签是否超过5个
+      if (this.tagsMap.size >= 5) {
+        return this.$Message.warning('标签不能超过五个');
+      }
+      // 父标签最多为3个
+      // 设置标签map 利于查找父标签
+      let ft = new Set();
+      // 转换下父标签数据
+      for (const item of this.tagsMap.values()) {
+        ft.add(item);
+      }
+      ft.add(this.currentFatherTag);
+      // 父标签不能大于3个
+      if (ft.size > 3) {
+        return this.$Message.warning('父标签不能大于三个');
+      }
+      this.tagsMap.set(tag, this.currentFatherTag);
+      // 刷新数据，防止页面不变化
+      this.changeFatherTag(this.currentFatherTag);
+      this.$emit("changeTags", this.tagsMap);
+    },
+  },
+  computed: {
+    fatherTagsList(){
+      return this.$store.state.fatherTagsList;
+    }
+  },
+  mounted() {
+    console.log(this.categoryTags)
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.dialog {
+  position: absolute;
+  //right: -60px;
+  top: 300px;
+  width: 500px;
+  height: 300px;
+  //border:1px solid #ccc;
+  :deep(.el-dialog__body) {
+    padding: 0;
+  }
+
+  .dialog-content {
+    padding: 10px;
+    display: flex;
+
+    .left {
+      padding: 0 20px;
+      max-height: 230px;
+      overflow-y: scroll;
+      min-width: 104px;
+
+      .ft:hover {
+        color: var(--main-color);
+      }
+    }
+
+    .right {
+      padding: 0 10px;
+
+      .tag {
+        margin: 0 5px;
+      }
+
+      .tag-active {
+        background: var(--bg-color);
+      }
+    }
+  }
+
+  :deep(.el-dialog) {
+    margin: 0 !important;
+    width: 500px !important;
+    height: 300px;
+    border: 1px solid #ccc;
+  }
+
+  :deep(.el-dialog__header) {
+    border-bottom: 1px solid #ccc;
+    padding: 3px 20px;
+    font-weight: bold;
+
+
+  }
+  :deep(.el-dialog__headerbtn) {
+    top: 5px!important;
+  }
+}
+</style>

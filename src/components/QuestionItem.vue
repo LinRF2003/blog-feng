@@ -5,7 +5,7 @@
         {{questionInfo.title}}
       </div>
       <div class="content">
-        {{questionInfo.content}}
+        {{questionInfo.summary}}
       </div>
       <div class="bottom">
         <div class="tags">
@@ -35,11 +35,6 @@ export default {
   name: 'QuestionItem',
   props: {
     questionInfo: {type: Object, required: true},
-  },
-  data(){
-    return {
-      tags:[], // 标签
-    }
   },
 }
 </script>

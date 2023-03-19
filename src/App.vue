@@ -12,10 +12,10 @@ export default {
 
   },
   mounted() {
-    // vuex 中添加标签列表
-    if (!this.$store.state.categoryTags) {
-      this.$store.dispatch('getTags');
-    }
+    // // vuex 中添加标签列表
+    // if (!this.$store.state.categoryTags) {
+    //   this.$store.dispatch('getTags');
+    // }
   }
 }
 </script>

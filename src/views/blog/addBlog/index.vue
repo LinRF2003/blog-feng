@@ -55,7 +55,7 @@
             </el-tag>
             <el-button size="small" @click="dialogVisibleTags = true">+ New Tag</el-button>
             <el-dialog
-                title="提示"
+                title="标签"
                 :visible.sync="dialogVisibleTags"
                 width="30%"
                 :before-close="closeDialog"
@@ -111,7 +111,7 @@
 
 <script>
 import MarkdownEditor from '@/components/MarkdownEditor.vue'
-import {getFatherTags} from "@/utils/methods";
+import {getFatherTags, getSonTags} from "@/utils/methods";
 
 export default {
   name: 'AddBlog',
@@ -185,17 +185,17 @@ export default {
     changeFatherTag(tag) {
       // 更改标签内容
       this.currentFatherTag = tag;
-      this.tags = [];
-      let tags = this.categoryTags[tag].tags;
-      for (const Tag in tags) {
-        this.tags.push(tags[Tag]);
-      }
+      // this.tags = [];
+      // let tags = this.categoryTags[tag].tags;
+      // for (const Tag in tags) {
+      //   this.tags.push(tags[Tag]);
+      // }
+      this.tags = getSonTags(this.categoryTags,tag);
     },
     // 点击子标签
     clickTags(tag) {
       // 判断tags中是否已有此标签
       let i = this.blogInfo.tags.indexOf(tag);
-      console.log(i)
       if (i !== -1) {
         this.blogInfo.tags.splice(i, 1);
         // 删除数据
@@ -214,7 +214,7 @@ export default {
         ft.add(item);
       }
       // 父标签不能大于3个
-      if(ft.size>=3){
+      if(ft.size>3){
         return this.$Message.warning('父标签不能大于三个');
       }
       this.blogInfo.tags.push(tag);
@@ -263,12 +263,9 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$store.state.categoryTags)
     if (!this.$store.state.categoryTags) {
       this.$store.dispatch('getTags');
     }
-
-
   },
   computed: {
     categoryTags() {
@@ -276,20 +273,10 @@ export default {
     },
   },
   watch: {
-    categoryTags: function (val) {
-      let ft = [];
-      for (const Tags in val) {
-        ft.push(Tags);
-      }
-      if (val) {
-        this.currentFatherTag = ft[0];
-        this.tags = [];
-        let tags = this.categoryTags[this.currentFatherTag].tags;
-        for (const Tag in tags) {
-          this.tags.push(tags[Tag]);
-        }
-      }
-      this.fatherTags = ft;
+    categoryTags: function (newval,oldval) {
+      this.fatherTags = getFatherTags(newval);
+      this.tags = getSonTags(newval,this.fatherTags[0]);
+      this.currentFatherTag = this.fatherTags[0];
     }
   }
 // watch:{

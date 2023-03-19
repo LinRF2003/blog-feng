@@ -132,6 +132,7 @@ export default {
     }
   },
   mounted() {
+
     // 获取用喜欢的博客id列表
     this.getBlogLikeList();
     // 获取标签

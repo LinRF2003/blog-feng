@@ -10,13 +10,16 @@ const store = new Vuex.Store({
     strict: debug,//在不是生产环境下都开启严格模式
     state: {
         categoryTags: null,
+        fatherTagsList:[],
     },
     getters: {},
     mutations: {
         SETCATEGORYTAGS(state, tags) {
             state.categoryTags = tags
         },
-
+        SETFATHERTAGS(state,ft){
+            state.fatherTagsList = ft;
+        }
 
 
     },
@@ -26,6 +29,12 @@ const store = new Vuex.Store({
             let result = await Request('/tags/get');
             if (result.code === 200) {
                 commit("SETCATEGORYTAGS", result.categoryTags);
+                // 获取父标签列表
+                let ft = [];
+                for (const tag in  result.categoryTags) {
+                    ft.push(tag);
+                }
+                commit("SETFATHERTAGS",ft)
             }
         },
         /*

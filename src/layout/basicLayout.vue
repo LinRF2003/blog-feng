@@ -63,9 +63,9 @@
     <div class="content">
       <router-view></router-view>
     </div>
-    <div class="footer">
-      <div>©2023 www.blogtree.com All rights reserved.</div>
-    </div>
+<!--    <div class="footer">-->
+<!--      <div>©2023 www.blogtree.com All rights reserved.</div>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -102,7 +102,6 @@ export default {
     },
   },
   mounted() {
-
     this.activePath = this.$route.path;
   }
 }

@@ -21,6 +21,11 @@ const routes = [
                 component: () => import('@/views/question/index.vue'),
             },
             {
+                path: '/addQuestion',
+                meta: {activePath: "/question"}, //参数
+                component: () => import('@/views/question/addQuestion/index.vue'),
+            },
+            {
                 path: '/user',
                 meta: {activePath: "/user"}, //参数
                 component: () => import('@/views/user/index.vue'),
@@ -28,26 +33,26 @@ const routes = [
                     {
                         path: '/',
                         name: '个人信息',
-                        meta: {activePath: "/my", activePath2: "/myinfo"},
+                        meta: {activePath: "/user", activePath2: "/myinfo"},
                         component: () => import('@/views/user/myInfo/index.vue'),
                     },
                     {
                         path: 'account',
                         name: '账号设置',
-                        meta: {activePath: "/my", activePath2: "/AS"},
+                        meta: {activePath: "/user", activePath2: "/AS"},
                         component: () => import('@/views/user/account/index.vue'),
                         children: [
                             {
                                 path: 'password',
                                 name: '修改密码',
-                                meta: {activePath: "/my", activePath2: "/AS", title: "修改密码"},
+                                meta: {activePath: "/user", activePath2: "/AS", title: "修改密码"},
                                 component: () => import('@/views/user/account/password/index.vue'),
                             },
                             {
                                 path: 'email',
                                 name: '修改邮箱',
                                 meta: {
-                                    activePath: "/my", activePath2: "/AS", title: "修改邮箱"
+                                    activePath: "/user", activePath2: "/AS", title: "修改邮箱"
                                 },
                                 component: () => import('@/views/user/account/email/index.vue'),
                             }
