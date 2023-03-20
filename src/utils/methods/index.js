@@ -1,14 +1,5 @@
 const store = require("@/store");
 
-// 获取父标签列表
-const getFatherTags = (categoryTags) => {
-    let ft = [];
-    for (const tag in categoryTags) {
-        ft.push(tag);
-    }
-    return ft;
-}
-
 // 获取子标签列表 需要传入父标签
 const getSonTags = (categoryTags,tag) => {
     const tags = categoryTags[tag].tags;
@@ -20,6 +11,5 @@ const getSonTags = (categoryTags,tag) => {
 }
 
 module.exports = {
-    getFatherTags,
     getSonTags
 }

@@ -1,30 +1,52 @@
 <template>
   <div class="blog">
     <div class="tags">
-      <a :class="['tag',currentFatherTag==='推荐'?'active':'']" @click="changeFatherTag('推荐')">
+      <a
+        :class="['tag', currentFatherTag === '推荐' ? 'active' : '']"
+        @click="changeFatherTag('推荐')"
+      >
         推荐
       </a>
-      <a :class="['tag',currentFatherTag===tag?'active':'']" v-for="tag in fatherTags" @click="changeFatherTag(tag)">
+      <a
+        :class="['tag', currentFatherTag === tag ? 'active' : '']"
+        v-for="(tag, index) in fatherTags"
+        @click="changeFatherTag(tag)"
+        :key="index"
+      >
         {{ tag }}
       </a>
     </div>
-    <div class="son-tags" v-show="currentFatherTag!=='推荐'">
-      <a :class="['son-tag', currentTag==='全部'?'son-active':'']" @click="changeTag('全部')">全部</a>
-      <a v-for="tag in tags" :class="['son-tag', currentTag===tag?'son-active':'']" @click="changeTag(tag)">
+    <div class="son-tags" v-show="currentFatherTag !== '推荐'">
+      <a
+        :class="['son-tag', currentTag === '全部' ? 'son-active' : '']"
+        @click="changeTag('全部')"
+        >全部</a
+      >
+      <a
+        v-for="(tag, index) in tags"
+        :class="['son-tag', currentTag === tag ? 'son-active' : '']"
+        @click="changeTag(tag)"
+        :key="index"
+      >
         {{ tag }}
       </a>
     </div>
     <div class="blog-content">
-      <BlogItem :blogInfo="blogInfo" v-for="blogInfo in blogData.list"
-                :like="likeBlogList.indexOf(blogInfo.id)!=-1" class="blog-item"></BlogItem>
+      <BlogItem
+        :blogInfo="blogInfo"
+        v-for="blogInfo in blogData.list"
+        :key="blogInfo.id"
+        :like="likeBlogList.indexOf(blogInfo.id) != -1"
+        class="blog-item"
+      ></BlogItem>
     </div>
-    <Null v-if="blogData.list.length==0"></Null>
+    <Null v-if="blogData.list.length == 0"></Null>
     <PaginationItem
-        :pageNo="blogData.pageNo"
-        :pageSize="blogData.pageSize"
-        :totalCount="blogData.totalCount"
-        :pageTotal="blogData.pageTotal"
-        @changePageNo="changePageNo"
+      :pageNo="blogData.pageNo"
+      :pageSize="blogData.pageSize"
+      :totalCount="blogData.totalCount"
+      :pageTotal="blogData.pageTotal"
+      @changePageNo="changePageNo"
     ></PaginationItem>
   </div>
 </template>
@@ -33,13 +55,13 @@
 import BlogItem from "@/components/BlogItem";
 
 export default {
-  name: 'Blog',
+  name: "Blog",
   data() {
     return {
       fatherTags: [], // 一级标签
       tags: [], // 二级标签
       currentFatherTag: "推荐", // 当前父标签
-      currentTag: "全部",// 当前子标签
+      currentTag: "全部", // 当前子标签
       categoryTags: {}, // 分类标签
       blogData: {
         pageSize: 10, // 每页页数
@@ -49,22 +71,21 @@ export default {
         totalCount: 0,
       },
       blog: null, // 博客元素
-      blogContent: null,// 博客内热元素
+      blogContent: null, // 博客内热元素
       likeBlogList: [], // 喜欢的博客列表
-    }
+    };
   },
   components: {
-    BlogItem
+    BlogItem,
   },
   methods: {
     // 获取标签
     async getTags() {
-      let result = await this.$Request('/tags/get');
+      let result = await this.$Request("/tags/get");
       if (result.code === 200) {
         this.categoryTags = result.categoryTags;
         for (const Tags in result.categoryTags) {
           this.fatherTags.push(Tags);
-
         }
         // 判断session中是否有sessionStorage数据；
         let currentFatherTag = sessionStorage.getItem("currentFatherTag");
@@ -72,7 +93,7 @@ export default {
         if (currentFatherTag && currentTag) {
           this.currentFatherTag = currentFatherTag;
           this.currentTag = currentTag;
-          if (currentFatherTag !== '推荐') {
+          if (currentFatherTag !== "推荐") {
             this.tags = [];
             let tags = this.categoryTags[currentFatherTag].tags;
             for (const Tag in tags) {
@@ -83,18 +104,17 @@ export default {
           }
         }
         // 获取当前标签内容
-        this.getBlogByTag(this.currentTag, '');
-
+        this.getBlogByTag(this.currentTag, "");
       }
     },
     // 获取标签内容
     async getBlogByTag(tag, fatherTag) {
-      let result = await this.$Request('/blog/get', {
+      let result = await this.$Request("/blog/get", {
         pageSize: this.blogData.pageSize,
         pageNo: this.blogData.pageNo,
         tag,
         fatherTag,
-      })
+      });
       if (result.code === 200) {
         this.blogData = result.data;
       }
@@ -102,18 +122,17 @@ export default {
     // 改变页数
     changePageNo(val) {
       this.blogData.pageNo = val;
-      console.log(this.blogData)
+      console.log(this.blogData);
       this.getBlogByTag(this.currentFatherTag);
     },
     // 改变当前父标签
     changeFatherTag(tag) {
-
       // 更改标签内容
       this.currentFatherTag = tag;
-      this.currentTag = '全部'
-      window.sessionStorage.setItem('currentFatherTag', this.currentFatherTag);
-      window.sessionStorage.setItem('currentTag', '全部');
-      if (tag !== '推荐') {
+      this.currentTag = "全部";
+      window.sessionStorage.setItem("currentFatherTag", this.currentFatherTag);
+      window.sessionStorage.setItem("currentTag", "全部");
+      if (tag !== "推荐") {
         this.tags = [];
         let tags = this.categoryTags[tag].tags;
         for (const Tag in tags) {
@@ -123,48 +142,46 @@ export default {
         this.getBlogByTag(this.currentTag, this.currentFatherTag);
       } else {
         // 获取当前标签内容
-        this.getBlogByTag(this.currentTag, '');
+        this.getBlogByTag(this.currentTag, "");
       }
-
     },
     // 改变子标签
     changeTag(tag) {
       // window.sessionStorage.setItem('currentFatherTag', this.currentFatherTag);
 
       this.currentTag = tag;
-      window.sessionStorage.setItem('currentTag', this.currentTag);
+      window.sessionStorage.setItem("currentTag", this.currentTag);
       // 获取当前标签内容
       this.getBlogByTag(this.currentTag, this.currentFatherTag);
     },
     // 获取用喜欢的博客id列表
     async getBlogLikeList() {
-      let result = await this.$Request('/blog/getLikeList');
+      let result = await this.$Request("/blog/getLikeList");
       if (result.code === 200) {
         this.likeBlogList = result.data.likeBlog;
       }
-    }
+    },
   },
   mounted() {
-
     // 获取用喜欢的博客id列表
     this.getBlogLikeList();
     // 获取标签
     if (!this.$store.state.categoryTags) {
-      this.$store.dispatch('getTags');
+      this.$store.dispatch("getTags");
     }
     // 获取标签
     this.getTags();
     // 给父标签添加事件
-    let tags = document.querySelector('.tags');
-    tags.style.height = '55px';
+    let tags = document.querySelector(".tags");
+    tags.style.height = "55px";
     tags.onmousemove = () => {
-      tags.style.height = '';
-    }
+      tags.style.height = "";
+    };
     tags.onmouseout = () => {
-      tags.style.height = '55px';
-    }
-    this.blog = document.querySelector('.blog');
-    this.blogContent = document.querySelector('.blog-content');
+      tags.style.height = "55px";
+    };
+    this.blog = document.querySelector(".blog");
+    this.blogContent = document.querySelector(".blog-content");
     // 页面刷新保留之前信息，防止刷新位置变化
     // window.onbeforeunload = () => {
     //   console.log('页面刷新之前触发');
@@ -175,16 +192,16 @@ export default {
   },
   watch: {
     currentFatherTag: function (val, oldval) {
-      if (val == '推荐') {
-        this.blog.style.paddingTop = '30px';
-        this.blogContent.style.marginTop = '45px';
+      if (val == "推荐") {
+        this.blog.style.paddingTop = "30px";
+        this.blogContent.style.marginTop = "45px";
       } else {
-        this.blog.style.paddingTop = '0';
-        this.blogContent.style.marginTop = '20px';
+        this.blog.style.paddingTop = "0";
+        this.blogContent.style.marginTop = "20px";
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -233,7 +250,6 @@ export default {
 
   .blog-content {
     margin-top: 45px;
-
   }
 }
 </style>

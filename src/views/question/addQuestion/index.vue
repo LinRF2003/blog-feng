@@ -2,28 +2,32 @@
   <div class="add-question">
     <div class="left">
       <MarkdownEditor
-          @changeMarkdownText="changeMarkdownText"
-          @changeHtml="changeHtml"
+        @changeMarkdownText="changeMarkdownText"
+        @changeHtml="changeHtml"
       ></MarkdownEditor>
     </div>
     <div class="right">
       <div class="title">
         <div class="text">添加标题</div>
-        <el-input type="textarea" :autosize="{ minRows:1, maxRows: 14 }" v-model="title" class="input"
-                  placeholder="请输入标题"></el-input>
+        <el-input
+          type="textarea"
+          :autosize="{ minRows: 1, maxRows: 14 }"
+          v-model="title"
+          class="input"
+          placeholder="请输入标题"
+        ></el-input>
       </div>
       <div class="tags">
-        <div class="text">
-          标签
-        </div>
+        <div class="text">标签</div>
         <div class="add-tag">
           <el-tag
-              :key="tag"
-              v-for="tag in tags"
-              closable
-              :disable-transitions="false"
-              @close="handleClose(tag)"
-              style="margin: 0 5px;">
+            :key="tag"
+            v-for="tag in tags"
+            closable
+            :disable-transitions="false"
+            @close="handleClose(tag)"
+            style="margin: 0 5px"
+          >
             {{ tag }}
           </el-tag>
           <span class="l">+</span>
@@ -31,39 +35,48 @@
         </div>
       </div>
 
-      <el-button type="primary" class="submit-button" round @click="submitQuestion">发布问题</el-button>
-
+      <el-button
+        type="primary"
+        class="submit-button"
+        round
+        @click="submitQuestion"
+        >发布问题</el-button
+      >
     </div>
-    <TagSelect @changeTags="changeTags" :categoryTags="categoryTags" v-if="categoryTags"></TagSelect>
+    <TagSelect
+      @changeTags="changeTags"
+      :categoryTags="categoryTags"
+      v-if="categoryTags"
+    ></TagSelect>
   </div>
 </template>
 
 <script>
-import MarkdownEditor from '@/components/MarkdownEditor.vue'
-import TagSelect from '@/components/TagSelect.vue'
+import MarkdownEditor from "@/components/MarkdownEditor.vue";
+import TagSelect from "@/components/TagSelect.vue";
 
 export default {
-  name: 'AddQuestion',
+  name: "AddQuestion",
   components: {
     MarkdownEditor,
-    TagSelect
+    TagSelect,
   },
   data() {
     return {
-      content: '',
-      markdownContent: '',
-      title: '',
+      content: "",
+      markdownContent: "",
+      title: "",
       questionList: [], // 问题列表
-      currentFT: '全部',//当前父标签
-      tags:[],
-      fatherTags:[],
-      editorType:1,
-    }
+      currentFT: "全部", //当前父标签
+      tags: [],
+      fatherTags: [],
+      editorType: 1,
+    };
   },
   methods: {
     // 获取问题列表
     async getQuestionList(tag) {
-      let result = await this.$Request('/question/get', {
+      let result = await this.$Request("/question/get", {
         fatherTag: tag,
       });
       if (result.code === 200) {
@@ -76,11 +89,11 @@ export default {
       this.getQuestionList(tag);
     },
     // 改变选择标签列表
-    changeTags(tagsMap){
+    changeTags(tagsMap) {
       this.tags = [...tagsMap.keys()];
-      console.log(this.tags)
+      console.log(this.tags);
       this.fatherTags = JSON.stringify([...new Set(tagsMap.values())]);
-      console.log(this.fatherTags)
+      console.log(this.fatherTags);
     },
     // 内容的双向绑定
     changeHtml(event) {
@@ -92,30 +105,28 @@ export default {
     },
     // 提交问题
     async submitQuestion() {
-
-      let result = await this.$Request('/question/add',{
-        title:this.title,
-        content:this.content,
-        fatherTags:this.fatherTags,
-        tags:JSON.stringify(this.tags),
-        markdownContent:this.markdownContent,
-      })
-    }
+      let result = await this.$Request("/question/add", {
+        title: this.title,
+        content: this.content,
+        fatherTags: this.fatherTags,
+        tags: JSON.stringify(this.tags),
+        markdownContent: this.markdownContent,
+      });
+    },
   },
   computed: {
     categoryTags() {
       return this.$store.state.categoryTags;
     },
-
   },
   mounted() {
     // vuex 中添加标签列表
     if (!this.$store.state.categoryTags) {
-      this.$store.dispatch('getTags');
+      this.$store.dispatch("getTags");
     }
     this.getQuestionList();
-  }
-}
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -124,7 +135,6 @@ export default {
 
   .left {
     flex: 1;
-
   }
 
   .right {
@@ -137,7 +147,7 @@ export default {
     .title {
       padding-bottom: 20px;
       border-bottom: 1px #ddd solid;
-      :deep(.el-textarea__inner){
+      :deep(.el-textarea__inner) {
         max-height: 300px;
       }
     }
@@ -165,7 +175,6 @@ export default {
       }
     }
 
-
     .submit-button {
       position: absolute;
       left: 50px;
@@ -173,7 +182,6 @@ export default {
       display: block;
       width: 200px;
     }
-
   }
 }
 </style>

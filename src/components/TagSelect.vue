@@ -2,31 +2,35 @@
   <div>
     <!--  :visible.sync="dialogVisibleTags"-->
     <el-dialog
-        title="标签"
-        :visible.sync="dialogVisibleTags"
-        width="30%"
-        :before-close="closeDialog"
-        center
-        :modal="false"
-        class="dialog">
+      title="标签"
+      :visible.sync="dialogVisibleTags"
+      width="30%"
+      :before-close="closeDialog"
+      center
+      :modal="false"
+      class="dialog"
+    >
       <div class="dialog-content">
         <div class="left">
-          <div :class="['ft',currentFatherTag===tag?'active':'']" v-for="tag in fatherTagsList"
-               @click="changeFatherTag(tag)">{{ tag }}
+          <div
+            :class="['ft', currentFatherTag === tag ? 'active' : '']"
+            v-for="(tag, index) in fatherTagsList"
+            @click="changeFatherTag(tag)"
+            :key="index"
+          >
+            {{ tag }}
           </div>
-
         </div>
         <div class="right">
-<!--          <el-tag-->
-<!--              v-for="tag in sonTagsList"-->
-<!--              :class="['tag',tags.indexOf(tag)!==-1?'tag-active':'']"-->
-<!--              @click="clickTags(tag)">-->
-<!--            {{ tag }}-->
-<!--          </el-tag>-->
           <el-tag
-              v-for="tag in tags"
-              :class="['tag',tagsMap.get(tag)===currentFatherTag?'tag-active':'']"
-              @click="clickTags(tag)">
+            v-for="(tag, index) in tags"
+            :key="index"
+            :class="[
+              'tag',
+              tagsMap.get(tag) === currentFatherTag ? 'tag-active' : '',
+            ]"
+            @click="clickTags(tag)"
+          >
             {{ tag }}
           </el-tag>
         </div>
@@ -36,24 +40,23 @@
 </template>
 
 <script>
-
-import {getSonTags} from "@/utils/methods";
+import { getSonTags } from "@/utils/methods";
 
 export default {
-  name: 'TagSelect',
-  props:{
-    categoryTags:{
-      type:Object,
-      required:true
-    }
+  name: "TagSelect",
+  props: {
+    categoryTags: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
-      currentFatherTag: 'python',
-      dialogVisibleTags: true,
+      currentFatherTag: "python", // 当前父标签
+      dialogVisibleTags: true, // 标签选中框是否显示
       tags: [], // 标签列表
-      tagsMap:new Map(),
-    }
+      tagsMap: new Map(), // 选中的标签列表
+    };
   },
   methods: {
     // 关闭标签对话框
@@ -79,7 +82,7 @@ export default {
       }
       // 判断标签是否超过5个
       if (this.tagsMap.size >= 5) {
-        return this.$Message.warning('标签不能超过五个');
+        return this.$Message.warning("标签不能超过五个");
       }
       // 父标签最多为3个
       // 设置标签map 利于查找父标签
@@ -91,7 +94,7 @@ export default {
       ft.add(this.currentFatherTag);
       // 父标签不能大于3个
       if (ft.size > 3) {
-        return this.$Message.warning('父标签不能大于三个');
+        return this.$Message.warning("父标签不能大于三个");
       }
       this.tagsMap.set(tag, this.currentFatherTag);
       // 刷新数据，防止页面不变化
@@ -100,14 +103,11 @@ export default {
     },
   },
   computed: {
-    fatherTagsList(){
+    fatherTagsList() {
       return this.$store.state.fatherTagsList;
-    }
+    },
   },
-  mounted() {
-    console.log(this.categoryTags)
-  }
-}
+};
 </script>
 
 <style scoped lang="scss">
@@ -161,11 +161,9 @@ export default {
     border-bottom: 1px solid #ccc;
     padding: 3px 20px;
     font-weight: bold;
-
-
   }
   :deep(.el-dialog__headerbtn) {
-    top: 5px!important;
+    top: 5px !important;
   }
 }
 </style>

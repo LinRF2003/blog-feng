@@ -21,9 +21,6 @@
 export default {
   data() {
     return {
-      // formData: {
-      //   imageUrl: "",
-      // },
       url: "",
       headers: { enctype: "multipart/form-data" },
       data: { type: "0" },

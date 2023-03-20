@@ -7,67 +7,68 @@
             <router-link to="/">MYBLOG</router-link>
           </div>
           <router-link
-              v-for="(item, index) in navList"
-              :key="index"
-              :to="item.path"
-              :class="['navitem', item.path == activePath ? 'active' : '']"
-          >{{ item.name }}
-          </router-link
-          >
+            v-for="(item, index) in navList"
+            :key="index"
+            :to="item.path"
+            :class="['navitem', item.path == activePath ? 'active' : '']"
+            >{{ item.name }}
+          </router-link>
         </div>
         <div class="search" v-if="$route.name != '搜索'">
           <el-input
-              placeholder="请输入内容"
-              v-model="content"
-              class="input-with-select"
-
-              clearable
+            placeholder="请输入内容"
+            v-model="content"
+            class="input-with-select"
+            clearable
           >
-            <el-button
-                slot="append"
-                icon="el-icon-search"
-
-            ></el-button>
+            <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
         </div>
 
         <div class="user">
-          <router-link to="/addBlog" target="_blank" class="addBlog" v-if="$route.path=='/'">发布博客</router-link>
-          <router-link to="/addQuestion" target="_blank" class="addBlog" v-if="$route.path=='/question'">添加问题</router-link>
+          <router-link
+            to="/addBlog"
+            target="_blank"
+            class="addBlog"
+            v-if="$route.path == '/'"
+            >发布博客</router-link
+          >
+          <router-link
+            to="/addQuestion"
+            target="_blank"
+            class="addBlog"
+            v-if="$route.path == '/question'"
+            >添加问题</router-link
+          >
           欢迎进入，
           <div></div>
           <!-- <i class="el-icon-arrow-down"></i> -->
           <el-dropdown class="username">
             <span class="el-dropdown-link">
-              {{
-                userInfo?.userName
+              {{ userInfo?.userName
               }}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <router-link to="/user"
-              >
+              <router-link to="/user">
                 <el-dropdown-item>个人信息</el-dropdown-item>
-              </router-link
-              >
-
+              </router-link>
               <span @click="logout"
-              ><el-dropdown-item>退出</el-dropdown-item></span
+                ><el-dropdown-item>退出</el-dropdown-item></span
               >
             </el-dropdown-menu>
           </el-dropdown>
           <router-link to="/user" class="img">
-            <img v-if="userInfo?.avatar" :src="userInfo?.avatar"/>
+            <img v-if="userInfo?.avatar" :src="userInfo?.avatar" />
           </router-link>
         </div>
-
       </div>
     </div>
     <div class="content">
       <router-view></router-view>
     </div>
-<!--    <div class="footer">-->
-<!--      <div>©2023 www.blogtree.com All rights reserved.</div>-->
-<!--    </div>-->
+    <!--    <div class="footer">-->
+    <!--      <div>©2023 www.blogtree.com All rights reserved.</div>-->
+    <!--    </div>-->
   </div>
 </template>
 
@@ -88,7 +89,6 @@ export default {
         {
           name: "个人中心",
           path: "/user",
-
         },
       ],
       // 导航选中路径
@@ -103,26 +103,26 @@ export default {
       this.activePath = to.meta.activePath; //到哪去
     },
   },
-  computed:{
-    userInfo(){
+  computed: {
+    userInfo() {
       return this.$store.state.userInfo;
-    }
+    },
   },
   mounted() {
     this.activePath = this.$route.path;
     // 获取用户信息
-    if(!this.$store.state.userInfo){
-      this.$store.dispatch('getUserInfo');
+    if (!this.$store.state.userInfo) {
+      this.$store.dispatch("getUserInfo");
     }
   },
-  methods:{
+  methods: {
     // 退出登录
     logout() {
       this.$Message.success("退出成功");
       this.$router.push("/login");
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -165,8 +165,7 @@ export default {
           min-height: 54px;
         }
 
-
-        .navitem:hover{
+        .navitem:hover {
           background: #f4f4f4;
         }
         .active {
@@ -180,7 +179,7 @@ export default {
         display: flex;
         align-items: center;
         padding: 0 20px;
-        :deep(.el-input__inner){
+        :deep(.el-input__inner) {
           min-width: 150px;
         }
       }
@@ -207,8 +206,8 @@ export default {
             width: 50px;
           }
         }
-        
-        .addBlog{
+
+        .addBlog {
           background: #18b8be;
           margin-right: 10px;
           padding: 5px 15px;
@@ -227,13 +226,11 @@ export default {
     width: 88%;
     min-width: 1000px;
     min-height: calc(100vh - 60px);
-    //box-sizing: border-box;
   }
 
   // 底部
   .footer {
     height: 60px;
-    // margin: 30px 0 20px;
     padding-top: 20px;
     text-align: center;
     font-size: 13px;

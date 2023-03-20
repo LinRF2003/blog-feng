@@ -2,7 +2,7 @@
   <div class="blog-item">
     <div class="top">
       <div class="avatar">
-        <img src="../assets/logo.png" alt="">
+        <img src="../assets/logo.png" alt="" />
       </div>
       <div class="name">
         {{ blogInfo.userName }}
@@ -13,69 +13,68 @@
     <div class="content">
       <div class="left" v-if="blogInfo.cover">
         <el-image
-            style="width: 160px; height: 100px;"
-            :src="blogInfo.cover"
-            :preview-src-list="[blogInfo.cover]">
+          style="width: 160px; height: 100px"
+          :src="blogInfo.cover"
+          :preview-src-list="[blogInfo.cover]"
+        >
         </el-image>
       </div>
 
       <div class="right">
-        <a class="title"
-           target="_blank" @click="addViews">{{ blogInfo.title }}
+        <a class="title" target="_blank" @click="addViews"
+          >{{ blogInfo.title }}
         </a>
         <div class="summary">{{ blogInfo.summary }}</div>
         <div class="bottom">
-
           <div class="view">{{ blogInfo.views }} 浏览</div>
-          <a :class="['like',isLike?'active':'']" @click="changeLike">{{ blogInfo.likeCount }} 赞</a>
+          <a :class="['like', isLike ? 'active' : '']" @click="changeLike"
+            >{{ blogInfo.likeCount }} 赞</a
+          >
           <div class="like">{{ blogInfo.commentCount }} 评论</div>
-
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-
 export default {
-  name: '',
+  name: "",
   data() {
     return {
       choose: true,
-      isLike: null
-    }
+      isLike: null,
+    };
   },
   props: {
-    blogInfo: {type: Object, required: true},
+    blogInfo: { type: Object, required: true },
     like: {
-      type: Boolean, required: true
-    }
+      type: Boolean,
+      required: true,
+    },
   },
   methods: {
+    // 增加浏览量
     addViews() {
-      this.$Request('/blog/addViews', {id: this.blogInfo.id});
+      this.$Request("/blog/addViews", { id: this.blogInfo.id });
       let routeData = this.$router.resolve({
-        name: '博客详情',
-        params: {id: this.blogInfo.id},
+        name: "博客详情",
+        params: { id: this.blogInfo.id },
         // query: {id: this.blogInfo.id, isLike: this.isLike}
-      })
-      window.open(routeData.href, '_blank')
+      });
+      window.open(routeData.href, "_blank");
 
       // this.$router.push(`/blogdetail/${this.blogInfo.id}`);
     },
+    // 改变点赞
     async changeLike() {
       if (this.choose) {
         this.choose = false;
-        let result = await this.$Request(
-            "/blog/changeLikeNum",
-            {
-              count: !this.isLike ? 1 : -1,
-              id: this.blogInfo.id,
-            },
-        );
-        // console.log(result);
+        let result = await this.$Request("/blog/changeLikeNum", {
+          count: !this.isLike ? 1 : -1,
+          id: this.blogInfo.id,
+        });
+
         if (result.code === 200) {
           this.isLike = !this.isLike;
           if (this.isLike) {
@@ -93,8 +92,8 @@ export default {
   },
   mounted() {
     this.isLike = this.like;
-  }
-}
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -196,7 +195,8 @@ export default {
         font-size: 14px;
         color: #333;
 
-        .view, .like {
+        .view,
+        .like {
           margin-right: 15px;
         }
       }
