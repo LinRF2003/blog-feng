@@ -17,7 +17,8 @@ exports.main = async (req, res) => {
     if (!captchaReg(captcha)) {
         return res.err(PARAMS_ERROR, '验证码格式错误，需为6位数字');
     }
-    const {userId} = req.body;
+
+    const {userId} = req.user;
     // 判断邮箱是否与之前相同
     const sql = 'select email from users where userId = ?';
     await db.query(sql, userId, (err, results) => {
@@ -33,6 +34,7 @@ exports.main = async (req, res) => {
         db.query(emailSql, email, (err, results) => {
             // 执行 SQL 语句失败
             if (err) {
+                console.log(err);
                 return res.err(SYSTEM_ERROR);
             }
             // 判断验证码是否超时

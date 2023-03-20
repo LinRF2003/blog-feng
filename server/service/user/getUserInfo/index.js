@@ -3,7 +3,7 @@ const {SYSTEM_ERROR} = require("../../../common/errorCode");
 
 exports.main = async (req, res) => {
     // 根据用户的 id，查询用户的基本信息
-    // 注意：为了防止用户的密码泄露，需要排除 password、phone 字段
+    // 注意：为了防止用户的隐私泄露，需要排除 password、phone 字段
     const sql = `select * from users where userId=?`
     // 判断用户需要获取的用户信息
     const userId = req.body.userId || req.user.userId;

@@ -30,34 +30,36 @@
             ></el-button>
           </el-input>
         </div>
-<!--        <div class="user">-->
-<!--          欢迎进入，-->
-<!--          <div></div>-->
-<!--          &lt;!&ndash; <i class="el-icon-arrow-down"></i> &ndash;&gt;-->
-<!--          <el-dropdown class="username">-->
-<!--            <span class="el-dropdown-link">-->
-<!--              {{-->
-<!--                userinfo?.user_name-->
-<!--              }}<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-<!--            </span>-->
-<!--            <el-dropdown-menu slot="dropdown">-->
-<!--              <router-link to="/my"-->
-<!--              >-->
-<!--                <el-dropdown-item>个人信息</el-dropdown-item>-->
-<!--              </router-link-->
-<!--              >-->
 
-<!--              <span @click="logout"-->
-<!--              ><el-dropdown-item>退出</el-dropdown-item></span-->
-<!--              >-->
-<!--            </el-dropdown-menu>-->
-<!--          </el-dropdown>-->
-<!--          <router-link to="/my" class="img">-->
-<!--            <img v-if="userinfo?.avatar" :src="userinfo?.avatar"/>-->
-<!--            <img src="@/assets/default.png" v-else/>-->
-<!--          </router-link>-->
-<!--        </div>-->
-        <router-link to="/addblog" target="_blank">发布博客</router-link>
+        <div class="user">
+          <router-link to="/addBlog" target="_blank" class="addBlog" v-if="$route.path=='/'">发布博客</router-link>
+          <router-link to="/addQuestion" target="_blank" class="addBlog" v-if="$route.path=='/question'">添加问题</router-link>
+          欢迎进入，
+          <div></div>
+          <!-- <i class="el-icon-arrow-down"></i> -->
+          <el-dropdown class="username">
+            <span class="el-dropdown-link">
+              {{
+                userInfo?.userName
+              }}<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <router-link to="/user"
+              >
+                <el-dropdown-item>个人信息</el-dropdown-item>
+              </router-link
+              >
+
+              <span @click="logout"
+              ><el-dropdown-item>退出</el-dropdown-item></span
+              >
+            </el-dropdown-menu>
+          </el-dropdown>
+          <router-link to="/user" class="img">
+            <img v-if="userInfo?.avatar" :src="userInfo?.avatar"/>
+          </router-link>
+        </div>
+
       </div>
     </div>
     <div class="content">
@@ -101,8 +103,25 @@ export default {
       this.activePath = to.meta.activePath; //到哪去
     },
   },
+  computed:{
+    userInfo(){
+      return this.$store.state.userInfo;
+    }
+  },
   mounted() {
     this.activePath = this.$route.path;
+    // 获取用户信息
+    if(!this.$store.state.userInfo){
+      this.$store.dispatch('getUserInfo');
+    }
+  },
+  methods:{
+    // 退出登录
+    logout() {
+      this.$message.success("退出成功");
+
+      this.$router.push("/login");
+    },
   }
 }
 </script>
@@ -132,7 +151,7 @@ export default {
         white-space: nowrap;
 
         .logo {
-          margin-right: 80px;
+          margin-right: 40px;
 
           a {
             font-size: 25px;
@@ -161,7 +180,7 @@ export default {
         flex: 1;
         display: flex;
         align-items: center;
-        padding: 0 30px;
+        padding: 0 20px;
         :deep(.el-input__inner){
           min-width: 150px;
         }
@@ -170,7 +189,7 @@ export default {
       .user {
         display: flex;
         align-items: center;
-
+        white-space: nowrap;
         .username {
           color: var(--main-color);
         }
@@ -188,6 +207,15 @@ export default {
           img {
             width: 50px;
           }
+        }
+        
+        .addBlog{
+          background: #18b8be;
+          margin-right: 10px;
+          padding: 5px 15px;
+          border-radius: 15px;
+          font-size: 14px;
+          color: #fff;
         }
       }
     }

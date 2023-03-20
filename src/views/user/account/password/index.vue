@@ -8,7 +8,7 @@
         :rules="rules"
         :hide-required-asterisk="true"
     >
-      <el-form-item label="输入原密码：" prop="oldPassword">
+      <el-form-item label="输入旧密码：" prop="oldPassword">
         <el-input
             v-model="formData.oldPassword"
             type="password"
@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import {passwordReg} from "@/utils/Regular";
+
 export default {
   data() {
     // 新旧密码对比
@@ -85,9 +87,8 @@ export default {
             message: "密码不能为空",
           },
           {
-            min: 6,
-            max: 20,
-            message: "密码在6 - 20位之间",
+            pattern: passwordReg,
+            message: "密码至少8位且必有数字+特殊字符+字母",
           },
           {
             validator: samePass,
@@ -105,24 +106,20 @@ export default {
     // 更新密码
     updatePassword() {
       this.$refs["formData"].validate(async (valid) => {
-        console.log(valid);
         if (!valid) {
           return;
         }
-        let result = await this.$request({
-          url: "/updatePassword",
-          method: "POST",
-          data: {
-            oldPassword: this.formData.oldPassword,
-            newPassword: this.formData.newPassword,
-          },
-        });
-        if (result.status === 200) {
-          if (result.data.status == 0) {
-            this.$message.success(result.data.message);
-          } else {
-            this.$message.warning(result.data.message);
-          }
+        let result = await this.$Request(
+            "/user/updatePassword",
+            {
+              oldPassword: this.formData.oldPassword,
+              newPassword: this.formData.newPassword,
+            });
+        if (result.code === 200) {
+          this.$Message.success(result.message);
+        } else {
+          this.$Message.warning(result.message);
+
         }
       });
     },

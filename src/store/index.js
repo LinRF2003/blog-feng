@@ -11,17 +11,22 @@ const store = new Vuex.Store({
     state: {
         categoryTags: null,
         fatherTagsList:[],
+        userInfo:null, // 用户信息
     },
     getters: {},
     mutations: {
+        // 设置分类标签
         SETCATEGORYTAGS(state, tags) {
             state.categoryTags = tags
         },
+        // 设置父标签
         SETFATHERTAGS(state,ft){
             state.fatherTagsList = ft;
+        },
+        // 设置用户信息
+        SETUSERINFO(state,userInfo) {
+            state.userInfo = userInfo;
         }
-
-
     },
     actions: {
         // 获取标签
@@ -37,10 +42,13 @@ const store = new Vuex.Store({
                 commit("SETFATHERTAGS",ft)
             }
         },
-        /*
-         todo
-          state中定义父标签数组， 增加传入父标签获取子标签数组，页面中需要自己做好数据变化
-         */
+        // 获取用户信息
+        async getUserInfo({commit}) {
+            let result = await Request('/user/get');
+            if(result.code === 200) {
+                commit("SETUSERINFO", result.userInfo);
+            }
+        }
     }
 })
 export default store;

@@ -117,7 +117,7 @@ export default {
     background: #fff;
     height: auto;
     flex: 1;
-    margin-bottom: 40px;
+    padding-bottom: 20px;
   }
 }
 </style>

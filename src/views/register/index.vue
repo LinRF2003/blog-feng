@@ -156,7 +156,6 @@ export default {
         console.log(result)
         this.$Message.warning(result.desc);
       }
-
     },
   },
   watch: {
@@ -167,7 +166,6 @@ export default {
         this.canSend = true;
         this.captchaSecond = 60;
       }
-
     }
   },
   beforeDestroy() {

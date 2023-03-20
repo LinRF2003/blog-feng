@@ -20,7 +20,7 @@ exports.main = async (req, res) => {
         // 对用户密码进行加密
         let password = bcrypt.hashSync(newPassword, 10)
 
-        const sql = `update users set password = ? where user_id = ?`
+        const sql = `update users set password = ? where userid = ?`
         db.query(sql, [password, req.user.userId], (err, results) => {
             if (err) return res.send(err);
             if (results.affectedRows !== 1) {

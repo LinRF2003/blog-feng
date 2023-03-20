@@ -15,11 +15,11 @@
         </div>
         <div class="item">
           <span class="word"
-          ><span>手</span><span>机</span><span>号</span></span
+          ><span>邮</span><span>箱</span></span
           >
           <div class="operation">
-            <div class="phone">{{ phone }}</div>
-            <router-link to="account/email">修改手机号</router-link>
+            <div class="phone">{{ email }}</div>
+            <router-link to="account/email">修改邮箱</router-link>
           </div>
         </div>
       </div>
@@ -38,9 +38,9 @@
 <script>
 export default {
   computed: {
-    phone() {
+    email() {
       // return this.$store.state.userInfo.phone;
-      return 13519777777;
+      return this.$store.state.userInfo?.email;
     },
   },
 };
