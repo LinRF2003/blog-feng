@@ -118,8 +118,7 @@ export default {
   methods:{
     // 退出登录
     logout() {
-      this.$message.success("退出成功");
-
+      this.$Message.success("退出成功");
       this.$router.push("/login");
     },
   }

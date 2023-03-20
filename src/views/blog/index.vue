@@ -19,6 +19,13 @@
                 :like="likeBlogList.indexOf(blogInfo.id)!=-1" class="blog-item"></BlogItem>
     </div>
     <Null v-if="blogData.list.length==0"></Null>
+    <PaginationItem
+        :pageNo="blogData.pageNo"
+        :pageSize="blogData.pageSize"
+        :totalCount="blogData.totalCount"
+        :pageTotal="blogData.pageTotal"
+        @changePageNo="changePageNo"
+    ></PaginationItem>
   </div>
 </template>
 
@@ -83,14 +90,20 @@ export default {
     // 获取标签内容
     async getBlogByTag(tag, fatherTag) {
       let result = await this.$Request('/blog/get', {
-        pageSize: this.pageSize,
-        pageNo: this.pageNo,
+        pageSize: this.blogData.pageSize,
+        pageNo: this.blogData.pageNo,
         tag,
         fatherTag,
       })
       if (result.code === 200) {
         this.blogData = result.data;
       }
+    },
+    // 改变页数
+    changePageNo(val) {
+      this.blogData.pageNo = val;
+      console.log(this.blogData)
+      this.getBlogByTag(this.currentFatherTag);
     },
     // 改变当前父标签
     changeFatherTag(tag) {

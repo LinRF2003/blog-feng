@@ -1,7 +1,14 @@
 <template>
   <div>
     <div class="user">
-      <div class="avatar"><img :src="userInfo?.avatar"/></div>
+      <div class="avatar">
+        <el-image
+            style="width: 120px"
+            :src="userInfo?.avatar"
+            :preview-src-list="[userInfo?.avatar]">
+        </el-image>
+<!--        <img :src="userInfo?.avatar"/>-->
+      </div>
       <div class="user-detail">
         <div class="user-name">{{ userInfo?.userName }}</div>
         <div class="blog-count">博客数：{{ userInfo?.blogCount }}篇</div>
@@ -176,9 +183,6 @@ export default {
     overflow: hidden;
     background: #f4f4f4;
 
-    img {
-      width: 120px;
-    }
   }
 
   .user-detail {

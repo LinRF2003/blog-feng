@@ -11,7 +11,7 @@ exports.main = async (req, res) => {
     } = req.body;
     pageSize = parseInt(pageSize);
     pageNo = parseInt(pageNo);
-    if (tag === '全部') {
+    if (tag === '全部' || tag === '推荐') {
         tag = '';
     }
     if (fatherTag === '全部') {
@@ -25,6 +25,7 @@ exports.main = async (req, res) => {
                 console.log(err)
                 return res.err(SYSTEM_ERROR);
             }
+            console.log(results);
             let totalCount = results[1][0].count;// 符合条件的总条数
             if (totalCount === 0) {
                 return res.successs({
