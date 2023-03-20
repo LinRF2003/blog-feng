@@ -47,6 +47,10 @@ router.post('/blog/search', require('../service/blog/searchBlog/index').main)
 router.post('/user/get', require('../service/user/getUserInfo/index').main)
 // 修改用户信息
 router.post('/user/update', require('../service/user/updateUserInfo/index').main)
+// 修改密码
+router.post('/user/updatePassword', require('../service/user/updatePassword/index').main)
+// 修改邮箱
+router.post('/user/updateEmail',require('../service/user/updateEmail/index').main)
 
 
 
@@ -57,6 +61,9 @@ router.post('/question/get', require('../service/question/getQuestion/index.js')
 router.post('/question/add', require('../service/question/addQuestion/index.js').main)
 // 删除问题
 router.post('/question/del', require('../service/question/deleteQuestion/index.js').main)
+// 增加浏览量
+router.post('/question/addViews', require('../service/question/addQuestionViews/index').main)
+
 
 
 module.exports = router

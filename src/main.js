@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 
 Vue.config.productionTip = false
-import { Button,Form,FormItem,Input,Checkbox,Radio,RadioGroup,Image,Select,Option,Upload,Tag,Dialog,Divider,Loading} from 'element-ui';
+import { Button,Form,FormItem,Input,Checkbox,Radio,RadioGroup,Image,Select,Option,Upload,Tag,Dialog,Divider,Loading,Pagination} from 'element-ui';
 Vue.use(Button);
 Vue.use(Image);
 Vue.use(Form);
@@ -18,6 +18,7 @@ Vue.use(Tag);
 Vue.use(Dialog);
 Vue.use(Loading);
 Vue.use(Divider);
+Vue.use(Pagination);
 // 引入路由
 import router from './router/index.js'
 // 引入vuex
@@ -35,8 +36,11 @@ Vue.prototype.$Message = Message;
 // 引入上传图片的全局组件
 import UploadPic from '@/components/UploadPic';
 import Null from "@/components/Null";
+// 引入分页器组件
+import PaginationItem from '@/components/PaginationItem'
 Vue.component('UploadPic', UploadPic)
 Vue.component('Null', Null)
+Vue.component('PaginationItem', PaginationItem)
 
 
 new Vue({

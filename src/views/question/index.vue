@@ -8,7 +8,15 @@
       <QuestionItem v-for="questionInfo in questionList" :key="questionInfo.id"
                     :questionInfo="questionInfo"></QuestionItem>
       <Null v-if="questionList.length==0"></Null>
+      <PaginationItem
+          :pageNo="pageNo"
+          :pageSize="pageSize"
+          :totalCount="totalCount"
+          :pageTotal="pageTotal"
+          @changePageNo="changePageNo"
+      ></PaginationItem>
     </div>
+
   </div>
 </template>
 
@@ -25,6 +33,10 @@ export default {
     return {
       questionList: [], // 问题列表
       currentFT: '全部',//当前父标签
+      pageNo: 1, // 当前页码
+      pageSize: 10, // 每页个数
+      totalCount: 0, // 全部博客数量
+      pageTotal: 0, // 总页面数
     }
   },
   methods: {
@@ -32,17 +44,30 @@ export default {
     async getQuestionList(tag) {
       let result = await this.$Request('/question/get', {
         fatherTag: tag,
+        pageNo: this.pageNo,
+        pageSize: this.pageSize,
       });
       if (result.code === 200) {
         this.questionList = result.data.list;
+        this.pageNo = result.data.pageNo;
+        this.pageSize = result.data.pageSize;
+        this.totalCount = result.data.totalCount;
+        this.pageTotal = result.data.pageTotal;
       }
     },
     // 改变标签，获取新问题列表
     changeTag(tag) {
+      this.pageNo = 1;
       this.currentFT = tag;
       this.getQuestionList(tag);
-    }
+    },
+    // 改变页数
+    changePageNo(val) {
+      this.pageNo = val;
+      this.getQuestionList(this.currentFT);
+    },
   },
+
   computed: {
     categoryTags() {
       return this.$store.state.categoryTags
@@ -92,6 +117,7 @@ export default {
     background: #fff;
     height: auto;
     flex: 1;
+    margin-bottom: 40px;
   }
 }
 </style>

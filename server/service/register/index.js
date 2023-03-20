@@ -46,13 +46,12 @@ exports.main = async (req, res) => {
                 return res.err(SYSTEM_ERROR);
             }
             // 判断验证码是否超时
-            // console.log(results[0].time);
             if ((Date.now() - results[0].time) / 90000 > 15) {
-                return res.send({ code: 201, message: '验证码超时，请重新获取' });
+                return res.sm2('验证码超时，请重新获取');
             }
             // 判断验证码是否正确
             if (captcha != results[0].captcha) {
-                return res.send({ code: 201, message: '验证码错误' });
+                return res.sm2('验证码错误' );
             }
             // 插入注册用户信息
             const insertSql = 'insert into users set ?';
