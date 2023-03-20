@@ -57,13 +57,20 @@ router.post('/user/updateEmail',require('../service/user/updateEmail/index').mai
 // 问题
 // 获取问题列表
 router.post('/question/get', require('../service/question/getQuestion/index.js').main)
+// 获取问题详情
+router.post('/question/getDetail', require('../service/question/getQuestionDetail/index.js').main)
 // 添加问题
 router.post('/question/add', require('../service/question/addQuestion/index.js').main)
 // 删除问题
 router.post('/question/del', require('../service/question/deleteQuestion/index.js').main)
 // 增加浏览量
 router.post('/question/addViews', require('../service/question/addQuestionViews/index').main)
-
+// 获取问题回答列表
+router.post('/question/getAnswer', require('../service/question/getAnswer/index.js').main)
+// 添加回答
+router.post('/question/addAnswer', require('../service/question/addAnswer/index.js').main)
+// 删除回答
+router.post('/question/delAnswer', require('../service/question/deleteAnswer/index.js').main)
 
 
 module.exports = router
