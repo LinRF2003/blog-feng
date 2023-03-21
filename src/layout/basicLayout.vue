@@ -99,6 +99,7 @@ export default {
   watch: {
     // 监听路由高亮当前所在页面
     $route(to, from) {
+      console.log(111)
       // console.log(from); //从哪来
       this.activePath = to.meta.activePath; //到哪去
     },

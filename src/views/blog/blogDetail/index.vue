@@ -5,9 +5,6 @@
       <div class="blog-title">{{ blogInfo.title }}</div>
       <div class="detail-blog-info">
         <div class="blog-createTime">{{ blogInfo.createTime }}</div>
-        <!-- 作者：<router-link to="/" class="user-name">{{
-          blogInfo.user_name
-        }}</router-link> -->
         作者：
         <div class="user-name">{{ blogInfo.userName }}</div>
         类型：

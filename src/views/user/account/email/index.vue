@@ -17,7 +17,11 @@
         <div v-show="!canSend" class="ban size">剩余{{ captchaSecond }}秒</div>
       </el-form-item>
       <el-form-item>
-        <el-button type="danger" @click="updatePhone">确认</el-button>
+        <el-button type="primary" @click="updatePhone">确认</el-button>
+        <el-button type="danger" @click="() => {
+         $router.push('/user/account')
+        }">取消
+        </el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -88,14 +92,14 @@ export default {
       if (!emailReg.test(this.formData.email)) {
         return this.$Message.warning('请输入正确的邮箱');
       }
-      let result = await this.$Request('/email/send',{email:this.formData.email});
+      let result = await this.$Request('/email/send', {email: this.formData.email});
       if (result.code === 200) {
         this.captchaSecond = 60;
         this.canSend = false;
         this.timer = setInterval(() => {
           this.captchaSecond -= 1;
         }, 1000);
-      }else{
+      } else {
         this.$Message.warning(result.message);
       }
     },
@@ -140,6 +144,7 @@ export default {
     background: #aaa;
     cursor: no-drop;
   }
+
   :deep(.el-form-item__content) {
     display: flex;
   }

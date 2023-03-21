@@ -1,9 +1,9 @@
 <template>
   <div class="question-item">
     <div class="left">
-      <div class="title">
+      <router-link class="title" :to="'/questionDetail/'+questionInfo.id">
         {{ questionInfo.title }}
-      </div>
+      </router-link>
       <div class="content">
         {{ questionInfo.summary }}
       </div>

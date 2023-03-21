@@ -26,6 +26,11 @@ const routes = [
                 component: () => import('@/views/question/addQuestion/index.vue'),
             },
             {
+                path: '/questionDetail/:id',
+                meta: {activePath: "/question"}, //参数
+                component: () => import('@/views/question/questionDetail/index.vue'),
+            },
+            {
                 path: '/user',
                 meta: {activePath: "/user"}, //参数
                 component: () => import('@/views/user/index.vue'),
