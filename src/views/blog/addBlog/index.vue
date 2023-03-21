@@ -121,7 +121,6 @@
 </template>
 
 <script>
-import MarkdownEditor from "@/components/MarkdownEditor.vue";
 import { getSonTags } from "@/utils/methods";
 
 export default {
@@ -163,9 +162,6 @@ export default {
       },
       fatherTags: [],
     };
-  },
-  components: {
-    MarkdownEditor,
   },
   methods: {
     // 内容的双向绑定
@@ -263,6 +259,7 @@ export default {
         });
         if (result.code === 200) {
           this.$Message.success("发布成功");
+          // 刷新页面，清除数据
           location.reload();
           // 跳转路由
         }

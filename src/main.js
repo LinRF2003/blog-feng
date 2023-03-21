@@ -36,7 +36,8 @@ Vue.prototype.$Request = Request;
 import Message from '@/utils/Message';
 Vue.prototype.$Message = Message;
 
-
+// 引入markdonw编辑器
+import MarkdownEditor from "@/components/MarkdownEditor";
 // 引入上传图片的全局组件
 import UploadPic from '@/components/UploadPic';
 import Null from "@/components/Null";
@@ -45,6 +46,7 @@ import PaginationItem from '@/components/PaginationItem'
 Vue.component('UploadPic', UploadPic)
 Vue.component('Null', Null)
 Vue.component('PaginationItem', PaginationItem)
+Vue.component('MarkdownEditor', MarkdownEditor)
 
 
 new Vue({

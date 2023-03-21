@@ -17,7 +17,7 @@ exports.main = (req, res) => {
         if (results.length !== 1) {
             return res.err(PARAMS_ERROR, '问题不存在')
         }
-        res.success(results)
+        res.success(results[0])
     })
 
 }

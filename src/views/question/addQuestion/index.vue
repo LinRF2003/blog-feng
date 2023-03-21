@@ -52,13 +52,11 @@
 </template>
 
 <script>
-import MarkdownEditor from "@/components/MarkdownEditor.vue";
 import TagSelect from "@/components/TagSelect.vue";
 
 export default {
   name: "AddQuestion",
   components: {
-    MarkdownEditor,
     TagSelect,
   },
   data() {
@@ -112,6 +110,11 @@ export default {
         tags: JSON.stringify(this.tags),
         markdownContent: this.markdownContent,
       });
+      if(result.code === 200) {
+        this.$Message.success("添加问题成功");
+        // 刷新页面，清除数据
+        location.reload();
+      }
     },
   },
   computed: {

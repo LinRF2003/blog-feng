@@ -1,18 +1,16 @@
 <template>
   <v-md-editor
       v-model="text"
-      height="700px"
+      :height="mHeight"
       @change="changeContent"
       @upload-image="handleUploadImage"
       :disabled-menus="[]"
       :toc-nav-position-right="true"
       @fullscreen-change="changeFull"
-
   ></v-md-editor>
 </template>
 
 <script>
-
 import Vue from 'vue';
 import VMdEditor from '@kangc/v-md-editor/lib/codemirror-editor';
 import '@kangc/v-md-editor/lib/style/codemirror-editor.css';
@@ -57,9 +55,10 @@ export default {
     return {
       text: "",
       editor: "",
+      mHeight:'700px'
     };
   },
-  props: ["markdownText"],
+  props: ["markdownText", "height"],
   methods: {
     changeContent(text, html) {
       this.$emit("changeMarkdownText", text);
@@ -104,6 +103,11 @@ export default {
       this.text = this.markdownText;
     }
     this.editor = document.querySelector('.v-md-editor');
+
+    // 判断是否传入的高度
+    if (this.height) {
+      this.mHeight = this.height
+    }
   },
 
 };
