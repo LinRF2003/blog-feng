@@ -27,7 +27,8 @@
             :key="index"
             :class="[
               'tag',
-              tagsMap.get(tag) === currentFatherTag ? 'tag-active' : '',
+              // tagsMap.get(tag) === currentFatherTag ? 'tag-active' : '',
+              tagsMap.get(tag)? 'tag-active' : ''
             ]"
             @click="clickTags(tag)"
           >
@@ -36,6 +37,9 @@
         </div>
       </div>
     </el-dialog>
+    <div  class="bg">
+
+    </div>
   </div>
 </template>
 
@@ -71,7 +75,9 @@ export default {
     },
     // 点击子标签
     clickTags(tag) {
+      // console.log(this.tagsMap.get(tag) == this.currentFatherTag);
       // 判断tags中是否已有此标签
+      // if (this.tagsMap.get(tag) == this.currentFatherTag) {
       if (this.tagsMap.has(tag)) {
         this.tagsMap.delete(tag);
         // 刷新数据，防止页面不变化
@@ -89,6 +95,7 @@ export default {
       let ft = new Set();
       // 转换下父标签数据
       for (const item of this.tagsMap.values()) {
+        console.log(item)
         ft.add(item);
       }
       ft.add(this.currentFatherTag);
@@ -107,14 +114,27 @@ export default {
       return this.$store.state.fatherTagsList;
     },
   },
+  mounted() {
+    this.tags = getSonTags(this.categoryTags, this.$store.state.fatherTagsList[0]);
+  }
 };
 </script>
 
 <style scoped lang="scss">
+.bg{
+  background: #999;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: .1;
+  z-index: 903;
+}
 .dialog {
   position: absolute;
-  //right: -60px;
-  top: 300px;
+  left: -220px;
+  top: 75px;
   width: 500px;
   height: 300px;
   //border:1px solid #ccc;
@@ -131,7 +151,9 @@ export default {
       max-height: 230px;
       overflow-y: scroll;
       min-width: 104px;
-
+      .ft{
+        padding: 5px 0;
+      }
       .ft:hover {
         color: var(--main-color);
       }
@@ -141,7 +163,7 @@ export default {
       padding: 0 10px;
 
       .tag {
-        margin: 0 5px;
+        margin:  5px;
       }
 
       .tag-active {

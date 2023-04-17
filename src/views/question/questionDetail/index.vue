@@ -30,7 +30,7 @@
       <div class="answer-text">
         回答({{questionDetailInfo.answerNum}})
       </div>
-      <div class="answer-item" v-for="i in answerList" :ke="i.id">
+      <div class="answer-item" v-for="i in answerList" :key="i.id">
         <div class="top info">
           <div class="avatar">
             <img :src="i.avatar" v-if="i.avatar">

@@ -160,7 +160,6 @@ export default {
         ],
         tags: [{ required: true, message: "不能为空" }],
       },
-      fatherTags: [],
     };
   },
   methods: {
@@ -276,23 +275,33 @@ export default {
     if (!this.$store.state.categoryTags) {
       this.$store.dispatch("getTags");
     }
-    this.tags = getSonTags(categoryTags, this.fatherTags[0]);
-    this.currentFatherTag = this.fatherTags[0];
+    // setTimeout(() => {
+    //   console.log(this.fatherTags[0]);
+    //   this.tags = getSonTags(
+    //     this.$store.state.categoryTags,
+    //     this.fatherTags[0]
+    //   );
+    //   this.currentFatherTag = this.fatherTags[0];
+    // }, 1000);
   },
   computed: {
     categoryTags() {
       return this.$store.state.categoryTags;
     },
     fatherTags() {
-      return this.$store.state.fatherTags;
+      return this.$store.state.fatherTagsList;
     },
   },
-  // watch: {
-  //   categoryTags: function (newval, oldval) {
-  //     this.tags = getSonTags(newval, this.fatherTags[0]);
-  //     this.currentFatherTag = this.fatherTags[0];
-  //   },
-  // },
+  watch: {
+    // categoryTags: function (newval, oldval) {
+    //   this.tags = getSonTags(newval, this.fatherTags[0]);
+    //   this.currentFatherTag = this.fatherTags[0];
+    // },
+    fatherTags: function (newval, oldval) {
+      this.tags = getSonTags(this.$store.state.categoryTags, newval[0]);
+      this.currentFatherTag = newval[0];
+    },
+  },
 
   // watch:{
   //   dialogVisibleTags:function(val,oldval){

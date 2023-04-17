@@ -33,6 +33,11 @@
           <span class="l">+</span>
           <span class="r">至少添加一个标签</span>
         </div>
+        <TagSelect
+            @changeTags="changeTags"
+            :categoryTags="categoryTags"
+            v-if="categoryTags"
+        ></TagSelect>
       </div>
 
       <el-button
@@ -43,11 +48,7 @@
         >发布问题</el-button
       >
     </div>
-    <TagSelect
-      @changeTags="changeTags"
-      :categoryTags="categoryTags"
-      v-if="categoryTags"
-    ></TagSelect>
+
   </div>
 </template>
 
@@ -161,7 +162,7 @@ export default {
 
     .tags {
       padding-top: 20px;
-
+      position: relative;
       .add-tag {
         color: #368cdd;
 
