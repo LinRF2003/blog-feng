@@ -1,4 +1,5 @@
 const express = require('express')
+const redisClient = require("../common/redis");
 const router = express.Router()
 
 // 注册
@@ -73,4 +74,24 @@ router.post('/question/addAnswer', require('../service/question/addAnswer/index.
 router.post('/question/delAnswer', require('../service/question/deleteAnswer/index.js').main)
 
 
+
+// 测试
+router.post('/test',(req,res)=>{
+
+    redisClient.setex('xiaoming', 100, '3');
+    return res.send('1');
+})
+router.post('/get',async (req, res) => {
+
+
+    redisClient.get('xiaoming', (err, val) => {
+        if (err) {
+            console.error(err)
+            return;
+        }
+        console.log(val);
+        return res.send(val);
+    })
+
+})
 module.exports = router

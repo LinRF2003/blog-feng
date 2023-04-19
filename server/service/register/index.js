@@ -1,12 +1,13 @@
 // 注册用户的处理函数
 const bcrypt = require('bcryptjs');
 
-const { PARAMS_ERROR, NULL_ERROR, SYSTEM_ERROR } = require('../../common/errorCode');
+const {PARAMS_ERROR, NULL_ERROR, SYSTEM_ERROR} = require('../../common/errorCode');
 const db = require('../../db/index');
-const { captchaReg, emailReg, passwordReg } = require('../../utils/regular');
+const {captchaReg, emailReg, passwordReg} = require('../../utils/regular');
+const redisClient = require("../../common/redis");
 exports.main = async (req, res) => {
     // 接收表单数据
-    let { email, captcha, password, repassword } = req.body
+    let {email, captcha, password, repassword} = req.body
     // 判断数据是否合法
     if (!email || !captcha || !password || !repassword) {
         return res.err(NULL_ERROR);
@@ -40,46 +41,55 @@ exports.main = async (req, res) => {
         }
         // 判断验证码是否超时   // 判断验证码是否正确
         const emailSql = `select * from temporary_email where email = ?`;
-        db.query(emailSql, email, (err, results) => {
+        db.query(emailSql, email, async (err, results) => {
             // 执行 SQL 语句失败
             if (err) {
                 return res.err(SYSTEM_ERROR);
             }
-            // 判断验证码是否超时
-            if ((Date.now() - results[0].time) / 90000 > 15) {
-                return res.sm2('验证码超时，请重新获取');
-            }
-            // 判断验证码是否正确
-            if (captcha != results[0].captcha) {
-                return res.sm2('验证码错误' );
-            }
-            // 插入注册用户信息
-            const insertSql = 'insert into users set ?';
-
-            // 对用户的密码,进行 bcrype 加密，返回值是加密之后的密码字符串
-            password = bcrypt.hashSync(password, 10);
-            let timestamp = '' + Date.now();
-            // 初始化用户名
-            let userName = '用户' + timestamp.substring((timestamp.length - 8), timestamp.length)
-            // 定义数据
-            const data = {
-                email,
-                password,
-                userName
-            }
-            db.query(insertSql, data, function (err, results) {
-                // 执行 SQL 语句失败
-                if (err) return res.err(SYSTEM_ERROR);
-                // SQL 语句执行成功，但影响行数不为 1
-                if (results.affectedRows !== 1) {
-                    return res.err(SYSTEM_ERROR, '注册用户失败');
-                } else {
-                    // 注册成功
-                    return res.sm('注册成功!')
+            // 查询redis中是否已存在此邮箱验证码信息
+            await redisClient.get(email, (err, val) => {
+                if (err) {
+                    console.error(err)
+                    return;
                 }
+                // 如果验证码存在redis中；
+                if (val) {
+                    // 判断验证码与用户输入的是否相同
+                    if (captcha == val.substring(0, 6)) {
+                        // 插入注册用户信息
+                        const insertSql = 'insert into users set ?';
 
+                        // 对用户的密码,进行 bcrype 加密，返回值是加密之后的密码字符串
+                        password = bcrypt.hashSync(password, 10);
+                        let timestamp = '' + Date.now();
+                        // 初始化用户名
+                        let userName = '用户' + timestamp.substring((timestamp.length - 8), timestamp.length)
+                        // 定义数据
+                        const data = {
+                            email,
+                            password,
+                            userName
+                        }
+                        db.query(insertSql, data, function (err, results) {
+                            // 执行 SQL 语句失败
+                            if (err) return res.err(SYSTEM_ERROR);
+                            // SQL 语句执行成功，但影响行数不为 1
+                            if (results.affectedRows !== 1) {
+                                return res.err(SYSTEM_ERROR, '注册用户失败');
+                            } else {
+                                // 注册成功
+                                return res.sm('注册成功!')
+                            }
+
+                        })
+                    } else {
+                        return res.sm2('验证码错误');
+                    }
+                } else {
+                    return res.sm2('验证码超时或错误，请重新获取');
+                }
             })
-        })
 
+        })
     })
 }

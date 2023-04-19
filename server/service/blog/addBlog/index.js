@@ -88,7 +88,6 @@ exports.main = async (req, res) => {
         // 执行 SQL 语句失败
         if (err) { return res.err(SYSTEM_ERROR) };
         if (results.affectedRows != 1) { return res.err(SYSTEM_ERROR, '发布失败') };
-        // todo
         // 博客数量加一
         const sql = `update users set blogCount = blogCount + 1 where userId = ${userId}`;
         db.query(sql, (err, results) => {
@@ -99,4 +98,5 @@ exports.main = async (req, res) => {
             return res.sm('发布博客成功');
         })
     })
+
 }
