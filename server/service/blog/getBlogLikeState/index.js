@@ -11,7 +11,10 @@ exports.main = (req, res) => {
     const sql = `select likeBlog from users where userId = ?`;
     db.query(sql, [req.user.userId], (err, results) => {
         if (err) return res.err(SYSTEM_ERROR);
-        return res.success(results[0].likeBlog.indexOf(req.body.id) != -1);
+        if(!results[0].likeBlog || results[0].likeBlog.length<1){
+            return res.success(false);
+        }
+        return res.success( results[0].likeBlog.indexOf(req.body.id) != -1);
 
     })
 }

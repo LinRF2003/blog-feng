@@ -37,7 +37,7 @@
         </div>
       </div>
     </el-dialog>
-    <div  class="bg">
+    <div  class="bg" @click="$emit('logout');">
 
     </div>
   </div>
@@ -66,6 +66,7 @@ export default {
     // 关闭标签对话框
     closeDialog() {
       this.dialogVisibleTags = false;
+      this.$emit("logout");
     },
     // 改变当前父标签
     changeFatherTag(tag) {
@@ -116,6 +117,8 @@ export default {
   },
   mounted() {
     this.tags = getSonTags(this.categoryTags, this.$store.state.fatherTagsList[0]);
+
+
   }
 };
 </script>

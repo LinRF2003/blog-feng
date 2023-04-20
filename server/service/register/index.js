@@ -78,6 +78,8 @@ exports.main = async (req, res) => {
                                 return res.err(SYSTEM_ERROR, '注册用户失败');
                             } else {
                                 // 注册成功
+                                // 删除redis中的验证码信息
+                                redisClient.del(email);
                                 return res.sm('注册成功!')
                             }
 

@@ -26,17 +26,18 @@
             closable
             :disable-transitions="false"
             @close="handleClose(tag)"
-            style="margin: 0 5px"
+            style="margin: 5px"
           >
             {{ tag }}
           </el-tag>
-          <span class="l">+</span>
-          <span class="r">至少添加一个标签</span>
+          <span class="l" @click="showTagSelect=true">+</span>
+          <span class="r" v-show="tags.length<1">至少添加一个标签</span>
         </div>
         <TagSelect
+            @logout="logout"
             @changeTags="changeTags"
             :categoryTags="categoryTags"
-            v-if="categoryTags"
+            v-if="showTagSelect"
         ></TagSelect>
       </div>
 
@@ -70,6 +71,7 @@ export default {
       tags: [],
       fatherTags: [],
       editorType: 1,
+      showTagSelect:false
     };
   },
   methods: {
@@ -86,6 +88,10 @@ export default {
     changeTag(tag) {
       this.currentFT = tag;
       this.getQuestionList(tag);
+    },
+    // 标签选择器退出方法
+    logout(){
+      this.showTagSelect = false;
     },
     // 改变选择标签列表
     changeTags(tagsMap) {
