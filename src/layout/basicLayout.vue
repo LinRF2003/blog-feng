@@ -14,14 +14,16 @@
             >{{ item.name }}
           </router-link>
         </div>
-        <div class="search" v-if="$route.name != '搜索'">
+        <div class="search">
           <el-input
+              v-if="$route.name != '搜索'"
             placeholder="请输入内容"
             v-model="content"
             class="input-with-select"
             clearable
+              @keyup.enter.native="search"
           >
-            <el-button slot="append" icon="el-icon-search"></el-button>
+            <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
           </el-input>
         </div>
 
@@ -122,6 +124,9 @@ export default {
       this.$Message.success("退出成功");
       this.$router.push("/login");
     },
+    search(){
+      this.$router.push(`/search?text=${this.content}`)
+    }
   },
 };
 </script>

@@ -10,9 +10,9 @@
       <div class="bottom">
         <div class="tags">
           <span
-            class="tag"
-            v-for="(tag, index) in JSON.parse(questionInfo.tags)"
-            :key="index"
+              class="tag"
+              v-for="(tag, index) in JSON.parse(questionInfo.tags)"
+              :key="index"
           >
             {{ tag }}
           </span>
@@ -21,7 +21,7 @@
         <div class="time">{{ questionInfo.createTime }}</div>
       </div>
     </div>
-    <div class="right">
+    <div :class="['right',questionInfo.answerNum > 0 ? 'bg-color' : '']">
       <div class="num">
         {{ questionInfo.answerNum }}
       </div>
@@ -35,7 +35,7 @@ export default {
   name: "QuestionItem",
   props: {
     // 问题数据
-    questionInfo: { type: Object, required: true },
+    questionInfo: {type: Object, required: true},
   },
 };
 </script>
@@ -45,14 +45,17 @@ export default {
   display: flex;
   padding: 10px 10px 15px;
   border-bottom: 1px #e6e6e6 solid;
+
   .left {
     flex: 1;
     width: 0;
+
     .title {
       color: #333;
       font-size: 18px;
       font-weight: 550;
     }
+
     .content {
       color: #555666;
       margin: 5px 0 8px;
@@ -62,12 +65,15 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
     .bottom {
       display: flex;
       align-items: center;
       font-size: 12px;
+
       .tags {
         margin-right: 10px;
+
         .tag {
           background-color: #ecf5ff;
           border: 1px #d9ecff solid;
@@ -76,11 +82,13 @@ export default {
           margin-right: 5px;
         }
       }
+
       .views {
         margin-right: 15px;
       }
     }
   }
+
   .right {
     color: #333;
     font-size: 14px;
@@ -89,9 +97,11 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     .num {
       padding-bottom: 5px;
     }
   }
+
 }
 </style>

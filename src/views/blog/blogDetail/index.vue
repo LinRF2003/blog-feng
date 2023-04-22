@@ -389,7 +389,7 @@ export default {
       border-bottom: 1px solid #ddd;
 
       .avatar {
-        width: 82px;
+        min-width: 82px;
         height: 82px;
         border-radius: 82px;
         border: 1px solid #ddd;

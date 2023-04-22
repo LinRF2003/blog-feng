@@ -65,6 +65,12 @@ const routes = [
                     }
                 ]
             },
+            {
+                path: '/search',
+                name:"搜索",
+                // meta: {activePath: "/question"}, //参数
+                component: () => import('@/views/search/index.vue'),
+            }
         ]
     },
     {

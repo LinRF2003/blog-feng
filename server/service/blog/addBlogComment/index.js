@@ -20,8 +20,11 @@ exports.main = (req, res) => {
         return res.err(PARAMS_ERROR, 'id不存在或错误');
     }
     // 判断内容是否为空且长度不超过200
-    if (!content || content.length > 200) {
-        return res.err(PARAMS_ERROR, '内容不能为空且长度小于200');
+    // if (!content || content.length > 200) {
+    //     return res.err(PARAMS_ERROR, '内容不能为空且长度小于200');
+    // }
+    if (!content) {
+        return res.err(PARAMS_ERROR, '内容不能为空');
     }
     // 定义添加评论的sql语句 // 添加成功时给相应的博客评论数加一
     const sql = `insert into blog_comment set ?;
