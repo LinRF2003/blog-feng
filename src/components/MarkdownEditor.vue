@@ -99,6 +99,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.markdownText)
     if (this.markdownText) {
       this.text = this.markdownText;
     }

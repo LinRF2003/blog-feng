@@ -2,33 +2,33 @@
   <div class="blog-item">
     <div class="top">
       <div class="avatar">
-        <img src="../assets/logo.png" alt="" />
+        <img src="../assets/logo.png" alt=""/>
       </div>
-      <div class="name">
+      <router-link class="name" :to="`/userCenter/${blogInfo.userId}`">
         {{ blogInfo.userName }}
-      </div>
+      </router-link>
       <el-divider direction="vertical"></el-divider>
       <div class="time">{{ blogInfo.createTime }}</div>
     </div>
     <div class="content">
       <div class="left" v-if="blogInfo.cover">
         <el-image
-          style="width: 160px; height: 100px"
-          :src="blogInfo.cover"
-          :preview-src-list="[blogInfo.cover]"
+            class="image"
+            :src="blogInfo.cover"
+            :preview-src-list="[blogInfo.cover]"
         >
         </el-image>
       </div>
 
       <div class="right">
         <a class="title" target="_blank" @click="addViews"
-          >{{ blogInfo.title }}
+        >{{ blogInfo.title }}
         </a>
         <div class="summary">{{ blogInfo.summary }}</div>
         <div class="bottom">
           <div class="view">{{ blogInfo.views }} 浏览</div>
           <a :class="['like', isLike ? 'active' : '']" @click="changeLike"
-            >{{ blogInfo.likeCount }} 赞</a
+          >{{ blogInfo.likeCount }} 赞</a
           >
           <div class="like">{{ blogInfo.commentCount }} 评论</div>
         </div>
@@ -43,23 +43,22 @@ export default {
   data() {
     return {
       choose: true,
-      isLike: null,
+      isLike:false
     };
   },
   props: {
-    blogInfo: { type: Object, required: true },
+    blogInfo: {type: Object, required: true},
     like: {
       type: Boolean,
-      required: true,
     },
   },
   methods: {
     // 增加浏览量
     addViews() {
-      this.$Request("/blog/addViews", { id: this.blogInfo.id });
+      this.$Request("/blog/addViews", {id: this.blogInfo.id});
       let routeData = this.$router.resolve({
         name: "博客详情",
-        params: { id: this.blogInfo.id },
+        params: {id: this.blogInfo.id},
         // query: {id: this.blogInfo.id, isLike: this.isLike}
       });
       window.open(routeData.href, "_blank");
@@ -91,7 +90,9 @@ export default {
     },
   },
   mounted() {
-    this.isLike = this.like;
+    if (this.like) {
+      this.isLike = this.like;
+    }
   },
 };
 </script>
@@ -140,15 +141,13 @@ export default {
     border-bottom: 1px solid #ccc;
 
     .left {
-      display: flex;
-      align-items: center;
-      min-width: 160px;
-      min-height: 100px;
       overflow: hidden;
+      background: #f4f4f4;
 
-      img {
-        width: 160px;
-        max-height: 100px;
+      .image {
+        text-align: center;
+        //width: 160px;
+        height: 100px;
       }
     }
 
@@ -201,6 +200,7 @@ export default {
         }
       }
     }
+
   }
 }
 </style>

@@ -48,9 +48,6 @@ export default {
 
 <style scoped lang="scss">
 .userSettings {
-  background: #fff;
-  padding: 20px;
-
   .top {
     margin-bottom: 10px;
 

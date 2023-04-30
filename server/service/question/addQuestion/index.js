@@ -4,7 +4,6 @@ const {NULL_ERROR, SYSTEM_ERROR, PARAMS_ERROR} = require("../../../common/errorC
 
 
 exports.main = (req, res) => {
-    console.log(req.body)
     // 取出 body 中的数据
     const {title, content, fatherTags, tags, markdownContent, editorType = 0} = req.body;
     // 判断数据是否正确
@@ -35,7 +34,7 @@ exports.main = (req, res) => {
     const sql = `insert into questions set ?`;
     // 定义添加问题的数据
     const data = {
-        title, content, fatherTags, tags, userName, userId, avatar,summary
+        title, content, fatherTags, tags, userName, userId, avatar,summary,markdownContent
     }
     db.query(sql, data, (err, results) => {
         if (err) {

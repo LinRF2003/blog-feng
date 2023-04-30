@@ -13,6 +13,11 @@
             :class="['navitem', item.path == activePath ? 'active' : '']"
             >{{ item.name }}
           </router-link>
+          <router-link
+              :to="`/userCenter/${userInfo?.userId}`"
+              :class="['navitem',userInfo?.userId == $route.params.id? 'active' : ''] "
+          >个人中心
+          </router-link>
         </div>
         <div class="search">
           <el-input
@@ -26,13 +31,11 @@
             <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
           </el-input>
         </div>
-
         <div class="user">
           <router-link
-            to="/addBlog"
-            target="_blank"
+            to="/editBlog"
             class="addBlog"
-            v-if="$route.path == '/'"
+            v-if="$route.meta.activePath == '/'"
             >发布博客</router-link
           >
           <router-link
@@ -88,10 +91,6 @@ export default {
           name: "问答",
           path: "/question",
         },
-        {
-          name: "个人中心",
-          path: "/user",
-        },
       ],
       // 导航选中路径
       activePath: "",
@@ -112,7 +111,7 @@ export default {
     },
   },
   mounted() {
-    this.activePath = this.$route.path;
+    this.activePath = this.$route.meta.activePath;
     // 获取用户信息
     if (!this.$store.state.userInfo) {
       this.$store.dispatch("getUserInfo");
@@ -125,7 +124,8 @@ export default {
       this.$router.push("/login");
     },
     search(){
-      this.$router.push(`/search?text=${this.content}`)
+
+      this.$router.push(`/search/blog?text=${this.content}`)
     }
   },
 };

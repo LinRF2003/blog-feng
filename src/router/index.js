@@ -16,19 +16,43 @@ const routes = [
                 component: () => import('@/views/blog/index.vue'),
             },
             {
-                path: '/question',
+                path: 'blog/:ft/:t',
+                meta: {activePath: "/"}, //参数
+                component: () => import('@/views/blog/index.vue'),
+            },
+            {
+                path: 'editBlog',
+                name: '编辑博客',
+                component: () => import('@/views/blog/editBlog/index.vue')
+            },
+            {
+                path: 'question',
                 meta: {activePath: "/question"}, //参数
                 component: () => import('@/views/question/index.vue'),
             },
             {
-                path: '/addQuestion',
+                path: 'question/:ft',
+                meta: {activePath: "/question"}, //参数
+                component: () => import('@/views/question/index.vue'),
+            },
+            {
+                path: 'addQuestion',
                 meta: {activePath: "/question"}, //参数
                 component: () => import('@/views/question/addQuestion/index.vue'),
             },
             {
-                path: '/questionDetail/:id',
+                path: 'questionDetail/:id',
                 meta: {activePath: "/question"}, //参数
                 component: () => import('@/views/question/questionDetail/index.vue'),
+            },
+            {
+                path: 'userCenter',
+                meta: {activePath: "/userCenter"}, //参数
+                component: () => import('@/views/user-center/index.vue'),
+            },
+            {
+                path: 'userCenter/:id',
+                component: () => import('@/views/user-center/index.vue'),
             },
             {
                 path: '/user',
@@ -66,16 +90,12 @@ const routes = [
                 ]
             },
             {
-                path: '/search',
-                name:"搜索",
+                path: '/search/:category',
+                name: "搜索",
                 // meta: {activePath: "/question"}, //参数
                 component: () => import('@/views/search/index.vue'),
             }
         ]
-    },
-    {
-        path: '/addblog',
-        component: () => import('@/views/blog/addBlog/index.vue')
     },
     {
         path: '/blogdetail/:id',

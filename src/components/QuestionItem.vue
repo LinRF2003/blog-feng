@@ -43,9 +43,9 @@ export default {
 <style scoped lang="scss">
 .question-item {
   display: flex;
-  padding: 10px 10px 15px;
+  padding: 20px;
   border-bottom: 1px #e6e6e6 solid;
-
+  background: #fff;
   .left {
     flex: 1;
     width: 0;

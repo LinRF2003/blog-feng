@@ -2,8 +2,10 @@ import Vue from 'vue'
 import App from './App.vue'
 
 Vue.config.productionTip = false
-import { Button,Form,FormItem,Input,Checkbox,Radio,RadioGroup,Image,Select,Option,Upload,Tag,Dialog,Divider,Loading,Pagination,DatePicker,Dropdown,DropdownMenu,DropdownItem} from 'element-ui';
+import { Button,Form,FormItem,Input,Checkbox,Radio,RadioGroup,Image,Select,Option,Upload,Tag,Dialog,Divider,Loading,Pagination,DatePicker,Dropdown,DropdownMenu,DropdownItem,Tabs,TabPane} from 'element-ui';
 Vue.use(Button);
+Vue.use(Tabs);
+Vue.use(TabPane);
 Vue.use(Image);
 Vue.use(Form);
 Vue.use(FormItem);
@@ -43,10 +45,16 @@ import UploadPic from '@/components/UploadPic';
 import Null from "@/components/Null";
 // 引入分页器组件
 import PaginationItem from '@/components/PaginationItem'
+// 引入博客item
+import BlogItem from '@/components/BlogItem'//
+// 引入问题item
+import QuestionItem from '@/components/QuestionItem'
 Vue.component('UploadPic', UploadPic)
 Vue.component('Null', Null)
 Vue.component('PaginationItem', PaginationItem)
 Vue.component('MarkdownEditor', MarkdownEditor)
+Vue.component('BlogItem', BlogItem)
+Vue.component('QuestionItem', QuestionItem)
 
 
 new Vue({

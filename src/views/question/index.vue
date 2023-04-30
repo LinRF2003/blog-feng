@@ -71,10 +71,15 @@ export default {
       this.pageNo = 1;
       this.currentFT = tag;
       this.getQuestionList(tag);
+      // 改变路由地址
+      this.$router.replace(`/question/${this.currentFT}?pageNo=1`);
+
     },
     // 改变页数
     changePageNo(val) {
       this.pageNo = val;
+      // 改变路由地址
+      this.$router.replace(`/question/${this.currentFT}?pageNo=${val}`);
       this.getQuestionList(this.currentFT);
     },
   },
@@ -92,6 +97,9 @@ export default {
     if (!this.$store.state.categoryTags) {
       this.$store.dispatch("getTags");
     }
+    // 获取路由中的标签信息
+    this.currentFT = this.$route.params.ft || '全部';
+    this.pageNo =  this.$route.query.pageNo;
     this.getQuestionList();
   },
 };

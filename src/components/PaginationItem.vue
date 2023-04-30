@@ -17,6 +17,7 @@ export default {
   props: ["totalCount", "pageNo", "pageSize", "pageTotal"],
   methods: {
     async changePageNo(val) {
+      window.scrollTo(0, 0);
       this.$emit("changePageNo", val);
     },
   },

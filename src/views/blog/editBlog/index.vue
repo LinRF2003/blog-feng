@@ -1,32 +1,40 @@
 <template>
   <div class="add-blog">
     <input
-      type="text"
-      placeholder="请输入文章标题"
-      class="title"
-      v-model="blogInfo.title"
-      autofocus
+        type="text"
+        placeholder="请输入文章标题"
+        class="title"
+        v-model="blogInfo.title"
+        autofocus
     />
-
     <MarkdownEditor
-      @changeMarkdownText="changeMarkdownText"
-      @changeHtml="changeHtml"
+        @changeMarkdownText="changeMarkdownText"
+        @changeHtml="changeHtml"
+        v-if="!$route.params.blogId"
     ></MarkdownEditor>
+    <div v-if="showById">
+      <MarkdownEditor
+          @changeMarkdownText="changeMarkdownText"
+          @changeHtml="changeHtml"
+          :markdownText="blogInfo.markdownContent"
+
+      ></MarkdownEditor>
+    </div>
     <div class="detail">
       <div class="ti">文章设置</div>
       <div class="content">
         <el-form
-          ref="blogInfo"
-          :model="blogInfo"
-          :rules="rules"
-          label-width="80px"
+            ref="blogInfo"
+            :model="blogInfo"
+            :rules="rules"
+            label-width="80px"
         >
           <el-form-item label="博客封面">
             <!-- 封面上传 -->
             <UploadPic
-              class="upload"
-              @getImageUrl="getImageUrl"
-              :imageUrl="blogInfo.cover"
+                class="upload"
+                @getImageUrl="getImageUrl"
+                :imageUrl="blogInfo.cover"
             ></UploadPic>
           </el-form-item>
           <el-form-item label="类型" prop="type">
@@ -35,9 +43,9 @@
                 <el-radio :label="0">原创</el-radio>
                 <el-radio :label="1">转载</el-radio>
                 <el-form-item
-                  label="原文地址"
-                  v-if="blogInfo.type"
-                  prop="reprintUrl"
+                    label="原文地址"
+                    v-if="blogInfo.type"
+                    prop="reprintUrl"
                 >
                   <el-input v-model="blogInfo.reprintUrl"></el-input>
                 </el-form-item>
@@ -46,47 +54,48 @@
           </el-form-item>
           <el-form-item label="标签" prop="tags" class="tags">
             <el-tag
-              :key="tag"
-              v-for="tag in blogInfo.tags"
-              closable
-              :disable-transitions="false"
-              @close="handleClose(tag)"
-              style="margin: 0 5px"
+                :key="tag"
+                v-for="tag in blogInfo.tags"
+                closable
+                :disable-transitions="false"
+                @close="handleClose(tag)"
+                style="margin: 0 5px"
             >
               {{ tag }}
             </el-tag>
             <el-button size="small" @click="dialogVisibleTags = true"
-              >+ New Tag</el-button
+            >+ New Tag
+            </el-button
             >
             <el-dialog
-              title="标签"
-              :visible.sync="dialogVisibleTags"
-              width="30%"
-              :before-close="closeDialog"
-              center
-              :modal="false"
-              class="dialog"
+                title="标签"
+                :visible.sync="dialogVisibleTags"
+                width="30%"
+                :before-close="closeDialog"
+                center
+                :modal="false"
+                class="dialog"
             >
               <div class="dialog-content">
                 <div class="left">
                   <div
-                    :class="['ft', currentFatherTag === tag ? 'active' : '']"
-                    v-for="(tag, index) in fatherTags"
-                    :key="index"
-                    @click="changeFatherTag(tag)"
+                      :class="['ft', currentFatherTag === tag ? 'active' : '']"
+                      v-for="(tag, index) in fatherTags"
+                      :key="index"
+                      @click="changeFatherTag(tag)"
                   >
                     {{ tag }}
                   </div>
                 </div>
                 <div class="right">
                   <el-tag
-                    v-for="(tag, index) in tags"
-                    :key="index"
-                    :class="[
+                      v-for="(tag, index) in tags"
+                      :key="index"
+                      :class="[
                       'tag',
                       blogInfo.tags.indexOf(tag) !== -1 ? 'tag-active' : '',
                     ]"
-                    @click="clickTags(tag)"
+                      @click="clickTags(tag)"
                   >
                     {{ tag }}
                   </el-tag>
@@ -104,11 +113,11 @@
           </el-form-item>
           <el-form-item label="博客摘要" prop="summary" class="summary">
             <el-input
-              v-model="blogInfo.summary"
-              type="textarea"
-              placeholder="请输入摘要"
-              :autosize="{ minRows: 4, maxRows: 4 }"
-              resize="none"
+                v-model="blogInfo.summary"
+                type="textarea"
+                placeholder="请输入摘要"
+                :autosize="{ minRows: 4, maxRows: 4 }"
+                resize="none"
             >
             </el-input>
             <a class="get" @click="getSummary"> 获取文章前200个字 </a>
@@ -116,19 +125,20 @@
         </el-form>
       </div>
       <el-button type="primary" @click="addBlog" class="add">提交</el-button>
+      <el-button type="danger" @click="$router.go(-1)" class="cancel">取消</el-button>
     </div>
   </div>
 </template>
 
 <script>
-import { getSonTags } from "@/utils/methods";
+import {getSonTags} from "@/utils/methods";
 
 export default {
   name: "AddBlog",
   data() {
     return {
       tagsMap: new Map(),
-      currentFatherTag: "",
+      currentFatherTag: "python",
       tags: "",
       // 博客信息
       blogInfo: {
@@ -144,21 +154,22 @@ export default {
         tags: [],
         fatherTags: [],
       },
+      showById:false,
       dialogVisibleTags: false, // 标签提示框
       // 表单验证
       rules: {
-        categoryId: [{ required: true, message: "请选择博客分类" }],
-        type: [{ required: true, message: "请选择类型" }],
-        reprintUrl: [{ required: true, message: "请输入原文地址" }],
+        categoryId: [{required: true, message: "请选择博客分类"}],
+        type: [{required: true, message: "请选择类型"}],
+        reprintUrl: [{required: true, message: "请输入原文地址"}],
         summary: [
-          { required: true, message: "不能为空" },
+          {required: true, message: "不能为空"},
           {
             max: 200,
             min: 20,
             message: "字数在20-200之间",
           },
         ],
-        tags: [{ required: true, message: "不能为空" }],
+        tags: [{required: true, message: "不能为空"}],
       },
     };
   },
@@ -251,17 +262,33 @@ export default {
         }
         let tags = JSON.stringify(this.blogInfo.tags);
         let fatherTags = JSON.stringify([...ft]);
-        let result = await this.$Request("/blog/add", {
-          ...this.blogInfo,
-          tags,
-          fatherTags,
-        });
-        if (result.code === 200) {
-          this.$Message.success("发布成功");
-          // 刷新页面，清除数据
-          location.reload();
-          // 跳转路由
+
+        // 博客存在修改博客信息
+        if (this.$route.params.blogId) {
+          let  result = await this.$Request("/blog/update", {
+            id:this.$route.params.id,
+            ...this.blogInfo,
+            tags,
+            fatherTags,
+          });
+          if (result.code === 200) {
+            this.$Message.success("修改成功");
+            // 跳转路由
+            this.$router.back();
+          }
+        } else {
+          let result = await this.$Request("/blog/add", {
+            ...this.blogInfo,
+            tags,
+            fatherTags,
+          });
+          if (result.code === 200) {
+            this.$Message.success("发布成功");
+            // 跳转路由
+            this.$router('/')
+          }
         }
+
       });
     },
     // 获取文章前150个字
@@ -270,11 +297,34 @@ export default {
       str = str.replace(/\s*/g, "");
       this.blogInfo.summary = str.substring(0, 200);
     },
+
+    // 获取需要修改的博客信息
+    async getBlogDetail() {
+
+      let result = await this.$Request(
+          "/blog/getDetail",
+          {id: this.$route.params.blogId},
+      );
+      console.log(result)
+      if (result.code === 200) {
+        this.blogInfo = result.data[0];
+        this.blogInfo.tags = JSON.parse(result.data[0].tags);
+        this.showById = true;
+      }
+    },
   },
   mounted() {
     if (!this.$store.state.categoryTags) {
       this.$store.dispatch("getTags");
     }
+    if (this.fatherTags[0]) {
+      this.currentFatherTag = this.fatherTags[0];
+      this.tags = getSonTags(this.categoryTags, this.currentFatherTag);
+    }
+    if (this.$route.params.blogId) {
+      this.getBlogDetail()
+    }
+    console.log(this.blogInfo.markdownContent);
     // setTimeout(() => {
     //   console.log(this.fatherTags[0]);
     //   this.tags = getSonTags(
@@ -357,7 +407,13 @@ export default {
 
     .add {
       position: absolute;
-      bottom: -40px;
+      bottom: -45px;
+      right: 120px;
+    }
+
+    .cancel {
+      position: absolute;
+      bottom: -45px;
       right: 40px;
     }
 

@@ -4,9 +4,12 @@
     <div class="left">
       <div class="blog-title">{{ blogInfo.title }}</div>
       <div class="detail-blog-info">
-        <div class="blog-createTime">{{ blogInfo.createTime }}</div>
+        <div class="blog-createTime">{{
+            blogInfo.createTime
+          }}
+        </div>
         作者：
-        <div class="user-name">{{ blogInfo.userName }}</div>
+        <router-link class="user-name" :to="`/userCenter/${blogInfo.userId}`">{{ blogInfo.userName }}</router-link>
         类型：
         <div class="type">{{ blogInfo.type == 0 ? "原创" : "转载" }}</div>
         <div v-if="blogInfo.type == 1" class="reprint">
@@ -188,11 +191,11 @@ export default {
     // 添加评论
     async addComment() {
       let result = await this.$Request(
-        "/blog/addComment",
-       {
-          content: this.content,
-          blogId: this.blogInfo.id,
-        },
+          "/blog/addComment",
+          {
+            content: this.content,
+            blogId: this.blogInfo.id,
+          },
       );
       // 重新获取评论
       if (result.code === 200) {
@@ -245,9 +248,9 @@ export default {
         }, 1000);
       }
     },
-    async getLikeState(){
-      let result = await this.$Request('/blog/getLikeState',{id:this.$route.params.id});
-      if(result.code === 200) {
+    async getLikeState() {
+      let result = await this.$Request('/blog/getLikeState', {id: this.$route.params.id});
+      if (result.code === 200) {
         this.like = result.data;
       }
     }

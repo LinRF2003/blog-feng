@@ -1,14 +1,14 @@
 <template>
-  <div class="question-detail">
+  <div class="question-detail" v-loading.fullscreen.lock="loading">
     <div class="top-content">
       <div class="top">
         <div class="avatar">
           <img :src="questionDetailInfo.avatar" v-if="questionDetailInfo.avatar">
           <img src="../../../assets/logo.png" v-else>
         </div>
-        <div class="user-name">
+        <router-link class="user-name" :to="`/userCenter/${questionDetailInfo.userId}`">
           {{ questionDetailInfo.userName }}
-        </div>
+        </router-link>
         <div class="time">
           {{ questionDetailInfo.createTime }}
         </div>
@@ -74,12 +74,14 @@ export default {
       questionDetailInfo: {},
       content: '',
       markdownContent: '',
-      answerList: []
+      answerList: [],
+      loading:false,
     }
   },
   methods: {
     // 获取问题详情数据
     async getQuestionDetail() {
+      this.loading = true;
       let result = await this.$Request('/question/getDetail', {id: this.$route.params.id})
       if (result.code === 200) {
         this.questionDetailInfo = result.data;
@@ -89,13 +91,16 @@ export default {
             hljs.highlightBlock(block);
           });
         });
+        this.loading = false;
       }
     },
     // 获取回答列表
     async getAnswerList() {
+      this.loading = true;
       let result = await this.$Request('question/getAnswer', {questionId: this.$route.params.id});
       if (result.code === 200) {
         this.answerList = result.data;
+        this.loading = false;
       }
     },
     // 内容的双向绑定
@@ -220,7 +225,7 @@ export default {
 
     .button {
       display: flex;
-      justify-content: end;
+      justify-content: flex-end;
       margin-top: 10px;
     }
   }

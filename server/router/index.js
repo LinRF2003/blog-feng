@@ -37,7 +37,11 @@ router.post('/blog/getLikeState', require('../service/blog/getBlogLikeState/inde
 // 改变点赞数
 router.post('/blog/changeLikeNum', require('../service/blog/changeLikeNum/index').main)
 // 获取我的博客
-router.post('/blog/getMy', require('../service/blog/getMyBlog/index').main)
+router.post('/blog/getBlogById', require('../service/blog/getBlogById/index').main)
+// 获取喜欢博客列表
+router.post('/blog/getLikeBlogById', require('../service/blog/getLikeBlogById/index').main)
+// 获取评论博客列表
+router.post('/blog/getCommentBlogById', require('../service/blog/getCommentBlogById/index').main)
 // 增加浏览量
 router.post('/blog/addViews', require('../service/blog/addBlogViews/index').main)
 // 模糊搜索博客
@@ -45,7 +49,7 @@ router.post('/blog/search', require('../service/blog/searchBlog/index').main)
 
 // 用户相关
 // 获取用户信息
-router.post('/user/get', require('../service/user/getUserInfo/index').main)
+router.post('/user/get', require('../service/user/getUserById/index').main)
 // 修改用户信息
 router.post('/user/update', require('../service/user/updateUserInfo/index').main)
 // 修改密码
@@ -58,6 +62,8 @@ router.post('/user/updateEmail',require('../service/user/updateEmail/index').mai
 // 问题
 // 获取问题列表
 router.post('/question/get', require('../service/question/getQuestion/index.js').main)
+// 获取问题列表
+router.post('/question/getById', require('../service/question/getQuestionById/index.js').main)
 // 获取问题详情
 router.post('/question/getDetail', require('../service/question/getQuestionDetail/index.js').main)
 // 添加问题
@@ -68,10 +74,14 @@ router.post('/question/del', require('../service/question/deleteQuestion/index.j
 router.post('/question/addViews', require('../service/question/addQuestionViews/index').main)
 // 获取问题回答列表
 router.post('/question/getAnswer', require('../service/question/getAnswer/index.js').main)
+// 根据id获取用户回答问题列表
+router.post('/question/getAnswerQuestionById', require('../service/question/getAnswerQuestionById/index.js').main)
 // 添加回答
 router.post('/question/addAnswer', require('../service/question/addAnswer/index.js').main)
 // 删除回答
 router.post('/question/delAnswer', require('../service/question/deleteAnswer/index.js').main)
+// 搜索回答
+router.post('/question/search', require('../service/question/searchQuestion/index.js').main)
 
 
 

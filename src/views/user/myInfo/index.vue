@@ -168,11 +168,9 @@ export default {
 
 <style lang="scss" scoped>
 .user {
-  background: #fff;
-  padding: 10px 20px;
   margin-bottom: 20px;
   display: flex;
-
+  max-width: 1000px;
   .avatar {
     min-width: 122px;
     height: 122px;
@@ -201,16 +199,18 @@ export default {
     }
 
     .desc {
-      // display: flex;
+      max-width: 1000px;
       font-size: 15px;
       line-height: 24px;
-
+      width: fit-content;
+      word-wrap: break-word;
       .n {
         position: absolute;
         width: 60px;
       }
 
       .de {
+
         margin-left: 42px;
       }
     }
@@ -221,7 +221,7 @@ export default {
   background: #fff;
   padding: 20px;
   color: #222;
-
+  width: 1190px;
   .top {
     display: flex;
     justify-content: space-between;
@@ -232,7 +232,10 @@ export default {
       font-weight: 550;
     }
   }
-
+  .desc{
+    width:1030px;
+    word-wrap: break-word;
+  }
   .img {
     width: 150px;
     height: 150px;

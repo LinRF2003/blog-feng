@@ -87,9 +87,10 @@ export default {
         for (const Tags in result.categoryTags) {
           this.fatherTags.push(Tags);
         }
-        // 判断session中是否有sessionStorage数据；
-        let currentFatherTag = sessionStorage.getItem("currentFatherTag");
-        let currentTag = sessionStorage.getItem("currentTag");
+      // 获取路由中的标签信息
+        let currentFatherTag = this.$route.params.ft;
+        let currentTag = this.$route.params.t;
+        this.blogData.pageNo =  this.$route.query.pageNo;
         if (currentFatherTag && currentTag) {
           this.currentFatherTag = currentFatherTag;
           this.currentTag = currentTag;
@@ -122,16 +123,18 @@ export default {
     // 改变页数
     changePageNo(val) {
       this.blogData.pageNo = val;
-      console.log(this.blogData);
-      this.getBlogByTag(this.currentFatherTag);
+      // 改变路由地址
+      this.$router.replace(`/blog/${this.currentFatherTag}/${this.currentTag}?pageNo=${val}`);
+      this.getBlogByTag(this.currentTag,this.currentFatherTag);
     },
     // 改变当前父标签
     changeFatherTag(tag) {
+      this.blogData.pageNo = 1;
+      // 改变路由地址
+      this.$router.replace(`/blog/${tag}/全部?pageNo=${this.blogData.pageNo}`);
       // 更改标签内容
       this.currentFatherTag = tag;
       this.currentTag = "全部";
-      window.sessionStorage.setItem("currentFatherTag", this.currentFatherTag);
-      window.sessionStorage.setItem("currentTag", "全部");
       if (tag !== "推荐") {
         this.tags = [];
         let tags = this.categoryTags[tag].tags;
@@ -147,10 +150,10 @@ export default {
     },
     // 改变子标签
     changeTag(tag) {
-      // window.sessionStorage.setItem('currentFatherTag', this.currentFatherTag);
-
+      this.blogData.pageNo = 1;
+      // 改变路由地址
+      this.$router.replace(`/blog/${this.currentFatherTag}/${tag}?pageNo=1`);
       this.currentTag = tag;
-      window.sessionStorage.setItem("currentTag", this.currentTag);
       // 获取当前标签内容
       this.getBlogByTag(this.currentTag, this.currentFatherTag);
     },

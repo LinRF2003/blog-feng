@@ -1,5 +1,5 @@
 const db = require("../../../db");
-const {SYSTEM_ERROR} = require("../../../common/errorCode");
+const {SYSTEM_ERROR, PARAMS_ERROR} = require("../../../common/errorCode");
 
 exports.main = async (req, res) => {
     // 根据用户的 id，查询用户的基本信息
@@ -7,6 +7,9 @@ exports.main = async (req, res) => {
     const sql = `select * from users where userId=?`
     // 判断用户需要获取的用户信息
     const userId = req.body.userId || req.user.userId;
+    if(!userId || userId < 0){
+        return res.err(PARAMS_ERROR);
+    }
     // 注意：req 对象上的 user 属性，是 Token 解析成功，express-jwt 中间件帮我们挂载上去的
     await db.query(sql, userId, (err, results) => {
         // 1. 执行 SQL 语句失败

@@ -10,7 +10,7 @@ exports.main = (req, res) => {
     if (!content) return res.err(NULL_ERROR);
     pageSize = parseInt(pageSize);
     pageNo = parseInt(pageNo);
-    console.log(content)
+    console.log(pageNo)
     // 定义sql
     const sql = `select * from blog where concat(title,content,summary,fatherTags,tags) like concat('%${content}%') and isDelete = 0 order by createTime desc limit ?,?;
     select count(*) count from blog where concat(title,content,summary,fatherTags,tags) like concat('%',?,'%') and isDelete = 0;`

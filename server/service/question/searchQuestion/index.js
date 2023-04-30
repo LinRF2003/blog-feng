@@ -12,8 +12,8 @@ exports.main = (req, res) => {
     pageNo = parseInt(pageNo);
     console.log(content)
     // 定义sql
-    const sql = `select * from blog where concat(title,content,summary,fatherTags,tags) like concat('%${content}%') and isDelete = 0 order by createTime desc limit ?,?;
-    select count(*) count from blog where concat(title,content,summary,fatherTags,tags) like concat('%',?,'%') and isDelete = 0;`
+    const sql = `select * from questions where concat(title,content,summary,fatherTags,tags) like concat('%${content}%') and isDelete = 0 order by createTime desc limit ?,?;
+    select count(*) count from questions where concat(title,content,summary,fatherTags,tags) like concat('%',?,'%') and isDelete = 0;`
 
     db.query(sql, [ (pageNo - 1) * pageSize, pageSize, content], (err, results) => {
 

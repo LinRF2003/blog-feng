@@ -1,16 +1,18 @@
 <template>
   <div class="my">
     <div class="left">
-      <router-link
-          :class="['my-info', activePath == '/myinfo' ? 'active' : '']"
-          to="/user"
-      >个人信息
-      </router-link>
-      <router-link
-          :class="['my-info', activePath == '/AS' ? 'active' : '']"
-          to="/user/account"
-      >账号设置
-      </router-link>
+      <div class="bg">
+        <router-link
+            :class="['my-info', activePath == '/myinfo' ? 'active' : '']"
+            to="/user"
+        >个人信息
+        </router-link>
+        <router-link
+            :class="['my-info', activePath == '/AS' ? 'active' : '']"
+            to="/user/account"
+        >账号设置
+        </router-link>
+      </div>
     </div>
     <div class="content">
       <router-view></router-view>
@@ -44,32 +46,43 @@ export default {
 <style scoped lang="scss">
 .my {
   display: flex;
-
+  width: 1400px;
+  margin: 0 auto;
   .left {
     position: fixed;
-    min-width: 150px;
-    height: 50px;
-    max-width: 150px;
-    color: #444;
-
+    min-width: 180px;
+    //height: 50px;
+    max-width: 180px;
+    //color: #444;
+    text-align: center;
+    .bg{
+      padding: 10px 0;
+      background: #fff;
+      //width: 120px;
+      height: 500px;
+    }
     a {
       display: block;
-      padding: 10px;
+      padding: 15px 10px;
+      color: #333;
     }
 
     a:hover {
       cursor: pointer;
-      color: #2f96fd;
+      //color: #2f96fd;
+      background: #f0f4f4;
     }
   }
 
   .content {
     flex: 1;
-    margin-left: 150px;
+    margin-left: 190px;
+    background: #fff ;
+    padding: 20px;
   }
 }
 
 .active {
-  color: #2f96fd;
+  background: #f0f4f4;
 }
 </style>

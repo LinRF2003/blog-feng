@@ -75,20 +75,6 @@ export default {
     };
   },
   methods: {
-    // 获取问题列表
-    async getQuestionList(tag) {
-      let result = await this.$Request("/question/get", {
-        fatherTag: tag,
-      });
-      if (result.code === 200) {
-        this.questionList = result.data.list;
-      }
-    },
-    // 改变标签，获取新问题列表
-    changeTag(tag) {
-      this.currentFT = tag;
-      this.getQuestionList(tag);
-    },
     // 标签选择器退出方法
     logout(){
       this.showTagSelect = false;
@@ -107,9 +93,11 @@ export default {
     // markdown内容的绑定
     changeMarkdownText(event) {
       this.markdownContent = event;
+      console.log(this.markdownContent)
     },
     // 提交问题
     async submitQuestion() {
+      console.log(this.markdownContent)
       let result = await this.$Request("/question/add", {
         title: this.title,
         content: this.content,
@@ -134,7 +122,6 @@ export default {
     if (!this.$store.state.categoryTags) {
       this.$store.dispatch("getTags");
     }
-    this.getQuestionList();
   },
 };
 </script>
