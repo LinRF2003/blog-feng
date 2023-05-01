@@ -8,7 +8,8 @@ exports.main = async (req, res) => {
     // 获取token中的用户信息
     const {
         userId,
-        userName
+        userName,
+        avatar
     } = req.user;
     // 获取客户端传送的数据
     const {
@@ -79,7 +80,8 @@ exports.main = async (req, res) => {
         type,
         reprintUrl: reprintUrl || null,
         tags,
-        fatherTags
+        fatherTags,
+        avatar
     }
 
     // 定义增加博客数据的sql语句

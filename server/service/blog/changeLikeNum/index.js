@@ -16,7 +16,7 @@ exports.main = async (req, res) => {
     }
     // 判断count是否正确
     if (count != -1 && count != 1) {
-        return res.err(PARAMS_ERROR, 'count为0或-1');
+        return res.err(PARAMS_ERROR, 'count为1或-1');
     }
 
     // 获取用户喜欢的博客列表
