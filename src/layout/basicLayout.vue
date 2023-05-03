@@ -4,13 +4,13 @@
       <div class="nav-container">
         <div class="item">
           <div class="logo">
-            <router-link to="/">MYBLOG</router-link>
+            <router-link to="/">BLOGFENG</router-link>
           </div>
           <router-link
             v-for="(item, index) in navList"
             :key="index"
             :to="item.path"
-            :class="['navitem', item.path == activePath ? 'active' : '']"
+            :class="['navitem', item.path === activePath ? 'active' : '']"
             >{{ item.name }}
           </router-link>
           <router-link
@@ -44,6 +44,13 @@
             class="addBlog"
             v-if="$route.path == '/question'"
             >添加问题</router-link
+          >
+          <router-link
+              to="/addDynamic"
+              target="_blank"
+              class="addBlog"
+              v-if="$route.path == '/dynamic'"
+          >添加动态</router-link
           >
           欢迎进入，
           <div></div>
@@ -91,6 +98,10 @@ export default {
           name: "问答",
           path: "/question",
         },
+        {
+          name:"动态",
+          path: "/dynamic"
+        }
       ],
       // 导航选中路径
       activePath: "",
@@ -145,8 +156,8 @@ export default {
     box-shadow: 0 2px 6px 0 #ddd;
 
     .nav-container {
-      margin: 0px auto;
-      width: 88%;
+      margin: 0 auto;
+      width: 1400px;
       height: 68px;
       display: flex;
       //justify-content: space-between;
@@ -156,12 +167,22 @@ export default {
         white-space: nowrap;
 
         .logo {
-          margin-right: 40px;
-
+          //margin-right: 60px;
+          width: 200px;
+          text-align: center;
           a {
             font-size: 25px;
-            color: var(--main-color);
+            //color: var(--main-color);
             font-weight: bold;
+            display: block;
+            //-webkit-text-stroke:1px #0000FF;        /*文字描边*/
+            //-webkit-text-fill-color:transparent;    /*设置文字的填充颜色*/
+            //background-image:-webkit-linear-gradient(bottom,red,#fd8403,yellow);
+            //-webkit-background-clip:text;
+            //-webkit-text-fill-color:transparent;
+            background: linear-gradient(to left, #F902FF, #00DBDE);
+            -webkit-background-clip: text;
+            color: transparent;
           }
         }
 
@@ -229,7 +250,7 @@ export default {
   .content {
     margin: 0 auto;
     padding-top: 78px;
-    width: 88%;
+    width: 1000px;
     min-width: 1000px;
     min-height: calc(100vh - 60px);
   }

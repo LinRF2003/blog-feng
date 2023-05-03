@@ -36,8 +36,16 @@ const routes = [
                 component: () => import('@/views/question/index.vue'),
             },
             {
+                path: 'dynamic',
+                meta: {activePath: "/dynamic"}, //参数
+                component: () => import('@/views/dynamic/index.vue'),
+            },
+            {
+                path: 'addDynamic',
+                component: () => import('@/views/dynamic/addDynamic/index.vue'),
+            },
+            {
                 path: 'addQuestion',
-                meta: {activePath: "/question"}, //参数
                 component: () => import('@/views/question/addQuestion/index.vue'),
             },
             {
@@ -107,7 +115,7 @@ const routes = [
         component: () => import('@/views/login/index.vue'),
     },
     {
-        path: '/register',  // 注册
+        path: '/register/:type',  // 注册
         component: () => import('@/views/register/index.vue')
     },
 

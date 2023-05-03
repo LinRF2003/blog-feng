@@ -44,12 +44,12 @@ export default {
       const isPNG = file.type === "image/png";
       const isLt3M = file.size / 1024 / 1024 / 1024 < 3;
       if (!isJPG && !isPNG) {
-        this.$message.error`在这里插入代码片`(
+        this.$Message.error(
             "上传头像图片只能是 JPG 格式或 png 格式!"
         );
       }
       if (!isLt3M) {
-        this.$message.error("上传头像图片大小不能超过 3MB!");
+        this.$Message.error("上传头像图片大小不能超过 3MB!");
       }
       return isJPG | isJPG && isLt3M;
     },

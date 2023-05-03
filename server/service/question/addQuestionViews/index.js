@@ -16,7 +16,6 @@ exports.main = (req, res) => {
             console.log(err);
             return res.err(SYSTEM_ERROR);
         }
-
         if (results.affectedRows != 0) return res.sm2('增加失败');
         res.sm('增加成功');
     })

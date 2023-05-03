@@ -6,7 +6,8 @@ const router = express.Router()
 router.post('/register', require('../service/register/index').main);
 // 登录
 router.post('/login', require('../service/login/index').main);
-
+// 搜索
+router.post('/search', require('../service/search/index').main);
 // 获取分类标签
 router.post('/tags/get', require('../service/tags/getTags/index').main);
 // 发送邮箱验证码
@@ -98,6 +99,7 @@ router.post('/dynamic/addComment', require('../service/dynamic/addDynamicComment
 router.post('/dynamic/getComment', require('../service/dynamic/getDynamciComment/index.js').main)
 
 
+
 // 测试
 router.post('/test',(req,res)=>{
 
@@ -105,8 +107,6 @@ router.post('/test',(req,res)=>{
     return res.send('1');
 })
 router.post('/get',async (req, res) => {
-
-
     redisClient.get('xiaoming', (err, val) => {
         if (err) {
             console.error(err)

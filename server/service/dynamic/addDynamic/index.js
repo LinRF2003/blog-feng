@@ -5,6 +5,7 @@ const {
 } = require('../../../common/errorCode')
 
 exports.main = async (req, res) => {
+    console.log(req.body)
     // 获取客户端传送的数据
     const {
         content,

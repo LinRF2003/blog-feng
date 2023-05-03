@@ -132,7 +132,7 @@ export default {
   }
 
   .content {
-    margin-left: 160px;
+    margin-left: 150px;
     background: #fff;
     height: auto;
     flex: 1;

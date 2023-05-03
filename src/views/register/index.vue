@@ -1,7 +1,8 @@
 <template>
   <div class="login">
     <div class="content">
-      <div class="title">注册</div>
+      <div class="title" v-if="$route.params.type === '1'">注册</div>
+      <div class="title" v-else>重置密码</div>
       <el-form ref="formData" :model="formData" :rules="rules">
         <el-form-item prop="email">
           <el-input
@@ -37,14 +38,22 @@
           ></el-input>
         </el-form-item>
         <router-link to="/login" class="register"
+                     v-if="$route.params.type === '1'"
         >已有账号？立即登录
         </router-link
         >
+        <router-link to="/login" class="register"
+                     v-else
+        >去登陆？
+        </router-link
+        >
         <el-form-item>
-          <el-button type="primary" :style="{ width: '100%' }" @click="register"
+          <el-button type="primary" :style="{ width: '100%' }" @click="register" v-if="$route.params.type === '1'"
           >注册
-          </el-button
-          >
+          </el-button>
+          <el-button type="primary" :style="{ width: '100%' }" @click="register" v-else>
+            重置密码
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -126,16 +135,21 @@ export default {
         if (!valid) {
           return;
         }
-
+        // 注册
         // 调用注册接口
         let result = await this.$Request('/register', {
           email: this.formData.email,
           password: this.formData.password,
           repassword: this.formData.rePassword,
           captcha: this.formData.captcha,
+          type:this.$route.params.type
         });
         if (result.code === 200) {
-          this.$Message.success('注册成功');
+          if (this.$route.params.type === '1') {
+            this.$Message.success('注册成功');
+          } else {
+            this.$Message.success('重置成功');
+          }
           this.$router.push("/login");
         } else {
           this.$Message.warning(result.message);
@@ -145,14 +159,14 @@ export default {
     },
     // 发送验证码
     async sendCaptcha() {
-      let result = await this.$Request('/email/send',{email:this.formData.email});
+      let result = await this.$Request('/email/send', {email: this.formData.email});
       if (result.code === 200) {
         this.captchaSecond = 60;
         this.canSend = false;
         this.timer = setInterval(() => {
           this.captchaSecond -= 1;
         }, 1000);
-      }else{
+      } else {
         console.log(result)
         this.$Message.warning(result.desc);
       }

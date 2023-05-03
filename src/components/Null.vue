@@ -8,7 +8,7 @@ export default {};
 
 <style scoped>
 .null {
-  min-height: 208px;
+  min-height: 183px;
   display: flex;
   align-items: center;
   justify-content: center;

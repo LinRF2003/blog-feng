@@ -1,5 +1,5 @@
 <template>
-  <div class="blog">
+  <div class="blog" v-loading.fullscreen.lock="loading">
     <div class="tags">
       <a
         :class="['tag', currentFatherTag === '推荐' ? 'active' : '']"
@@ -40,7 +40,7 @@
         class="blog-item"
       ></BlogItem>
     </div>
-    <Null v-if="blogData.list.length == 0"></Null>
+    <Null v-if="blogData.list.length === 0"></Null>
     <PaginationItem
       :pageNo="blogData.pageNo"
       :pageSize="blogData.pageSize"
@@ -73,6 +73,7 @@ export default {
       blog: null, // 博客元素
       blogContent: null, // 博客内热元素
       likeBlogList: [], // 喜欢的博客列表
+      loading:false
     };
   },
   components: {
@@ -110,6 +111,7 @@ export default {
     },
     // 获取标签内容
     async getBlogByTag(tag, fatherTag) {
+      this.loading = true;
       let result = await this.$Request("/blog/get", {
         pageSize: this.blogData.pageSize,
         pageNo: this.blogData.pageNo,
@@ -118,6 +120,7 @@ export default {
       });
       if (result.code === 200) {
         this.blogData = result.data;
+        this.loading = false;
       }
     },
     // 改变页数

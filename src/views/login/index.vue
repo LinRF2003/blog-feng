@@ -20,11 +20,15 @@
               clearable
           ></el-input>
         </el-form-item>
-        <router-link to="/register" class="register"
+        <router-link to="/register/2" class="pa"
+        >忘记密码?
+        </router-link
+        >
+        <router-link to="/register/1" class="register"
         >还没有账号？立即注册
         </router-link
         >
-        <el-form-item>
+        <el-form-item style="margin-bottom: 5px;">
           <el-checkbox v-model="formData.rememberMe" :true-label="1"
           >记住我
           </el-checkbox
@@ -135,6 +139,13 @@ export default {
       position: absolute;
       top: 180px;
       right: 20px;
+      font-size: 12px;
+    }
+    .pa{
+      color: #333;
+      position: absolute;
+      top: 180px;
+      left: 20px;
       font-size: 12px;
     }
   }

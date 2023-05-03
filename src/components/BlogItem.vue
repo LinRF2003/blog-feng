@@ -2,7 +2,10 @@
   <div class="blog-item">
     <div class="top">
       <div class="avatar">
-        <img src="../assets/logo.png" alt=""/>
+        <el-image
+            :src="blogInfo?.avatar"
+            :preview-src-list="[blogInfo?.avatar]">
+        </el-image>
       </div>
       <router-link class="name" :to="`/userCenter/${blogInfo.userId}`">
         {{ blogInfo.userName }}

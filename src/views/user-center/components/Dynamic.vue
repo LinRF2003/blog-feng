@@ -1,9 +1,9 @@
 <template>
   <div class="my-blog" v-loading.fullscreen.lock="loading">
     <div v-for="item in blogList" :key="item.blogId" class="content">
-      <router-link :to="`/blogDetail/${item.id}`"  class="blog-content"  target="_blank">
-        <BlogItem :blogInfo="item"></BlogItem>
-      </router-link>
+      <div class="blog-content" >
+        <DynamicItem :dynamicInfo="item"></DynamicItem>
+      </div>
     </div>
     <PaginationItem
         v-if="!loading"
@@ -13,7 +13,7 @@
         :pageTotal="pageTotal"
         @changePageNo="changePageNo"
     ></PaginationItem>
-    <Null v-if="blogList.length == 0 && !loading"></Null>
+    <Null v-if="blogList.length === 0 && !loading"></Null>
   </div>
 </template>
 
@@ -36,7 +36,7 @@ export default {
     async getLikeBlogList() {
       this.loading = true;
       let result = await this.$Request(
-          "/blog/getCommentBlogById", {
+          "/dynamic/getById", {
             pageNo: this.pageNo,
             pageSize: this.pageSize,
             id: this.$route.params.id
@@ -48,7 +48,7 @@ export default {
         this.pageSize = result.data.pageSize;
         this.totalCount = result.data.totalCount;
         this.pageTotal = result.data.pageTotal;
-        this.$emit("changeCount", 'comment', result.data.totalCount)
+        this.$emit("changeCount", 'dynamic', result.data.totalCount)
         this.loading = false;
       }
     },
@@ -107,5 +107,8 @@ export default {
 
 .blog-item {
   padding: 0px 0 20px;
+}
+.dynamic-item{
+  padding: 0 0 15px;
 }
 </style>

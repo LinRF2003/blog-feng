@@ -7,7 +7,7 @@
             :src="userInfo?.avatar"
             :preview-src-list="[userInfo?.avatar]">
         </el-image>
-<!--        <img :src="userInfo?.avatar"/>-->
+        <!--        <img :src="userInfo?.avatar"/>-->
       </div>
       <div class="user-detail">
         <div class="user-name">{{ userInfo?.userName }}</div>
@@ -65,7 +65,10 @@
               v-if="editShow"
               v-model="updateInfo.introduction"
               type="textarea"
+              show-word-limit
               :autosize="{ minRows: 4, maxRows: 4 }"
+              resize="none"
+   :maxlength="100"
           ></el-input>
           <div class="desc" v-else>
             {{ userInfo?.introduction || "该用户很懒，没有添加简介" }}
@@ -170,7 +173,8 @@ export default {
 .user {
   margin-bottom: 20px;
   display: flex;
-  max-width: 1000px;
+  max-width: 600px;
+
   .avatar {
     min-width: 122px;
     height: 122px;
@@ -199,18 +203,18 @@ export default {
     }
 
     .desc {
-      max-width: 1000px;
+      max-width: 600px;
       font-size: 15px;
       line-height: 24px;
       width: fit-content;
       word-wrap: break-word;
+
       .n {
         position: absolute;
         width: 60px;
       }
 
       .de {
-
         margin-left: 42px;
       }
     }
@@ -221,7 +225,8 @@ export default {
   background: #fff;
   padding: 20px;
   color: #222;
-  width: 1190px;
+  width: 770px;
+
   .top {
     display: flex;
     justify-content: space-between;
@@ -232,10 +237,12 @@ export default {
       font-weight: 550;
     }
   }
-  .desc{
-    width:1030px;
+
+  .desc {
+    width: 630px;
     word-wrap: break-word;
   }
+
   .img {
     width: 150px;
     height: 150px;

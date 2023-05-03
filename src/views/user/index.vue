@@ -46,13 +46,12 @@ export default {
 <style scoped lang="scss">
 .my {
   display: flex;
-  width: 1400px;
   margin: 0 auto;
   .left {
     position: fixed;
-    min-width: 180px;
+    min-width: 150px;
     //height: 50px;
-    max-width: 180px;
+    max-width: 150px;
     //color: #444;
     text-align: center;
     .bg{
@@ -76,7 +75,7 @@ export default {
 
   .content {
     flex: 1;
-    margin-left: 190px;
+    margin-left: 160px;
     background: #fff ;
     padding: 20px;
   }

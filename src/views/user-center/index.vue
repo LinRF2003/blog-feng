@@ -38,14 +38,6 @@
         </div>
         <div class="item">
           <div class="item-left">
-            问答
-          </div>
-          <div class="item-right">
-            {{ questionCount }}
-          </div>
-        </div>
-        <div class="item">
-          <div class="item-left">
             评论
           </div>
           <div class="item-right">
@@ -56,9 +48,17 @@
           <div class="item-left">
             获赞
           </div>
-        <div class="item-right">
-          {{ likeCount }}
+          <div class="item-right">
+            {{ likeCount }}
+          </div>
         </div>
+        <div class="item">
+          <div class="item-left">
+            问答
+          </div>
+          <div class="item-right">
+            {{ questionCount }}
+          </div>
         </div>
         <div class="item">
           <div class="item-left">
@@ -66,6 +66,14 @@
           </div>
           <div class="item-right">
             {{ answerCount }}
+          </div>
+        </div>
+        <div class="item">
+          <div class="item-left">
+            动态
+          </div>
+          <div class="item-right">
+            {{ dynamicCount }}
           </div>
         </div>
       </div>
@@ -76,17 +84,20 @@
         <el-tab-pane label="博客" name="blog">
           <BLog @changeCount="changeCount"></BLog>
         </el-tab-pane>
-        <el-tab-pane label="问答" name="question">
-          <Question  @changeCount="changeCount"></Question>
-        </el-tab-pane>
         <el-tab-pane label="评论" name="comment">
-          <Comment  @changeCount="changeCount"></Comment>
+          <Comment @changeCount="changeCount"></Comment>
         </el-tab-pane>
         <el-tab-pane label="点赞" name="like">
-          <like  @changeCount="changeCount"></like>
+          <like @changeCount="changeCount"></like>
+        </el-tab-pane>
+        <el-tab-pane label="问答" name="question">
+          <Question @changeCount="changeCount"></Question>
         </el-tab-pane>
         <el-tab-pane label="回答" name="answer">
           <Answer @changeCount="changeCount"></Answer>
+        </el-tab-pane>
+        <el-tab-pane label="动态" name="dynamic">
+          <Dynamic @changeCount="changeCount"></Dynamic>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -100,6 +111,7 @@ import Question from "@/views/user-center/components/Question";
 import Like from "@/views/user-center/components/Like";
 import Answer from "@/views/user-center/components/Answer";
 import Comment from "@/views/user-center/components/Comment";
+import Dynamic from "@/views/user-center/components/Dynamic";
 
 export default {
   name: '',
@@ -111,8 +123,9 @@ export default {
       questionCount: 0,
       likeCount: 0,
       answerCount: 0,
-      commentCount:0,
-      loading:false
+      commentCount: 0,
+      dynamicCount: 0,
+      loading: false
     }
   },
   components: {
@@ -120,7 +133,8 @@ export default {
     Question,
     Like,
     Answer,
-    Comment
+    Comment,
+    Dynamic
   },
   methods: {
     handleClick() {
@@ -136,8 +150,10 @@ export default {
         this.questionCount = count;
       } else if (type === 'answer') {
         this.answerCount = count;
-      }else if (type === 'comment'){
+      } else if (type === 'comment') {
         this.commentCount = count;
+      } else if (type === 'dynamic') {
+        this.dynamicCount = count;
       }
     },
     // 获取用户信息
@@ -157,7 +173,7 @@ export default {
   },
   watch: {
     // 监听路由id变化，防止点击个人中心时不切换自己的信息
-    '$route.params.id': ()=>{
+    '$route.params.id': () => {
       location.reload();
     }
   }
@@ -166,12 +182,11 @@ export default {
 
 <style scoped lang="scss">
 .user-center {
-  width: 1400px;
-  margin: 10px auto 0;
+  margin: 0 auto;
   display: flex;
 
   .left {
-    width: 300px;
+    width: 220px;
 
     .top {
       padding: 10px 15px;
@@ -182,7 +197,7 @@ export default {
 
       .editor {
         position: relative;
-        left: -110px;
+        left: -70px;
         font-size: 14px;
         color: #409EFF;
         cursor: pointer;

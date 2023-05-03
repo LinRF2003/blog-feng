@@ -47,14 +47,18 @@ import Null from "@/components/Null";
 import PaginationItem from '@/components/PaginationItem'
 // 引入博客item
 import BlogItem from '@/components/BlogItem'//
+import UserItem from '@/components/UserItem'//
 // 引入问题item
 import QuestionItem from '@/components/QuestionItem'
+import DynamicItem from '@/components/DynamicItem'
 Vue.component('UploadPic', UploadPic)
 Vue.component('Null', Null)
 Vue.component('PaginationItem', PaginationItem)
 Vue.component('MarkdownEditor', MarkdownEditor)
 Vue.component('BlogItem', BlogItem)
 Vue.component('QuestionItem', QuestionItem)
+Vue.component('DynamicItem', DynamicItem)
+Vue.component('UserItem', UserItem)
 
 
 new Vue({
