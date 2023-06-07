@@ -115,7 +115,8 @@ export default {
 .login {
   width: 100%;
   height: 100vh;
-  background: url("../../assets/login-bg.jpg");
+  //background: url("../../assets/login-bg.jpg");
+  background-image: linear-gradient(-90deg, #29bdd9 0%, #276ace 100%);
   background-size: cover;
 
   .content {
@@ -141,7 +142,8 @@ export default {
       right: 20px;
       font-size: 12px;
     }
-    .pa{
+
+    .pa {
       color: #333;
       position: absolute;
       top: 180px;
@@ -152,7 +154,7 @@ export default {
 }
 </style>
 <style>
-/*html {*/
-/*  overflow-y: hidden !important;*/
-/*}*/
+::-webkit-scrollbar{
+  width: 0px!important;
+}
 </style>

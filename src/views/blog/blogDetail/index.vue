@@ -490,4 +490,8 @@ export default {
 img {
   width: 500px;
 }
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
 </style>

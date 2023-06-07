@@ -9,8 +9,8 @@
         class="input"
         :maxlength="250"
         :autosize="{minRows:7,maxRows:7}"
-    resize="none"></el-input>
-
+        resize="none"></el-input>
+    <!--    action="http://121.196.194.159:3030/api/imgUpload"-->
     <el-upload
         action="http://127.0.0.1:3030/api/imgUpload"
         :headers="headers"
@@ -90,7 +90,7 @@ export default {
     // 发布动态
     async releaseDynamic() {
       // 判断内容是否正确
-      if(this.content.replace(/\s*/g,"") === ''){
+      if (this.content.replace(/\s*/g, "") === '') {
         this.$Message.warning("内容不能为空")
       }
       console.log(this.imgUrlList)
@@ -98,12 +98,12 @@ export default {
         content: this.content,
         imgUrlList: JSON.stringify(this.imgUrlList)
       })
-      if(result.code === 200){
+      if (result.code === 200) {
         this.$Message.success("发布成功")
         // 刷新页面
-        setTimeout(()=>{
+        setTimeout(() => {
           location.reload();
-        },500)
+        }, 500)
 
       }
     }
@@ -121,11 +121,13 @@ export default {
     margin-bottom: 10px;
     font-size: 20px;
     color: #111;
-    textarea{
+
+    textarea {
       color: #000;
     }
   }
-  .button{
+
+  .button {
     float: right;
     margin-top: 20px;
   }

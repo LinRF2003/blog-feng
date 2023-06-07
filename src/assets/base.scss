@@ -29,11 +29,6 @@ a {
   color: var(--main-color);
 }
 
-// 导航条样式
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
 
 ::-webkit-scrollbar-track {
   background: rgb(239, 239, 239);

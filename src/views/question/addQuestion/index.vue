@@ -2,36 +2,36 @@
   <div class="add-question">
     <div class="left">
       <MarkdownEditor
-        @changeMarkdownText="changeMarkdownText"
-        @changeHtml="changeHtml"
+          @changeMarkdownText="changeMarkdownText"
+          @changeHtml="changeHtml"
       ></MarkdownEditor>
     </div>
     <div class="right">
       <div class="title">
         <div class="text">添加标题</div>
         <el-input
-          type="textarea"
-          :autosize="{ minRows: 1, maxRows: 14 }"
-          v-model="title"
-          class="input"
-          placeholder="请输入标题"
+            type="textarea"
+            :autosize="{ minRows: 1, maxRows: 14 }"
+            v-model="title"
+            class="input"
+            placeholder="请输入标题"
         ></el-input>
       </div>
       <div class="tags">
         <div class="text">标签</div>
         <div class="add-tag">
           <el-tag
-            :key="tag"
-            v-for="tag in tags"
-            closable
-            :disable-transitions="false"
-            @close="handleClose(tag)"
-            style="margin: 5px"
+              :key="tag"
+              v-for="tag in tags"
+              closable
+              :disable-transitions="false"
+              @close="handleClose(tag)"
+              style="margin: 5px"
           >
             {{ tag }}
           </el-tag>
-          <span class="l" @click="showTagSelect=true">+</span>
-          <span class="r" v-show="tags.length<1">至少添加一个标签</span>
+          <span class="l" @click="showTagSelect=true" v-show="tags.length<5">+</span>
+          <span class="r" v-show="tags.length<1" @click="showTagSelect=true">至少添加一个标签</span>
         </div>
         <TagSelect
             @logout="logout"
@@ -42,11 +42,12 @@
       </div>
 
       <el-button
-        type="primary"
-        class="submit-button"
-        round
-        @click="submitQuestion"
-        >发布问题</el-button
+          type="primary"
+          class="submit-button"
+          round
+          @click="submitQuestion"
+      >发布问题
+      </el-button
       >
     </div>
 
@@ -71,12 +72,12 @@ export default {
       tags: [],
       fatherTags: [],
       editorType: 1,
-      showTagSelect:false
+      showTagSelect: false
     };
   },
   methods: {
     // 标签选择器退出方法
-    logout(){
+    logout() {
       this.showTagSelect = false;
     },
     // 改变选择标签列表
@@ -95,6 +96,13 @@ export default {
       this.markdownContent = event;
       console.log(this.markdownContent)
     },
+    // 删除标签
+    handleClose(tag) {
+      let i = this.tags.indexOf(tag);
+      this.tags.splice(i, 1);
+      // // 删除数据
+      // this.tagsMap.delete(tag);
+    },
     // 提交问题
     async submitQuestion() {
       console.log(this.markdownContent)
@@ -105,7 +113,7 @@ export default {
         tags: JSON.stringify(this.tags),
         markdownContent: this.markdownContent,
       });
-      if(result.code === 200) {
+      if (result.code === 200) {
         this.$Message.success("添加问题成功");
         // 刷新页面，清除数据
         location.reload();
@@ -141,9 +149,11 @@ export default {
     width: 300px;
     font-size: 14px;
     position: relative;
+
     .title {
       padding-bottom: 20px;
       border-bottom: 1px #ddd solid;
+
       :deep(.el-textarea__inner) {
         max-height: 300px;
       }
@@ -156,6 +166,7 @@ export default {
     .tags {
       padding-top: 20px;
       position: relative;
+
       .add-tag {
         color: #368cdd;
 

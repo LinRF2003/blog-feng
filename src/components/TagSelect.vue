@@ -2,49 +2,49 @@
   <div>
     <!--  :visible.sync="dialogVisibleTags"-->
     <el-dialog
-      title="标签"
-      :visible.sync="dialogVisibleTags"
-      width="30%"
-      :before-close="closeDialog"
-      center
-      :modal="false"
-      class="dialog"
+        title="标签"
+        :visible.sync="dialogVisibleTags"
+        width="30%"
+        :before-close="closeDialog"
+        center
+        :modal="false"
+        class="dialog"
     >
       <div class="dialog-content">
         <div class="left">
           <div
-            :class="['ft', currentFatherTag === tag ? 'active' : '']"
-            v-for="(tag, index) in fatherTagsList"
-            @click="changeFatherTag(tag)"
-            :key="index"
+              :class="['ft', currentFatherTag === tag ? 'active' : '']"
+              v-for="(tag, index) in fatherTagsList"
+              @click="changeFatherTag(tag)"
+              :key="index"
           >
             {{ tag }}
           </div>
         </div>
         <div class="right">
           <el-tag
-            v-for="(tag, index) in tags"
-            :key="index"
-            :class="[
+              v-for="(tag, index) in tags"
+              :key="index"
+              :class="[
               'tag',
               // tagsMap.get(tag) === currentFatherTag ? 'tag-active' : '',
               tagsMap.get(tag)? 'tag-active' : ''
             ]"
-            @click="clickTags(tag)"
+              @click="clickTags(tag)"
           >
             {{ tag }}
           </el-tag>
         </div>
       </div>
     </el-dialog>
-    <div  class="bg" @click="$emit('logout');">
+    <div class="bg" @click="$emit('logout');">
 
     </div>
   </div>
 </template>
 
 <script>
-import { getSonTags } from "@/utils/methods";
+import {getSonTags} from "@/utils/methods";
 
 export default {
   name: "TagSelect",
@@ -124,7 +124,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.bg{
+.bg {
   background: #999;
   width: 100vw;
   height: 100vh;
@@ -134,6 +134,7 @@ export default {
   opacity: .1;
   z-index: 903;
 }
+
 .dialog {
   position: absolute;
   left: -220px;
@@ -154,9 +155,12 @@ export default {
       max-height: 230px;
       overflow-y: scroll;
       min-width: 104px;
-      .ft{
+
+      .ft {
         padding: 5px 0;
+        cursor: pointer;
       }
+
       .ft:hover {
         color: var(--main-color);
       }
@@ -166,7 +170,8 @@ export default {
       padding: 0 10px;
 
       .tag {
-        margin:  5px;
+        margin: 5px;
+        cursor: pointer;
       }
 
       .tag-active {
@@ -184,11 +189,16 @@ export default {
 
   :deep(.el-dialog__header) {
     border-bottom: 1px solid #ccc;
-    padding: 3px 20px;
+    padding: 10px 20px;
     font-weight: bold;
   }
   :deep(.el-dialog__headerbtn) {
     top: 5px !important;
+  }
+  :deep(.el-dialog__close:before){
+    position: absolute;
+    right: 5px;
+    top: 10px;
   }
 }
 </style>

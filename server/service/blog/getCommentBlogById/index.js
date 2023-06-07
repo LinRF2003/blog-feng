@@ -20,7 +20,7 @@ exports.main = (req, res) => {
             console.log(err);
             res.err(SYSTEM_ERROR);
         }
-        if (results.length < 1) {
+        if (results && results.length < 1) {
             return res.success({
                 pageNo,
                 pageSize,
@@ -38,7 +38,6 @@ exports.main = (req, res) => {
         const pageSql = `select * from blog where id in (${idStr}) and isDelete = 0 order by views desc, createTime desc limit ?,?;
                     select count(*) count from blog where id in (${idStr}) and  isDelete = 0;`
         await getPage(res, pageSql, pageNo, pageSize)
-        // res.send({ code: 200, data: results })
     })
 }
 

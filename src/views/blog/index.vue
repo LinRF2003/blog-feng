@@ -2,51 +2,51 @@
   <div class="blog" v-loading.fullscreen.lock="loading">
     <div class="tags">
       <a
-        :class="['tag', currentFatherTag === '推荐' ? 'active' : '']"
-        @click="changeFatherTag('推荐')"
+          :class="['tag', currentFatherTag === '推荐' ? 'active' : '']"
+          @click="changeFatherTag('推荐')"
       >
         推荐
       </a>
       <a
-        :class="['tag', currentFatherTag === tag ? 'active' : '']"
-        v-for="(tag, index) in fatherTags"
-        @click="changeFatherTag(tag)"
-        :key="index"
+          :class="['tag', currentFatherTag === tag ? 'active' : '']"
+          v-for="(tag, index) in fatherTags"
+          @click="changeFatherTag(tag)"
+          :key="index"
       >
         {{ tag }}
       </a>
     </div>
     <div class="son-tags" v-show="currentFatherTag !== '推荐'">
       <a
-        :class="['son-tag', currentTag === '全部' ? 'son-active' : '']"
-        @click="changeTag('全部')"
-        >全部</a
+          :class="['son-tag', currentTag === '全部' ? 'son-active' : '']"
+          @click="changeTag('全部')"
+      >全部</a
       >
       <a
-        v-for="(tag, index) in tags"
-        :class="['son-tag', currentTag === tag ? 'son-active' : '']"
-        @click="changeTag(tag)"
-        :key="index"
+          v-for="(tag, index) in tags"
+          :class="['son-tag', currentTag === tag ? 'son-active' : '']"
+          @click="changeTag(tag)"
+          :key="index"
       >
         {{ tag }}
       </a>
     </div>
     <div class="blog-content">
       <BlogItem
-        :blogInfo="blogInfo"
-        v-for="blogInfo in blogData.list"
-        :key="blogInfo.id"
-        :like="likeBlogList.indexOf(blogInfo.id) != -1"
-        class="blog-item"
+          :blogInfo="blogInfo"
+          v-for="blogInfo in blogData.list"
+          :key="blogInfo.id"
+          :like="likeBlogList.indexOf(blogInfo.id) != -1"
+          class="blog-item"
       ></BlogItem>
     </div>
-    <Null v-if="blogData.list.length === 0"></Null>
+    <Null v-if="blogData.list.length === 0 && !loading"></Null>
     <PaginationItem
-      :pageNo="blogData.pageNo"
-      :pageSize="blogData.pageSize"
-      :totalCount="blogData.totalCount"
-      :pageTotal="blogData.pageTotal"
-      @changePageNo="changePageNo"
+        :pageNo="blogData.pageNo"
+        :pageSize="blogData.pageSize"
+        :totalCount="blogData.totalCount"
+        :pageTotal="blogData.pageTotal"
+        @changePageNo="changePageNo"
     ></PaginationItem>
   </div>
 </template>
@@ -73,7 +73,7 @@ export default {
       blog: null, // 博客元素
       blogContent: null, // 博客内热元素
       likeBlogList: [], // 喜欢的博客列表
-      loading:false
+      loading: false
     };
   },
   components: {
@@ -88,10 +88,10 @@ export default {
         for (const Tags in result.categoryTags) {
           this.fatherTags.push(Tags);
         }
-      // 获取路由中的标签信息
+        // 获取路由中的标签信息
         let currentFatherTag = this.$route.params.ft;
         let currentTag = this.$route.params.t;
-        this.blogData.pageNo =  this.$route.query.pageNo;
+        this.blogData.pageNo = this.$route.query.pageNo;
         if (currentFatherTag && currentTag) {
           this.currentFatherTag = currentFatherTag;
           this.currentTag = currentTag;
@@ -128,7 +128,7 @@ export default {
       this.blogData.pageNo = val;
       // 改变路由地址
       this.$router.replace(`/blog/${this.currentFatherTag}/${this.currentTag}?pageNo=${val}`);
-      this.getBlogByTag(this.currentTag,this.currentFatherTag);
+      this.getBlogByTag(this.currentTag, this.currentFatherTag);
     },
     // 改变当前父标签
     changeFatherTag(tag) {
@@ -222,11 +222,14 @@ export default {
     flex-wrap: wrap;
     background: #fff;
     padding: 10px 5px;
-    //height: 35px;
+    min-height: 35px;
     overflow: hidden;
 
     .tag {
       padding: 8px 16px;
+    }
+    .tag:hover{
+      color: var(--main-color);
     }
   }
 
@@ -245,6 +248,11 @@ export default {
       font-size: 14px;
       line-height: 24px;
       border-radius: 26px;
+    }
+
+    .son-tag:hover {
+      color: #000;
+      background: var(--bg-color);
     }
 
     // 子标签选择

@@ -117,7 +117,7 @@ exports.main = async (req, res) => {
 
                         // 对用户的密码,进行 bcrype 加密，返回值是加密之后的密码字符串
                         password = bcrypt.hashSync(password, 10);
-                        db.query(insertSql,[password,email], function (err, results) {
+                        db.query(insertSql, [password, email], function (err, results) {
                             // 执行 SQL 语句失败
                             if (err) return res.err(SYSTEM_ERROR);
                             // SQL 语句执行成功，但影响行数不为 1

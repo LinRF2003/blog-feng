@@ -8,6 +8,7 @@ const config = require('../../config');
 
 // 引入数据库文件   
 const db = require('../../db/index')
+const {sha1} = require("mysql/lib/protocol/Auth");
 
 exports.main = (req, res) => {
     const { email, password } = req.body;
@@ -15,6 +16,7 @@ exports.main = (req, res) => {
     if (!email || !password) {
         return res.err(NULL_ERROR);
     }
+    if(!email || !password)
     // 判断邮箱是否正确
     if (!emailReg(email)) {
         return res.err(PARAMS_ERROR, '邮箱错误');
@@ -44,10 +46,14 @@ exports.main = (req, res) => {
                 expiresIn: '720h', // token 有效期为 10 个小时
             })
             // 登录成功
-           
-            res.successs({ message: "登录成功",  token: 'Bearer ' + tokenStr, })
+           // 添加登录次数
+            let sql = "update users set loginCount = loginCount + 1 where email = ?"
+            db.query(sql,email,(err, results) => {
+                return res.successs({ message: "登录成功",  token: 'Bearer ' + tokenStr, })
+            })
+
         } else {
-            res.sm2('密码错误！')
+            return res.sm2('密码错误！')
         }
     })
 }

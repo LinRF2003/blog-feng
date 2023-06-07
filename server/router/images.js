@@ -33,6 +33,7 @@ router.post("/imgUpload", upload.array("img", 1), (req, res) => {
     fileInfo.size = file[0].size;
     // fileInfo.path = 'http://43.136.121.120:3030/images/' + file[0].filename;
     fileInfo.path = 'http://127.0.0.1:3030/images/' + file[0].filename;
+    // fileInfo.path = 'http://121.196.194.159:3030/images/' + file[0].filename;
     res.send({
         code:200,
         value: "图片上传成功",

@@ -15,7 +15,7 @@
           </router-link>
           <router-link
               :to="`/userCenter/${userInfo?.userId}`"
-              :class="['navitem',userInfo?.userId == $route.params.id? 'active' : ''] "
+              :class="['navitem',userInfo?.userId && userInfo?.userId == $route.params.id? 'active' : ''] "
           >个人中心
           </router-link>
         </div>
@@ -264,5 +264,13 @@ export default {
     color: #939393;
     line-height: 25px;
   }
+}
+
+
+</style>
+<style>
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
 }
 </style>

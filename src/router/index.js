@@ -144,7 +144,7 @@ router.beforeEach((to, from, next) => {
 
     if (!token) {
         // 如果去登录注册页，不用token
-        if (to.path == '/register' || to.path == '/login') {
+        if (to.path === '/register/1' || to.path === '/register/2' || to.path === '/login') {
             next();
         } else {
             next('/login');

@@ -1,12 +1,12 @@
 <template>
-  <div class="dynamic">
+  <div class="dynamic"  v-loading.fullscreen.lock="loading">
     <div class="content">
       <DynamicItem
           v-for="dynamicInfo in dynamicList"
           :key="dynamicInfo.id"
           :dynamicInfo="dynamicInfo"
       ></DynamicItem>
-      <Null v-if="dynamicList.length == 0"></Null>
+      <Null  v-if="dynamicList.length === 0 && !loading"></Null>
       <PaginationItem
           :pageNo="pageNo"
           :pageSize="pageSize"
@@ -29,11 +29,13 @@ export default {
       pageNo: 1, // 当前页数
       pageTotal: 0,
       totalCount: 0,
+      loading:false
     }
   },
   methods: {
     // 获取动态列表
     async getDynamicList() {
+      this.loading = true;
       let result = await this.$Request("/dynamic/get", {
         pageNo: this.pageNo,
         pageSize: this.pageSize
@@ -44,6 +46,7 @@ export default {
         this.pageSize = result.data.pageSize;
         this.totalCount = result.data.totalCount;
         this.pageTotal = result.data.pageTotal;
+        this.loading = false;
       }
     },
     // 改变页数

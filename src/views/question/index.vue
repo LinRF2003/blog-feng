@@ -1,5 +1,5 @@
 <template>
-  <div class="question">
+  <div class="question" v-loading.fullscreen.lock="loading">
     <div class="left">
       <a
         :class="['tag', currentFT == '全部' ? 'bg-color' : '']"
@@ -20,7 +20,7 @@
         :key="questionInfo.id"
         :questionInfo="questionInfo"
       ></QuestionItem>
-      <Null v-if="questionList.length == 0"></Null>
+      <Null v-if="questionList.length === 0 && !loading"></Null>
       <PaginationItem
         :pageNo="pageNo"
         :pageSize="pageSize"
@@ -48,11 +48,13 @@ export default {
       pageSize: 10, // 每页个数
       totalCount: 0, // 全部博客数量
       pageTotal: 0, // 总页面数
+      loading:false
     };
   },
   methods: {
     // 获取问题列表
     async getQuestionList(tag) {
+      this.loading = true;
       let result = await this.$Request("/question/get", {
         fatherTag: tag,
         pageNo: this.pageNo,
@@ -64,6 +66,7 @@ export default {
         this.pageSize = result.data.pageSize;
         this.totalCount = result.data.totalCount;
         this.pageTotal = result.data.pageTotal;
+        this.loading = false;
       }
     },
     // 改变标签，获取新问题列表

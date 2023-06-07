@@ -192,7 +192,7 @@ export default {
 .login {
   width: 100%;
   height: 100vh;
-  background: url("../../assets/login-bg.jpg");
+  background-image: linear-gradient(-90deg, #29bdd9 0%, #276ace 100%);
   background-size: cover;
 
   .content {

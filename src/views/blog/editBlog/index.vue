@@ -236,14 +236,14 @@ export default {
       }
       this.blogInfo.tags.push(tag);
     },
-    // 添加博客
+    // 添加或修改博客
     addBlog() {
       // 判断标题和内容是否为空
       if (!this.blogInfo.title || !this.blogInfo.content) {
         return this.$Message.warning("标题和内容不能为空");
       }
-      if (this.blogInfo.title.length < 5) {
-        return this.$Message.warning("标题不能少于五位");
+      if (this.blogInfo.title.length < 5 || this.blogInfo.title.length > 30) {
+        return this.$Message.warning("标题不能少于五位且不能大于三十位");
       }
       let str = this.blogInfo.content.replace(/<[^<>]+>/g, "");
       str = str.replace(/\s*/g, "");
@@ -285,7 +285,7 @@ export default {
           if (result.code === 200) {
             this.$Message.success("发布成功");
             // 跳转路由
-            this.$router('/')
+            this.$router.push('/');
           }
         }
 
@@ -374,7 +374,7 @@ export default {
 
 <style scoped lang="scss">
 .add-blog {
-  width: 88vw;
+  // width: 88vw;
   margin: 0 auto;
   min-width: 1000px;
 

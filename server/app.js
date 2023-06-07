@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors')
 // 将 cors 注册为全局中间件
 app.use(cors({
-    origin: ['http://localhost:8080', 'http://localhost:8081'],//可设置多个跨域
+    origin: ['http://127.0.0.1:8080', 'http://127.0.0.1:8081','http://localhost:8081','http://localhost:8080'],//可设置多个跨域
     credentials: true//允许客户端携带验证信息
 }))
 
@@ -23,7 +23,7 @@ app.use(bodyParser.json({limit: requestLimit}));
 // app.use(express.urlencoded({ extended: true }))
 // app.use(express.json())
 // 解决跨域问题
-// app.use(cors({ origin: "http://localhost:8080" }))
+// app.use(cors({ origin: "http://localhost:8081" }))
 // 导入配置文件
 const config = require('./config')
 const {NO_LOGIN} = require('./common/errorCode');
@@ -34,7 +34,7 @@ app.use(express.static('public'))
 
 // 使用 .unless({ path: [/^\/api\//] }) 指定哪些接口不需要进行 Token 的身份认证
 // app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api\//] }))
-app.use(expressJWT({secret: config.jwtSecretKey}).unless({path: ['/api/login', '/api/register', '/api/imgUpload', '/api/email/send', '/api/test', '/api/get']}))
+app.use(expressJWT({secret: config.jwtSecretKey}).unless({path: ['/api/login', '/api/register', '/api/imgUpload', '/api/email/send', '/api/test', '/api/get', /^\/images\/.*/]}))
 // , /^\/api\/question\//
 
 
@@ -43,6 +43,7 @@ app.use(require('./utils/respond.js'));
 
 // 错误中间件
 app.use(function (err, req, res, next) {
+    console.log(112312)
     // 捕获身份认证失败的错误
     if (err.name === 'UnauthorizedError') return res.send({...NO_LOGIN});
     // google需要配置，否则报错cors error
@@ -51,6 +52,7 @@ app.use(function (err, req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', req.get('Origin'));
     // 允许跨域请求的方法
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE, PUT');
+
     next();
 })
 

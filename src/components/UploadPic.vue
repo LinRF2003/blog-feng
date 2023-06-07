@@ -1,4 +1,5 @@
 <template>
+  <!--  action="http://121.196.194.159:3030/api/imgUpload"-->
   <el-upload
       class="avatar-uploader"
       action="http://127.0.0.1:3030/api/imgUpload"
@@ -10,7 +11,7 @@
       :headers="headers"
   >
     <div class="img" v-if="url">
-      <img :src="url" class="avatar" />
+      <img :src="url" class="avatar"/>
     </div>
 
     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -22,8 +23,8 @@ export default {
   data() {
     return {
       url: "",
-      headers: { enctype: "multipart/form-data" },
-      data: { type: "0" },
+      headers: {enctype: "multipart/form-data"},
+      data: {type: "0"},
     };
   },
   props: ["imageUrl"],
@@ -55,7 +56,7 @@ export default {
     },
   },
   mounted() {
-    if(this.imageUrl){
+    if (this.imageUrl) {
       this.url = this.imageUrl;
     }
   }
@@ -68,15 +69,18 @@ export default {
   height: 152px;
   border: 1px dashed #d9d9d9;
 }
+
 .avatar-uploader .el-upload {
   border-radius: 6px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
 }
+
 .avatar-uploader:hover {
   border-color: #409eff;
 }
+
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
@@ -85,12 +89,14 @@ export default {
   line-height: 150px;
   text-align: center;
 }
+
 .img {
   width: 150px;
   height: 150px;
   display: flex;
   align-items: center;
 }
+
 .avatar {
   width: 150px;
 
