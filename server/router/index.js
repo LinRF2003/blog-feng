@@ -47,6 +47,14 @@ router.post('/blog/getCommentBlogById', require('../service/blog/getCommentBlogB
 router.post('/blog/addViews', require('../service/blog/addBlogViews/index').main)
 // 模糊搜索博客
 router.post('/blog/search', require('../service/blog/searchBlog/index').main)
+// 获取博客评论回复
+router.post('/blog/getBlogCommentReplyById', require('../service/blog/getBlogCommentReplyById/index').main)
+// 添加博客评论回复
+router.post('/blog/addBlogCommentReply', require('../service/blog/addBlogCommentReply/index').main)
+// 删除博客评论回复
+router.post('/blog/delBlogCommentReply', require('../service/blog/deleteBlogCommentReply/index').main)
+
+
 
 // 用户相关
 // 获取用户信息
