@@ -39,6 +39,14 @@ const respond = function (req, res, next) {
                 code: 200,
                 ...data
             })
+        },
+        // 添加成功返回id
+        res.successId = function (id) {
+            res.send({
+                // 状态
+                code: 200,
+                id
+            })
         }
     next();
 }

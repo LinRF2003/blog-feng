@@ -48,7 +48,7 @@ exports.main = (req, res) => {
         console.log(results)
         // 执行 SQL 语句成功，但是影响行数不等于 1
         if (results.affectedRows !== 1) return res.sm2('添加失败！');
-        res.sm('添加成功');
+        res.successId(results.insertId);
 
     })
 

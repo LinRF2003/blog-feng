@@ -45,37 +45,26 @@
     </div>
     <!-- 评论 -->
     <div class="comment" v-if="blogInfo.allowComment" id="comment">
-      <div>评论</div>
+      <div style="font-weight: 550; margin-bottom: 10px; font-size: 18px">评论</div>
+      <!-- 评论框 -->
+      <div class="comment-box">
+        <div class="comment-box-avatar">
+          <img :src="$store.state.userInfo?.avatar" alt="">
+        </div>
+        <div class="input-box">
+          <textarea class="input" v-model="commentContent"
+                    placeholder="善言结善语，恶语伤人心"></textarea>
+          <el-button
+              type="primary"
+              class="button" @click="addComment">发布评论
+          </el-button>
+        </div>
+      </div>
+      <!-- 评论列表 -->
+      <div v-for="item in commentList" :key="item.id">
+        <CommentItem :item="item" :currentUserName="blogInfo.userName" @deleteComment="deleteComment" @addCommentReply="addCommentReply"></CommentItem>
+      </div>
 
-      <div class="item" v-for="item in commentList" :key="item.id">
-        <div class="avatar">
-          <img :src="item.avatar" v-if="item.avatar"/>
-          <img src="@/assets/logo.png" v-else/>
-        </div>
-        <div class="info">
-          <div class="name">
-            <div class="auto" v-if="item.userName == blogInfo.userName">
-              作者本人
-            </div>
-            {{ item.userName }}
-          </div>
-          <div class="comment-content" v-html="item.content"></div>
-          <div class="time">{{ item.createTime }}</div>
-        </div>
-      </div>
-      <div class="add-comment" @click="showComment">
-        <el-button type="danger" class="button">添加评论</el-button>
-      </div>
-      <div v-if="showEditor" class="editor">
-        <div
-            contenteditable="true"
-            class="desc"
-            placeholder="请输入内容"
-            @input="handleInput"
-        ></div>
-        <el-button type="primary" @click="addComment">发布</el-button>
-        <el-button @click="changeShow">取消</el-button>
-      </div>
     </div>
     <!-- 左边固定点赞评论 -->
     <div class="float">
@@ -96,6 +85,8 @@
 //代码高亮样式
 import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-light.css";
+import {formatDate} from "@/utils/methods";
+import CommentItem from "@/components/CommentItem";
 
 export default {
   name: "BlogDetail",
@@ -107,11 +98,14 @@ export default {
       // operationText: "展开",
       // limitBtnShow: false,
       showEditor: false,
-      content: "",
+      commentContent: "",
       loading: false,
       like: null,
       choose: true, //控制点赞操作
     };
+  },
+  components: {
+    CommentItem
   },
   methods: {
     // 根据路由博客id获取博客详情
@@ -193,13 +187,20 @@ export default {
       let result = await this.$Request(
           "/blog/addComment",
           {
-            content: this.content,
+            content: this.commentContent,
             blogId: this.blogInfo.id,
           },
       );
       // 重新获取评论
+      // todo id 还未添加
       if (result.code === 200) {
-        this.getCommentList();
+        this.commentList.unshift({
+          content: this.commentContent,
+          avatar: this.$store.state.userInfo.avatar,
+          userName: this.$store.state.userInfo.userName,
+          createTime: formatDate(new Date())
+        })
+        this.commentContent = "";
         this.blogInfo.commentCount += 1;
         this.showEditor = false;
         this.$Message.success("添加评论成功");
@@ -253,7 +254,46 @@ export default {
       if (result.code === 200) {
         this.like = result.data;
       }
-    }
+    },
+    // 删除评论
+    async deleteComment(id) {
+      let result = await this.$Request('/blog/delComment', {commentId: id, blogId: this.$route.params.id});
+      if (result.code === 200) {
+        this.$Message.success("删除评论成功");
+        // 删除评论
+        this.commentList = this.commentList.filter((item) => {
+          return item.id !== id
+        })
+      }
+    },
+    // 添加评论回复
+    async addCommentReply(info,callback){
+      console.log(info)
+      let result = await this.$Request("/blog/addBlogCommentReply",{
+        content:info.content,
+        blogCommentId:info.id,
+        toUserId:info.toUserId,
+        toUserName:info.toUserName
+      })
+      if(result.code === 200) {
+        // 添加回复评论replyList
+        const obj =  this.commentList.find(item=> item.id === info.id
+        )
+        obj.replyList.unshift({
+          id:result.id,
+          blogCommentId:info.id,
+          userId:this.$store.state.userInfo.userId,
+          content: info.content,
+          avatar: this.$store.state.userInfo.avatar,
+          userName: this.$store.state.userInfo.userName,
+          toUserName:info.toUserName,
+          createTime: formatDate(new Date()),
+          toUserId:info.toUserId
+        })
+        callback("添加成功");
+      }
+    },
+
   },
   mounted() {
     // 获取博客详情
@@ -262,6 +302,8 @@ export default {
     this.getCommentList();
     // 获取喜欢状态
     this.getLikeState();
+    // 获取用户信息
+    this.$store.dispatch("getUserInfo");
   },
 };
 </script>
@@ -270,7 +312,7 @@ export default {
 .container {
   margin: 0 auto;
   padding-top: 18px;
-  width: 88%;
+  width: 1200px;
   padding-bottom: 30px;
 
   .left {
@@ -320,7 +362,7 @@ export default {
     width: 300px;
     position: fixed;
     top: 18px;
-    left: 73%;
+    left: calc(50% + 315px);
     padding: 10px;
 
     .top-title {
@@ -359,78 +401,64 @@ export default {
     padding: 10px 20px;
     width: 75%;
 
-    .add-comment {
+    .comment-box {
       display: flex;
-      align-items: center;
-      margin: 30px 0 20px;
 
-      .button {
-        background: #ff0000;
-        margin: 0 auto;
+      .comment-box-avatar {
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        img {
+          width: 50px;
+          height: 50px;
+        }
+      }
+
+      .input-box {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        .input {
+          width: 100%;
+          min-height: 120px;
+          background-color: rgb(247, 248, 249);
+          font-family: 微软雅黑;
+          font-size: 15px;
+          resize: none;
+          padding: 10px 12px;
+          border-image: initial;
+          border-radius: 5px;
+          border: 1px solid rgb(247, 248, 249);
+          outline: none;
+          box-sizing: border-box;
+        }
+
+        .input:focus {
+          border-color: #80c0db;
+        }
+
+        .button {
+          margin-top: 15px;
+          //margin-right: 10px;
+          width: 100px;
+        }
       }
     }
 
-    .editor {
-      .desc {
-        border: 2px solid #333;
-        border-radius: 4px;
-        padding: 10px;
-        min-height: 200px;
-        margin: 10px 0;
-      }
-    }
+
 
     div[contenteditable]:empty:not(:focus):before {
       content: attr(placeholder);
       color: #aaa;
     }
 
-    .item {
-      display: flex;
-      padding-top: 10px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid #ddd;
-
-      .avatar {
-        min-width: 82px;
-        height: 82px;
-        border-radius: 82px;
-        border: 1px solid #ddd;
-        display: flex;
-        align-items: center;
-        overflow: hidden;
-
-        img {
-          width: 80px;
-        }
-      }
-
-      .info {
-        margin-left: 10px;
-
-        .name {
-          display: flex;
-          color: #666;
-          margin-bottom: 10px;
-          font-size: 14px;
-
-          .auto {
-            margin-right: 4px;
-            color: #1890ff;
-          }
-        }
-
-        .time {
-          margin-top: 10px;
-          font-size: 12px;
-        }
-
-        .comment-content {
-          color: #4d4d4d;
-          line-height: 20px;
-        }
-      }
-    }
   }
 
   .float {
@@ -490,6 +518,7 @@ export default {
 img {
   width: 500px;
 }
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;

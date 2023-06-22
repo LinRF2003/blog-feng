@@ -7,11 +7,13 @@ const db = require('../../../db/index')
 
 exports.main = (req, res) => {
     // 获取参数
-    const {
+    let  {
         commentId,
         blogId
     } = req.body;
-     // 判断id是否正确
+    // commentId = parseInt(commentId);
+    // blogId = parseInt(blogId);
+    // 判断id是否正确
     if (!blogId || blogId < 0) {
         return res.err(PARAMS_ERROR);
     }
@@ -22,15 +24,21 @@ exports.main = (req, res) => {
     const sql = `update  blog_comment set isDelete = 1 where id = ? and blogId = ?`
     db.query(sql, [commentId, blogId], (err, results) => {
         // 执行 SQL 语句失败
-        if (err) return res.err(SYSTEM_ERROR)
+        if (err) {
+            console.log(err)
+            return res.err(SYSTEM_ERROR)
+        }
         if (results.affectedRows != 1) {
             return res.sm2('评论不存在');
         }
         // 删除成功时给相应的博客评论数减一
-        const sql = `update blog set commentCount = commentCount - 1 where blogId = ?`
+        const sql = `update blog set commentCount = commentCount - 1 where id = ?`
         db.query(sql, blogId, (err, results) => {
             // 执行 SQL 语句失败
-            if (err) return res.err(SYSTEM_ERROR)
+            if (err) {
+                console.log(err)
+                return res.err(SYSTEM_ERROR)
+            }
             if (results.affectedRows != 1) {
                 return res.err(SYSTEM_ERROR);
             }
