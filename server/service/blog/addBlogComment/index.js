@@ -4,16 +4,13 @@ const db = require('../../../db/index')
 
 
 exports.main = (req, res) => {
-    // 获取用户信息
-    const {
-        userId,
-        userName,
-        avatar
-    } = req.user;
     // 获取body数据
     const {
         content,
-        blogId
+        blogId,
+        userId,
+        userName,
+        avatar
     } = req.body;
     // 判断id是否正确
     if (!blogId || blogId < 0) {
@@ -44,8 +41,7 @@ exports.main = (req, res) => {
 
         // 执行 SQL 语句成功，但是影响行数不等于 1
         if (results[0].affectedRows !== 1 || results[1].affectedRows !== 1) return res.sm2('添加失败！');
-        res.sm('添加成功');
-
+        res.successId(results[0].insertId);
     })
 
 }

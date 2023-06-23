@@ -9,6 +9,7 @@
         center
         :modal="false"
         class="dialog"
+        :style="`left:${left}px;top:${top}px`"
     >
       <div class="dialog-content">
         <div class="left">
@@ -53,13 +54,26 @@ export default {
       type: Object,
       required: true,
     },
+    top: {
+      type: Number,
+      required: true,
+    },
+    left: {
+      type: Number,
+      required: true,
+    },
+    tagsMap:{
+      type:Map,
+      required:true,
+
+    }
   },
   data() {
     return {
       currentFatherTag: "python", // 当前父标签
       dialogVisibleTags: true, // 标签选中框是否显示
       tags: [], // 标签列表
-      tagsMap: new Map(), // 选中的标签列表
+      // tagsMap: new Map(), // 选中的标签列表
     };
   },
   methods: {
@@ -136,9 +150,8 @@ export default {
 }
 
 .dialog {
+  line-height: 20px;
   position: absolute;
-  left: -220px;
-  top: 75px;
   width: 500px;
   height: 300px;
   //border:1px solid #ccc;
@@ -159,6 +172,7 @@ export default {
       .ft {
         padding: 5px 0;
         cursor: pointer;
+
       }
 
       .ft:hover {

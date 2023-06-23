@@ -13,7 +13,7 @@
         :pageTotal="pageTotal"
         @changePageNo="changePageNo"
     ></PaginationItem>
-    <Null v-if="blogList.length == 0 && !loading"></Null>
+    <Null v-if="blogList.length === 0 && !loading"></Null>
   </div>
 </template>
 

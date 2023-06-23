@@ -73,7 +73,7 @@ export default {
       blog: null, // 博客元素
       blogContent: null, // 博客内热元素
       likeBlogList: [], // 喜欢的博客列表
-      loading: false
+      loading: true
     };
   },
   components: {

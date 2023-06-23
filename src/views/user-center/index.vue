@@ -85,19 +85,19 @@
           <BLog @changeCount="changeCount"></BLog>
         </el-tab-pane>
         <el-tab-pane label="评论" name="comment">
-          <Comment @changeCount="changeCount"></Comment>
+          <Comment @changeCount="changeCount" v-if="currentSelectName === 'comment'"></Comment>
         </el-tab-pane>
         <el-tab-pane label="点赞" name="like">
-          <like @changeCount="changeCount"></like>
+          <like @changeCount="changeCount" v-if="currentSelectName === 'like'"></like>
         </el-tab-pane>
         <el-tab-pane label="问答" name="question">
-          <Question @changeCount="changeCount"></Question>
+          <Question @changeCount="changeCount" v-if="currentSelectName === 'question'"></Question>
         </el-tab-pane>
         <el-tab-pane label="回答" name="answer">
-          <Answer @changeCount="changeCount"></Answer>
+          <Answer @changeCount="changeCount" v-if="currentSelectName === 'answer'"></Answer>
         </el-tab-pane>
-        <el-tab-pane label="动态" name="dynamic">
-          <Dynamic @changeCount="changeCount"></Dynamic>
+        <el-tab-pane label="动态" name="dynamic" >
+          <Dynamic @changeCount="changeCount" v-if="currentSelectName === 'dynamic'"></Dynamic>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -125,7 +125,8 @@ export default {
       answerCount: 0,
       commentCount: 0,
       dynamicCount: 0,
-      loading: false
+      loading: false,
+      currentSelectName:"",
     }
   },
   components: {
@@ -137,8 +138,8 @@ export default {
     Dynamic
   },
   methods: {
-    handleClick() {
-
+    handleClick(e) {
+      this.currentSelectName = e.name;
     },
     // 改变数量
     changeCount(type, count) {

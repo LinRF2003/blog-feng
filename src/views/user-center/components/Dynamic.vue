@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     // 获取博客列表
-    async getLikeBlogList() {
+    async getDynamicList() {
       this.loading = true;
       let result = await this.$Request(
           "/dynamic/getById", {
@@ -43,6 +43,7 @@ export default {
           }
       );
       if (result.code === 200) {
+        console.log(result)
         this.blogList = result.data.list;
         this.pageNo = result.data.pageNo;
         this.pageSize = result.data.pageSize;
@@ -55,11 +56,11 @@ export default {
     // 获取需要请求的页码数
     changePageNo(val) {
       this.pageNo = val;
-      this.getBlogList();
+      this.getDynamicList();
     },
   },
   mounted() {
-    this.getLikeBlogList();
+    this.getDynamicList();
   },
 };
 </script>

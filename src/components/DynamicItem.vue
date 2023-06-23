@@ -38,10 +38,11 @@
         </div>
         <div class="like" @click="() => {
          showComment = !showComment
-        }">评论 {{ dynamicInfo.commentCount }}</div>
+        }">评论 {{ dynamicInfo.commentCount }}
+        </div>
       </div>
-      <div class="comment" v-if="showComment">
-        <div class="add">
+      <div class="comment">
+        <div class="add" v-if="showComment">
           <el-input v-model="commentContent" @keyup.enter.native="addDynamicComment"></el-input>
           <div class="reply" @click="addDynamicComment">
             回复
@@ -49,11 +50,18 @@
         </div>
         <div class="item" v-for="item in dynamicCommentList">
           <div class="info">
-            {{ item.userName }} : {{ item.content }}
-          </div>
-          <div class="time">
-            {{item.createTime}}
+            <div class="name">{{ item.userName }} :</div>
+            <div class="content"> {{ item.content }}</div>
 
+          </div>
+          <div class="b">
+            <div class="time">
+              {{ item.createTime }}
+            </div>
+            <div class="del-button" @click="deleteDynamicComment(item.id)"
+                 v-show="item.userId === $store.state.userInfo.userId">
+              删除
+            </div>
           </div>
         </div>
       </div>
@@ -74,8 +82,8 @@ export default {
       isLike: false,
       likeCount: 0,
       choose: true,
-      commentContent:"",
-      showComment:false
+      commentContent: "",
+      showComment: false
     }
   },
   watch: {
@@ -115,16 +123,36 @@ export default {
         this.dynamicCommentList = result.data;
       }
     },
+    // 添加评论
     async addDynamicComment() {
+      if (this.commentContent.length > 200) {
+        return this.$Message.warning("评论字数不能大于200")
+      }
       let result = await this.$Request("/dynamic/addComment", {
-        content:this.commentContent,
+        content: this.commentContent,
         dynamicId: this.dynamicInfo.id
       })
-      if(result.code === 200){
+      if (result.code === 200) {
         // 清空原有数据
-        this.commentContent="";
+        this.commentContent = "";
         // 评论数加一
         this.dynamicInfo.commentCount += 1;
+        // 添加成功
+        this.$Message.success("添加成功");
+        this.showComment = false;
+        this.getDynamicCommentList();
+      }
+    },
+    // 删除评论
+    async deleteDynamicComment(id) {
+      console.log(id)
+      let result = await this.$Request("/dynamic/delComment", {
+        dynamicId: this.dynamicInfo.id,
+        commentId: id
+      })
+      if (result.code === 200) {
+        this.$Message.success("删除成功");
+        // 重新获取数据
         this.getDynamicCommentList();
       }
     }
@@ -144,7 +172,7 @@ export default {
   padding: 15px;
   border-bottom: 1px solid #ddd;
   margin-bottom: 10px;
-
+  width: 100%;
   .top {
     display: flex;
 
@@ -212,25 +240,54 @@ export default {
     margin-top: 15px;
 
     font-size: 14px;
-
+    .item:hover{
+      background:#fcfcfc;
+    }
     .item {
       background: #f7f9fa;
       padding: 10px;
-      .time{
-        font-size: 12px;
-        color: #666;
-        margin-top: 5px;
+        .info{
+          display: flex;
+
+          .content{
+            padding-left: 8px;
+            flex:1;
+            word-wrap: break-word;
+            box-sizing: border-box;
+            width: 100px;
+          }
+
+
+        }
+      .b {
+        display: flex;
+
+        .time {
+          flex: 1;
+          font-size: 12px;
+          color: #666;
+          margin-top: 5px;
+        }
+
+        .del-button {
+          color: red;
+          font-size: 12px;
+          cursor: pointer;
+        }
       }
+
     }
-    .add{
+
+    .add {
       display: flex;
       margin-bottom: 10px;
-      .reply{
+
+      .reply {
         width: 80px;
         background: #16b998;
         display: flex;
         align-items: center;
-        justify-content:center;
+        justify-content: center;
         margin: 0 10px;
         color: #fff;
         font-size: 17px;

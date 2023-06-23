@@ -62,7 +62,8 @@
       </div>
       <!-- 评论列表 -->
       <div v-for="item in commentList" :key="item.id">
-        <CommentItem :item="item" :currentUserName="blogInfo.userName" @deleteComment="deleteComment" @addCommentReply="addCommentReply"></CommentItem>
+        <CommentItem :item="item" :current-user-id="blogInfo.userId" @deleteComment="deleteComment"
+                     @addCommentReply="addCommentReply"></CommentItem>
       </div>
 
     </div>
@@ -189,16 +190,22 @@ export default {
           {
             content: this.commentContent,
             blogId: this.blogInfo.id,
+            avatar: this.$store.state.userInfo.avatar,
+            userName: this.$store.state.userInfo.userName,
+            userId: this.$store.state.userInfo.userId
           },
       );
       // 重新获取评论
       // todo id 还未添加
       if (result.code === 200) {
         this.commentList.unshift({
+          id: result.id,
+          userId: this.$store.state.userInfo.userId,
           content: this.commentContent,
           avatar: this.$store.state.userInfo.avatar,
           userName: this.$store.state.userInfo.userName,
-          createTime: formatDate(new Date())
+          createTime: formatDate(new Date()),
+          replyList:[]
         })
         this.commentContent = "";
         this.blogInfo.commentCount += 1;
@@ -267,29 +274,30 @@ export default {
       }
     },
     // 添加评论回复
-    async addCommentReply(info,callback){
+    async addCommentReply(info, callback) {
       console.log(info)
-      let result = await this.$Request("/blog/addBlogCommentReply",{
-        content:info.content,
-        blogCommentId:info.id,
-        toUserId:info.toUserId,
-        toUserName:info.toUserName
+      let result = await this.$Request("/blog/addBlogCommentReply", {
+        content: info.content,
+        blogCommentId: info.id,
+        toUserId: info.toUserId,
+        toUserName: info.toUserName
       })
-      if(result.code === 200) {
+      if (result.code === 200) {
         // 添加回复评论replyList
-        const obj =  this.commentList.find(item=> item.id === info.id
+        const obj = this.commentList.find(item => item.id === info.id
         )
-        obj.replyList.unshift({
-          id:result.id,
-          blogCommentId:info.id,
-          userId:this.$store.state.userInfo.userId,
-          content: info.content,
-          avatar: this.$store.state.userInfo.avatar,
-          userName: this.$store.state.userInfo.userName,
-          toUserName:info.toUserName,
-          createTime: formatDate(new Date()),
-          toUserId:info.toUserId
-        })
+        console.log(obj)
+          obj.replyList.unshift({
+            id: result.id,
+            blogCommentId: info.id,
+            userId: this.$store.state.userInfo.userId,
+            content: info.content,
+            avatar: this.$store.state.userInfo.avatar,
+            userName: this.$store.state.userInfo.userName,
+            toUserName: info.toUserName,
+            createTime: formatDate(new Date()),
+            toUserId: info.toUserId
+          })
         callback("添加成功");
       }
     },
@@ -413,6 +421,7 @@ export default {
         overflow: hidden;
         display: flex;
         align-items: center;
+
         img {
           width: 50px;
           height: 50px;
@@ -451,7 +460,6 @@ export default {
         }
       }
     }
-
 
 
     div[contenteditable]:empty:not(:focus):before {

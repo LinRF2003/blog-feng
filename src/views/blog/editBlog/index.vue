@@ -63,45 +63,19 @@
             >
               {{ tag }}
             </el-tag>
-            <el-button size="small" @click="dialogVisibleTags = true"
+            <el-button size="small" @click="showTagSelect=true"
             >+ New Tag
             </el-button
             >
-            <el-dialog
-                title="标签"
-                :visible.sync="dialogVisibleTags"
-                width="30%"
-                :before-close="closeDialog"
-                center
-                :modal="false"
-                class="dialog"
-            >
-              <div class="dialog-content">
-                <div class="left">
-                  <div
-                      :class="['ft', currentFatherTag === tag ? 'active' : '']"
-                      v-for="(tag, index) in fatherTags"
-                      :key="index"
-                      @click="changeFatherTag(tag)"
-                  >
-                    {{ tag }}
-                  </div>
-                </div>
-                <div class="right">
-                  <el-tag
-                      v-for="(tag, index) in tags"
-                      :key="index"
-                      :class="[
-                      'tag',
-                      blogInfo.tags.indexOf(tag) !== -1 ? 'tag-active' : '',
-                    ]"
-                      @click="clickTags(tag)"
-                  >
-                    {{ tag }}
-                  </el-tag>
-                </div>
-              </div>
-            </el-dialog>
+            <TagSelect
+                @logout="logout"
+                @changeTags="changeTags"
+                :categoryTags="categoryTags"
+                v-if="showTagSelect"
+                :tagsMap="tagsMap"
+                :left="0"
+                :top="-300"
+            ></TagSelect>
           </el-form-item>
           <el-form-item label="评论">
             <div class="allow-comment">
@@ -132,14 +106,18 @@
 
 <script>
 import {getSonTags} from "@/utils/methods";
-
+import TagSelect from "@/components/TagSelect.vue";
 export default {
   name: "AddBlog",
+  components:{
+    TagSelect
+  },
   data() {
     return {
       tagsMap: new Map(),
       currentFatherTag: "python",
       tags: "",
+      showTagSelect: false,
       // 博客信息
       blogInfo: {
         content: "",
@@ -156,6 +134,7 @@ export default {
       },
       showById:false,
       dialogVisibleTags: false, // 标签提示框
+      // selectTagsMap:new Map(),
       // 表单验证
       rules: {
         categoryId: [{required: true, message: "请选择博客分类"}],
@@ -197,45 +176,20 @@ export default {
     closeDialog() {
       this.dialogVisibleTags = false;
     },
+    // 标签选择器退出方法
+    logout() {
+      this.showTagSelect = false;
+    },
+    // 改变选择标签列表
+    changeTags(tagsMap) {
+      this.blogInfo.tags = [...tagsMap.keys()];
+      // console.log(this.blogInfo.tags);
+      this.tagsMap=tagsMap;
+      // this.selectTagsMap = tagsMap;
+      // this.blogInfo.fatherTags = JSON.stringify([...new Set(tagsMap.values())]);
+      // console.log( this.blogInfo.fatherTags);
+    },
 
-    // 改变当前父标签
-    changeFatherTag(tag) {
-      // 更改标签内容
-      this.currentFatherTag = tag;
-      // this.tags = [];
-      // let tags = this.categoryTags[tag].tags;
-      // for (const Tag in tags) {
-      //   this.tags.push(tags[Tag]);
-      // }
-      this.tags = getSonTags(this.categoryTags, tag);
-    },
-    // 点击子标签
-    clickTags(tag) {
-      // 判断tags中是否已有此标签
-      let i = this.blogInfo.tags.indexOf(tag);
-      if (i !== -1) {
-        this.blogInfo.tags.splice(i, 1);
-        // 删除数据
-        this.tagsMap.delete(tag);
-        return;
-      }
-      // 判断标签是否超过5个
-      if (this.blogInfo.tags.length >= 5) {
-        return this.$Message.warning("标签不能超过五个");
-      }
-      // 设置标签map 利于查找父标签
-      this.tagsMap.set(tag, this.currentFatherTag);
-      let ft = new Set();
-      // 转换下父标签数据
-      for (const item of this.tagsMap.values()) {
-        ft.add(item);
-      }
-      // 父标签不能大于3个
-      if (ft.size > 3) {
-        return this.$Message.warning("父标签不能大于三个");
-      }
-      this.blogInfo.tags.push(tag);
-    },
     // 添加或修改博客
     addBlog() {
       // 判断标题和内容是否为空
@@ -291,6 +245,7 @@ export default {
 
       });
     },
+
     // 获取文章前150个字
     getSummary() {
       let str = this.blogInfo.content.replace(/<[^<>]+>/g, "");
@@ -437,62 +392,7 @@ export default {
           position: relative;
         }
 
-        .dialog {
-          position: absolute;
-          //right: -60px;
-          top: -300px;
-          width: 500px;
-          height: 300px;
-          //border:1px solid #ccc;
-          :deep(.el-dialog__body) {
-            padding: 0;
-          }
 
-          .dialog-content {
-            padding: 10px;
-            display: flex;
-
-            .left {
-              padding: 0 20px;
-              max-height: 230px;
-              overflow-y: scroll;
-              min-width: 104px;
-
-              .ft:hover {
-                color: var(--main-color);
-              }
-            }
-
-            .right {
-              padding: 0 10px;
-
-              .tag {
-                margin: 0 5px;
-              }
-
-              .tag-active {
-                background: var(--bg-color);
-              }
-            }
-          }
-
-          :deep(.el-dialog) {
-            margin: 0 !important;
-            width: 500px !important;
-            height: 300px;
-            border: 1px solid #ccc;
-          }
-
-          :deep(.el-dialog__header) {
-            border-bottom: 1px solid #ccc;
-            padding: 0 20px;
-            font-weight: bold;
-
-            .deep {
-              top: 12px;
-            }
-          }
-        }
       }
 
       .summary {

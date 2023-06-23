@@ -13,7 +13,7 @@
         :pageTotal="pageTotal"
         @changePageNo="changePageNo"
     ></PaginationItem>
-    <Null v-if="blogList.length == 0 && !loading"></Null>
+    <Null v-if="blogList.length === 0 && !loading"></Null>
   </div>
 </template>
 
@@ -48,7 +48,7 @@ export default {
         this.pageSize = result.data.pageSize;
         this.totalCount = result.data.totalCount;
         this.pageTotal = result.data.pageTotal;
-        this.$emit("changeCount", 'like', result.data.totalCount)
+        this.$emit("changeCount", 'like', result.data.totalCount);
         this.loading = false;
       }
     },

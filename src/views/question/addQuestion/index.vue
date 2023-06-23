@@ -19,25 +19,29 @@
       </div>
       <div class="tags">
         <div class="text">标签</div>
-        <div class="add-tag">
+        <div class="add-tag" @click="showTagSelect=true">
           <el-tag
               :key="tag"
               v-for="tag in tags"
               closable
               :disable-transitions="false"
               @close="handleClose(tag)"
-              style="margin: 5px"
+              style="margin: 5px;cursor: pointer"
+
           >
             {{ tag }}
           </el-tag>
-          <span class="l" @click="showTagSelect=true" v-show="tags.length<5">+</span>
-          <span class="r" v-show="tags.length<1" @click="showTagSelect=true">至少添加一个标签</span>
+          <span class="l"  v-show="tags.length<5">+</span>
+          <span class="r" v-show="tags.length<1" >至少添加一个标签</span>
         </div>
         <TagSelect
             @logout="logout"
             @changeTags="changeTags"
             :categoryTags="categoryTags"
             v-if="showTagSelect"
+            :tagsMap="tagsMap"
+            :left="-220"
+            :top="75"
         ></TagSelect>
       </div>
 
@@ -72,7 +76,8 @@ export default {
       tags: [],
       fatherTags: [],
       editorType: 1,
-      showTagSelect: false
+      showTagSelect: false,
+      tagsMap:new Map()
     };
   },
   methods: {
@@ -84,6 +89,7 @@ export default {
     changeTags(tagsMap) {
       this.tags = [...tagsMap.keys()];
       console.log(this.tags);
+      this.tagsMap = tagsMap;
       this.fatherTags = JSON.stringify([...new Set(tagsMap.values())]);
       console.log(this.fatherTags);
     },
@@ -169,16 +175,17 @@ export default {
 
       .add-tag {
         color: #368cdd;
-
         .l {
           padding: 3px 5px;
           background: #ecf5ff;
           font-weight: 700;
           margin-right: 5px;
+          cursor: pointer;
         }
 
         .r {
           font-size: 13px;
+          cursor: pointer;
         }
       }
     }
@@ -192,4 +199,5 @@ export default {
     }
   }
 }
+
 </style>

@@ -92,6 +92,8 @@ router.post('/question/delAnswer', require('../service/question/deleteAnswer/ind
 // 搜索回答
 router.post('/question/search', require('../service/question/searchQuestion/index.js').main)
 
+
+
 // 动态
 // 添加动态
 router.post('/dynamic/add', require('../service/dynamic/addDynamic/index.js').main)
@@ -105,7 +107,8 @@ router.post('/dynamic/getById', require('../service/dynamic/getDynamicById/index
 router.post('/dynamic/addComment', require('../service/dynamic/addDynamicComment/index.js').main)
 // 获取动态评论
 router.post('/dynamic/getComment', require('../service/dynamic/getDynamciComment/index.js').main)
-
+// 删除动态评论
+router.post('/dynamic/delComment', require('../service/dynamic/deleteDynamicComment/index').main)
 
 
 // 测试

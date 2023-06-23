@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <div class="content">
+    <div class="content" v-loading.fullscreen.lock="loading">
       <router-link :to="`/questionDetail/${questionInfo.id}`"
                    target="_blank"
                    v-for="questionInfo in questionList"
@@ -8,7 +7,7 @@
         <QuestionItem :questionInfo="questionInfo"></QuestionItem>
       </router-link>
 
-      <Null v-if="questionList.length == 0"></Null>
+      <Null v-if="questionList.length === 0 && !loading"></Null>
       <PaginationItem
           :pageNo="pageNo"
           :pageSize="pageSize"
@@ -17,7 +16,6 @@
           @changePageNo="changePageNo"
       ></PaginationItem>
     </div>
-  </div>
 </template>
 
 <script>
@@ -30,16 +28,17 @@ export default {
       pageSize: 10, // 每页个数
       totalCount: 0, // 全部数量
       pageTotal: 0, // 总页面数
+      loading:false
     }
   },
   methods: {
     // 获取用户问题列表
     async getQuestionList() {
+      this.loading = true;
       let result = await this.$Request('/question/getById', {
-        // id: this.$route.params.id,
+        id: this.$route.params.id,
         pageNo: this.pageNo,
         pageSize: this.pageSize,
-        id: 1
       })
       if (result.code === 200) {
         this.questionList = result.data.list;
@@ -47,7 +46,8 @@ export default {
         this.pageSize = result.data.pageSize;
         this.totalCount = result.data.totalCount;
         this.pageTotal = result.data.pageTotal;
-        this.$emit("changeCount", 'question', result.data.totalCount)
+        this.$emit("changeCount", 'question', result.data.totalCount);
+        this.loading = false;
       }
     },
 

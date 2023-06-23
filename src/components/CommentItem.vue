@@ -5,7 +5,7 @@
     </div>
     <div class="info">
       <div class="name">
-        <div class="auto" v-if="item.userName == currentUserName">
+        <div class="auto" v-if="item.userId == currentUserId">
           作者本人
         </div>
         {{ item.userName }}
@@ -50,7 +50,7 @@ export default {
       showReplyBox: false
     }
   },
-  props: ["item", "currentUserName"],
+  props: ["item", "currentUserId"],
   components: {
     ReplyCommentInput,
     ReplyItem
