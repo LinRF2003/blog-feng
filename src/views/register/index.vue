@@ -152,7 +152,7 @@ export default {
           }
           this.$router.push("/login");
         } else {
-          this.$Message.warning(result.message);
+          this.$Message.warning(result.desc);
         }
       });
 
@@ -168,7 +168,7 @@ export default {
         }, 1000);
       } else {
         console.log(result)
-        this.$Message.warning(result.desc);
+        this.$Message.warning(result.message);
       }
     },
   },

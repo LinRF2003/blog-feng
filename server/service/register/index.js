@@ -1,13 +1,13 @@
 // 注册用户的处理函数
 const bcrypt = require('bcryptjs');
 
-const {PARAMS_ERROR, NULL_ERROR, SYSTEM_ERROR} = require('../../common/errorCode');
+const { PARAMS_ERROR, NULL_ERROR, SYSTEM_ERROR } = require('../../common/errorCode');
 const db = require('../../db/index');
-const {captchaReg, emailReg, passwordReg} = require('../../utils/regular');
+const { captchaReg, emailReg, passwordReg } = require('../../utils/regular');
 const redisClient = require("../../common/redis");
 exports.main = async (req, res) => {
     // 接收表单数据
-    let {email, captcha, password, repassword, type} = req.body;
+    let { email, captcha, password, repassword, type } = req.body;
     // 判断数据是否合法
     if (!email || !captcha || !password || !repassword || !type) {
         return res.err(NULL_ERROR);
@@ -39,7 +39,7 @@ exports.main = async (req, res) => {
             if (err) {
                 return res.err(SYSTEM_ERROR);
             }
-            // 手机号是否已被注册
+            // 手机号邮箱已被注册
             if (results.length === 1) {
                 return res.err(PARAMS_ERROR, '邮箱已被注册')
             }

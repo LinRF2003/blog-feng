@@ -42,6 +42,7 @@
           <div class="time">
             {{ i.createTime }}
           </div>
+          <div class="del-button" @click="deleteQuestionComment(i.id)" v-show="$store.state.userInfo.userId===i.userId">删除</div>
         </div>
         <div class="content" v-html="i.content">
         </div>
@@ -130,6 +131,20 @@ export default {
         this.questionDetailInfo.answerNum += 1;
       }
 
+    },
+    // 删除问题回答
+    async deleteQuestionComment(id) {
+      let result = await this.$Request("/question/delAnswer", {
+        questionId: this.$route.params.id,
+        id: id
+      })
+      if(result.code === 200) {
+        this.$Message.success("删除回答成功");
+        // 回答数减一
+        this.questionDetailInfo.answerNum -= 1;
+        // 重新获取评论
+        this.getAnswerList();
+      }
     }
   },
   mounted() {
@@ -167,8 +182,13 @@ export default {
   .time {
     color: #676767;
     font-size: 12px;
+    flex:1;
   }
-
+  .del-button{
+    cursor: pointer;
+    color: red;
+    font-size: 12px;
+  }
   .views {
     font-size: 14px;
     flex: 1;

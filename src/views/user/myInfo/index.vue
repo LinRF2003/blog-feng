@@ -152,7 +152,10 @@ export default {
           this.$store.dispatch("getUserInfo");
           this.editShow = false;
           this.loading = false;
-          this.$message.success("修改成功");
+          // 存储token
+          localStorage.setItem("token", result.token);
+
+          this.$Message.success("修改用户信息成功");
         }
         // location.reload();
       });

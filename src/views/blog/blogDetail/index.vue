@@ -196,7 +196,6 @@ export default {
           },
       );
       // 重新获取评论
-      // todo id 还未添加
       if (result.code === 200) {
         this.commentList.unshift({
           id: result.id,

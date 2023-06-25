@@ -1,9 +1,9 @@
 <template>
   <div class="question-item">
     <div class="left">
-      <router-link class="title" :to="'/questionDetail/'+questionInfo.id">
+      <a class="title"  @click="goToDetail(questionInfo.id)">
         {{ questionInfo.title }}
-      </router-link>
+      </a>
       <div class="content">
         {{ questionInfo.summary }}
       </div>
@@ -37,6 +37,14 @@ export default {
     // 问题数据
     questionInfo: {type: Object, required: true},
   },
+  methods:{
+    // 去到详情页
+    goToDetail(id){
+      // 添加浏览量
+      this.$Request("/question/addViews",{id});
+      this.$router.push(`/questionDetail/${id}`);
+    }
+  }
 };
 </script>
 

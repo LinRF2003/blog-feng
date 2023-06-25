@@ -1,3 +1,13 @@
+/**
+ * @api {get} /admin/login/ 登录接口
+ * @apiName 登录接口
+ * @apiGroup admin
+ *
+ *
+ *
+ * @apiSuccess {String} firstname Firstname of the User.
+ * @apiSuccess {String} lastname  Lastname of the User.
+ */
 // 注册密码的处理函数
 const bcrypt = require('bcryptjs');
 const { SYSTEM_ERROR, PARAMS_ERROR, NULL_ERROR } = require('../../common/errorCode');

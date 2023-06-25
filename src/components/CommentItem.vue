@@ -30,6 +30,7 @@
       <div class="reply-list">
         <ReplyItem v-for="replyItem in item.replyList"
                    :replyItem="replyItem"
+                   :key="replyItem.id"
         @deleteReply="deleteReply"
         @addCommentReply2="addCommentReply2"></ReplyItem>
       </div>

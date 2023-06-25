@@ -29,7 +29,7 @@ router.post('/blog/getComment', require('../service/blog/getBlogComment/index.js
 router.post('/blog/del', require('../service/blog/deleteBlog/index').main)
 // 添加博客评论
 router.post('/blog/addComment', require('../service/blog/addBlogComment/index').main)
-// 删除评论
+// 删除博客评论
 router.post('/blog/delComment', require('../service/blog/deleteBlogComment/index').main)
 // 获取点赞列表
 router.post('/blog/getLikeList', require('../service/blog/getLikeList/index').main)
@@ -37,7 +37,7 @@ router.post('/blog/getLikeList', require('../service/blog/getLikeList/index').ma
 router.post('/blog/getLikeState', require('../service/blog/getBlogLikeState/index').main)
 // 改变点赞数
 router.post('/blog/changeLikeNum', require('../service/blog/changeLikeNum/index').main)
-// 获取我的博客
+// 根据 id 获取个人博客博客
 router.post('/blog/getBlogById', require('../service/blog/getBlogById/index').main)
 // 获取喜欢博客列表
 router.post('/blog/getLikeBlogById', require('../service/blog/getLikeBlogById/index').main)
@@ -47,7 +47,7 @@ router.post('/blog/getCommentBlogById', require('../service/blog/getCommentBlogB
 router.post('/blog/addViews', require('../service/blog/addBlogViews/index').main)
 // 模糊搜索博客
 router.post('/blog/search', require('../service/blog/searchBlog/index').main)
-// 获取博客评论回复
+// 获取博客评论回复列表
 router.post('/blog/getBlogCommentReplyById', require('../service/blog/getBlogCommentReplyById/index').main)
 // 添加博客评论回复
 router.post('/blog/addBlogCommentReply', require('../service/blog/addBlogCommentReply/index').main)
@@ -64,7 +64,7 @@ router.post('/user/update', require('../service/user/updateUserInfo/index').main
 // 修改密码
 router.post('/user/updatePassword', require('../service/user/updatePassword/index').main)
 // 修改邮箱
-router.post('/user/updateEmail',require('../service/user/updateEmail/index').main)
+router.post('/user/updateEmail', require('../service/user/updateEmail/index').main)
 
 
 
@@ -112,12 +112,12 @@ router.post('/dynamic/delComment', require('../service/dynamic/deleteDynamicComm
 
 
 // 测试
-router.post('/test',(req,res)=>{
+router.post('/test', (req, res) => {
 
     redisClient.setex('xiaoming', 100, '3');
     return res.send('1');
 })
-router.post('/get',async (req, res) => {
+router.post('/get', async (req, res) => {
     redisClient.get('xiaoming', (err, val) => {
         if (err) {
             console.error(err)

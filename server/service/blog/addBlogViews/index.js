@@ -2,7 +2,12 @@
 const { SYSTEM_ERROR } = require('../../../common/errorCode');
 const db = require('../../../db/index')
 
-
+/**
+ * 
+ * @param req
+ * @param res
+ * @returns {*}
+ */
 exports.main = (req, res) => {
     const { id } = req.body;
     // 判断id是否正确

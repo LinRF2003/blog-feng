@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "serve": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs": "apidoc -i ./router -o ./public/docs"
   },
   "keywords": [],
   "author": "",
@@ -22,5 +23,12 @@
     "nodemailer": "^6.9.1",
     "path": "^0.12.7",
     "redis": "^3.1.2"
+  },
+  "apidoc": {
+    "name": "用户管理",
+    "version": "0.1.0",
+    "description": "apiDoc 用户管理接口文档",
+    "title": "用户管理接口文档",
+    "url": "https://api.github.com/v1"
   }
 }

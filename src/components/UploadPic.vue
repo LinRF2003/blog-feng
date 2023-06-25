@@ -1,5 +1,7 @@
 <template>
   <!--  action="http://121.196.194.159:3030/api/imgUpload"-->
+  <!--  action="http://127.0.0.1:3030/api/imgUpload"-->
+
   <el-upload
       class="avatar-uploader"
       action="http://127.0.0.1:3030/api/imgUpload"

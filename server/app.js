@@ -43,7 +43,6 @@ app.use(require('./utils/respond.js'));
 
 // 错误中间件
 app.use(function (err, req, res, next) {
-    console.log(112312)
     // 捕获身份认证失败的错误
     if (err.name === 'UnauthorizedError') return res.send({...NO_LOGIN});
     // google需要配置，否则报错cors error

@@ -1,9 +1,9 @@
 <template>
   <div class="my-blog" v-loading.fullscreen.lock="loading">
     <div v-for="item in blogList" :key="item.id" class="content">
-      <router-link :to="`/blogDetail/${item.id}`"  class="blog-content"  target="_blank">
-      <BlogItem :blogInfo="item"></BlogItem>
-      </router-link>
+      <div  class="blog-content">
+        <BlogItem :blogInfo="item"></BlogItem>
+      </div>
       <div class="operate" v-if="$route.params.id == $store.state.userInfo?.userId">
         <el-button type="primary" round @click="updateBlog(item.id)"
         >修改

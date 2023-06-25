@@ -59,7 +59,8 @@
                 closable
                 :disable-transitions="false"
                 @close="handleClose(tag)"
-                style="margin: 0 5px"
+                style="margin: 0 5px;cursor: pointer"
+                @click="showTagSelect=true"
             >
               {{ tag }}
             </el-tag>
@@ -190,34 +191,36 @@ export default {
       // console.log( this.blogInfo.fatherTags);
     },
 
-    // 添加或修改博客
-    addBlog() {
+    // 在点击发布/修改博客时调用的方法
+    async addBlog() {
       // 判断标题和内容是否为空
       if (!this.blogInfo.title || !this.blogInfo.content) {
         return this.$Message.warning("标题和内容不能为空");
       }
+      // 判断标题长度是否合法
       if (this.blogInfo.title.length < 5 || this.blogInfo.title.length > 30) {
         return this.$Message.warning("标题不能少于五位且不能大于三十位");
       }
+      // 去掉HTML标签和空格后，判断内容长度是否合法
       let str = this.blogInfo.content.replace(/<[^<>]+>/g, "");
       str = str.replace(/\s*/g, "");
       if (str.length < 20) {
         return this.$Message.warning("内容不能少于20位");
       }
-      // 判断博客详情是否正确
+      // 进行表单验证
       this.$refs["blogInfo"].validate(async (valid) => {
         if (!valid) {
           return false;
         }
-        let ft = new Set();
-        // 转换下父标签数据
+        // 使用Set去重并获取父标签
+        let fatherTagSet = new Set();
         for (const item of this.tagsMap.values()) {
-          ft.add(item);
+          fatherTagSet.add(item);
         }
+        // 将标签和父标签转为JSON字符串
         let tags = JSON.stringify(this.blogInfo.tags);
-        let fatherTags = JSON.stringify([...ft]);
-
-        // 博客存在修改博客信息
+        let fatherTags = JSON.stringify([...fatherTagSet]);
+        // 如果博客存在，则修改博客信息
         if (this.$route.params.blogId) {
           let  result = await this.$Request("/blog/update", {
             id:this.$route.params.id,
@@ -230,7 +233,7 @@ export default {
             // 跳转路由
             this.$router.back();
           }
-        } else {
+        } else { // 否则添加新博客
           let result = await this.$Request("/blog/add", {
             ...this.blogInfo,
             tags,
@@ -242,20 +245,22 @@ export default {
             this.$router.push('/');
           }
         }
-
       });
     },
-
     // 获取文章前150个字
     getSummary() {
+      // 去掉HTML标签和空格
       let str = this.blogInfo.content.replace(/<[^<>]+>/g, "");
       str = str.replace(/\s*/g, "");
+      // 获取前150个字符
       this.blogInfo.summary = str.substring(0, 200);
+      // let str = this.blogInfo.content.replace(/<[^<>]+>/g, "");
+      // str = str.replace(/\s*/g, "");
+      // this.blogInfo.summary = str.substring(0, 200);
     },
 
     // 获取需要修改的博客信息
     async getBlogDetail() {
-
       let result = await this.$Request(
           "/blog/getDetail",
           {id: this.$route.params.blogId},
@@ -279,15 +284,6 @@ export default {
     if (this.$route.params.blogId) {
       this.getBlogDetail()
     }
-    console.log(this.blogInfo.markdownContent);
-    // setTimeout(() => {
-    //   console.log(this.fatherTags[0]);
-    //   this.tags = getSonTags(
-    //     this.$store.state.categoryTags,
-    //     this.fatherTags[0]
-    //   );
-    //   this.currentFatherTag = this.fatherTags[0];
-    // }, 1000);
   },
   computed: {
     categoryTags() {
@@ -298,32 +294,11 @@ export default {
     },
   },
   watch: {
-    // categoryTags: function (newval, oldval) {
-    //   this.tags = getSonTags(newval, this.fatherTags[0]);
-    //   this.currentFatherTag = this.fatherTags[0];
-    // },
     fatherTags: function (newval, oldval) {
       this.tags = getSonTags(this.$store.state.categoryTags, newval[0]);
       this.currentFatherTag = newval[0];
     },
   },
-
-  // watch:{
-  //   dialogVisibleTags:function(val,oldval){
-  //     if(val) {
-  //       let body = document.querySelector('.add-blog');
-  //       console.log(body);
-  //       body.addEventListener('click',() => {
-  //        this.dialogVisibleTags = false;
-  //       },true)
-  //     }else{
-  //       let body = document.querySelector('.add-blog');
-  //       body.removeEventListener('click',() => {
-  //         this.dialogVisibleTags = true;
-  //       },true)
-  //     }
-  //   }
-  // }
 };
 </script>
 

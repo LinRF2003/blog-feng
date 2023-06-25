@@ -90,38 +90,34 @@ export default {
     },
     // 点击子标签
     clickTags(tag) {
-      // console.log(this.tagsMap.get(tag) == this.currentFatherTag);
-      // 判断tags中是否已有此标签
-      // if (this.tagsMap.get(tag) == this.currentFatherTag) {
+      // 判断标签是否已经存在于 tagsMap 中
       if (this.tagsMap.has(tag)) {
+        // 如果存在，就删除这个标签
         this.tagsMap.delete(tag);
-        // 刷新数据，防止页面不变化
-        this.changeFatherTag(this.currentFatherTag);
-        this.$emit("changeTags", this.tagsMap);
-        // 删除数据
-        return;
+      } else {
+        // 如果不存在，就添加这个标签到 tagsMap 中
+
+        // 判断是否已经有5个标签
+        if (this.tagsMap.size >= 5) {
+          return this.$Message.warning('标签不能超过五个');
+        }
+
+        // 创建一个 Set 集合用来保存所有父标签，然后把已经在 tagsMap 中的父标签加入这个集合
+        const fatherTags = new Set(this.tagsMap.values());
+        fatherTags.add(this.currentFatherTag);
+
+        // 判断是否有3个及以上的父标签
+        if (fatherTags.size > 3) {
+          return this.$Message.warning('父标签不能大于三个');
+        }
+
+        // 添加标签和父标签到 tagsMap 中
+        this.tagsMap.set(tag, this.currentFatherTag);
       }
-      // 判断标签是否超过5个
-      if (this.tagsMap.size >= 5) {
-        return this.$Message.warning("标签不能超过五个");
-      }
-      // 父标签最多为3个
-      // 设置标签map 利于查找父标签
-      let ft = new Set();
-      // 转换下父标签数据
-      for (const item of this.tagsMap.values()) {
-        console.log(item)
-        ft.add(item);
-      }
-      ft.add(this.currentFatherTag);
-      // 父标签不能大于3个
-      if (ft.size > 3) {
-        return this.$Message.warning("父标签不能大于三个");
-      }
-      this.tagsMap.set(tag, this.currentFatherTag);
-      // 刷新数据，防止页面不变化
+
+      // 刷新视图，并且发射一个事件通知父组件
       this.changeFatherTag(this.currentFatherTag);
-      this.$emit("changeTags", this.tagsMap);
+      this.$emit('changeTags', this.tagsMap);
     },
   },
   computed: {

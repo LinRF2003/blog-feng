@@ -34,7 +34,6 @@ exports.main = async (req, res) => {
             // bcc: '密送',
             subject: '登录验证码',
             text
-
         };
         mailTransport.sendMail(options, function (err, msg) {
             if (err) {
@@ -56,12 +55,13 @@ exports.main = async (req, res) => {
         // 如果验证码存在redis中，判断时间是否大于60秒；
         if (val) {
             let oldTime = val.substring(6);
-            if ((oldTime - Date.now()) / 1000 > 60) {
+            console.log((Date.now() - oldTime) / 1000 > 60);
+            console.log((Date.now() - parseInt(oldTime)) / 1000)
+            if ((Date.now() - oldTime) / 1000 > 60) {
                 sendEmail();
+                return;
             }
             return res.sm2('60秒内只能请求一次');
-
-            return true;
         } else {
             console.log('false');
             // 发送验证码
