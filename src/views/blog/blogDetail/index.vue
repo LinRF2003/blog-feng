@@ -4,24 +4,23 @@
     <div class="left">
       <div class="blog-title">{{ blogInfo.title }}</div>
       <div class="detail-blog-info">
-        <div class="blog-createTime">{{
-            blogInfo.createTime
-          }}
-        </div>
+        <div class="blog-createTime">{{ blogInfo.createTime }}</div>
         作者：
-        <router-link class="user-name" :to="`/userCenter/${blogInfo.userId}`">{{ blogInfo.userName }}</router-link>
+        <router-link class="user-name" :to="`/userCenter/${blogInfo.userId}`">{{
+          blogInfo.userName
+        }}</router-link>
         类型：
         <div class="type">{{ blogInfo.type == 0 ? "原创" : "转载" }}</div>
         <div v-if="blogInfo.type == 1" class="reprint">
           转载地址：
           <a
-              :href="`${
+            :href="`${
               blogInfo.reprintUrl.indexOf('http') == 0
                 ? blogInfo.reprintUrl
                 : 'http://' + blogInfo.reprintUrl
             }`"
-              target="_blank"
-          >{{ blogInfo.reprintUrl }}</a
+            target="_blank"
+            >{{ blogInfo.reprintUrl }}</a
           >
         </div>
       </div>
@@ -33,11 +32,11 @@
       <div class="title">
         <div v-if="!catelog.length" class="catalog">空空如也</div>
         <a
-            class="item"
-            v-for="item in catelog"
-            :key="item.id"
-            :href="'#' + item.id"
-            :style="{ marginLeft: `${15 * item.leval}px` }"
+          class="item"
+          v-for="item in catelog"
+          :key="item.id"
+          :href="'#' + item.id"
+          :style="{ marginLeft: `${15 * item.leval}px` }"
         >
           {{ item.title }}
         </a>
@@ -45,27 +44,34 @@
     </div>
     <!-- 评论 -->
     <div class="comment" v-if="blogInfo.allowComment" id="comment">
-      <div style="font-weight: 550; margin-bottom: 10px; font-size: 18px">评论</div>
+      <div style="font-weight: 550; margin-bottom: 10px; font-size: 18px">
+        评论
+      </div>
       <!-- 评论框 -->
       <div class="comment-box">
         <div class="comment-box-avatar">
-          <img :src="$store.state.userInfo?.avatar" alt="">
+          <img :src="$store.state.userInfo?.avatar" alt="" />
         </div>
         <div class="input-box">
-          <textarea class="input" v-model="commentContent"
-                    placeholder="善言结善语，恶语伤人心"></textarea>
-          <el-button
-              type="primary"
-              class="button" @click="addComment">发布评论
+          <textarea
+            class="input"
+            v-model="commentContent"
+            placeholder="善言结善语，恶语伤人心"
+          ></textarea>
+          <el-button type="primary" class="button" @click="addComment"
+            >发布评论
           </el-button>
         </div>
       </div>
       <!-- 评论列表 -->
       <div v-for="item in commentList" :key="item.id">
-        <CommentItem :item="item" :current-user-id="blogInfo.userId" @deleteComment="deleteComment"
-                     @addCommentReply="addCommentReply"></CommentItem>
+        <CommentItem
+          :item="item"
+          :current-user-id="blogInfo.userId"
+          @deleteComment="deleteComment"
+          @addCommentReply="addCommentReply"
+        ></CommentItem>
       </div>
-
     </div>
     <!-- 左边固定点赞评论 -->
     <div class="float">
@@ -74,10 +80,9 @@
         <div class="count">{{ blogInfo.likeCount }}</div>
       </div>
       <a href="#comment" class="pinglun"
-      ><i class="el-icon-chat-line-round"></i>
+        ><i class="el-icon-chat-line-round"></i>
         <div class="count">{{ blogInfo.commentCount }}</div>
-      </a
-      >
+      </a>
     </div>
   </div>
 </template>
@@ -86,7 +91,7 @@
 //代码高亮样式
 import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-light.css";
-import {formatDate} from "@/utils/methods";
+import { formatDate } from "@/utils/methods";
 import CommentItem from "@/components/CommentItem";
 
 export default {
@@ -106,16 +111,15 @@ export default {
     };
   },
   components: {
-    CommentItem
+    CommentItem,
   },
   methods: {
     // 根据路由博客id获取博客详情
     async getBlogDetail() {
       this.loading = true;
-      let result = await this.$Request(
-          "/blog/getDetail",
-          {id: this.$route.params.id},
-      );
+      let result = await this.$Request("/blog/getDetail", {
+        id: this.$route.params.id,
+      });
 
       if (result.code === 200) {
         this.blogInfo = result.data[0];
@@ -157,12 +161,9 @@ export default {
 
     // 获取评论列表
     async getCommentList() {
-      let result = await this.$Request(
-          "/blog/getComment",
-          {
-            blogId: this.$route.params.id,
-          },
-      );
+      let result = await this.$Request("/blog/getComment", {
+        blogId: this.$route.params.id,
+      });
 
       if (result.code === 200) {
         this.commentList = result.data;
@@ -185,16 +186,13 @@ export default {
 
     // 添加评论
     async addComment() {
-      let result = await this.$Request(
-          "/blog/addComment",
-          {
-            content: this.commentContent,
-            blogId: this.blogInfo.id,
-            avatar: this.$store.state.userInfo.avatar,
-            userName: this.$store.state.userInfo.userName,
-            userId: this.$store.state.userInfo.userId
-          },
-      );
+      let result = await this.$Request("/blog/addComment", {
+        content: this.commentContent,
+        blogId: this.blogInfo.id,
+        avatar: this.$store.state.userInfo.avatar,
+        userName: this.$store.state.userInfo.userName,
+        userId: this.$store.state.userInfo.userId,
+      });
       // 重新获取评论
       if (result.code === 200) {
         this.commentList.unshift({
@@ -204,8 +202,8 @@ export default {
           avatar: this.$store.state.userInfo.avatar,
           userName: this.$store.state.userInfo.userName,
           createTime: formatDate(new Date()),
-          replyList:[]
-        })
+          replyList: [],
+        });
         this.commentContent = "";
         this.blogInfo.commentCount += 1;
         this.showEditor = false;
@@ -233,13 +231,10 @@ export default {
     async changeLike() {
       if (this.choose) {
         this.choose = false;
-        let result = await this.$Request(
-            "/blog/changeLikeNum",
-            {
-              count: !this.like ? 1 : -1,
-              id: this.$route.params.id,
-            }
-        );
+        let result = await this.$Request("/blog/changeLikeNum", {
+          count: !this.like ? 1 : -1,
+          id: this.$route.params.id,
+        });
         // console.log(result);
         if (result.code === 200) {
           this.like = !this.like;
@@ -256,51 +251,54 @@ export default {
       }
     },
     async getLikeState() {
-      let result = await this.$Request('/blog/getLikeState', {id: this.$route.params.id});
+      let result = await this.$Request("/blog/getLikeState", {
+        id: this.$route.params.id,
+      });
       if (result.code === 200) {
         this.like = result.data;
       }
     },
     // 删除评论
     async deleteComment(id) {
-      let result = await this.$Request('/blog/delComment', {commentId: id, blogId: this.$route.params.id});
+      let result = await this.$Request("/blog/delComment", {
+        commentId: id,
+        blogId: this.$route.params.id,
+      });
       if (result.code === 200) {
         this.$Message.success("删除评论成功");
         // 删除评论
         this.commentList = this.commentList.filter((item) => {
-          return item.id !== id
-        })
+          return item.id !== id;
+        });
       }
     },
     // 添加评论回复
     async addCommentReply(info, callback) {
-      console.log(info)
+      console.log(info);
       let result = await this.$Request("/blog/addBlogCommentReply", {
         content: info.content,
         blogCommentId: info.id,
         toUserId: info.toUserId,
-        toUserName: info.toUserName
-      })
+        toUserName: info.toUserName,
+      });
       if (result.code === 200) {
         // 添加回复评论replyList
-        const obj = this.commentList.find(item => item.id === info.id
-        )
-        console.log(obj)
-          obj.replyList.unshift({
-            id: result.id,
-            blogCommentId: info.id,
-            userId: this.$store.state.userInfo.userId,
-            content: info.content,
-            avatar: this.$store.state.userInfo.avatar,
-            userName: this.$store.state.userInfo.userName,
-            toUserName: info.toUserName,
-            createTime: formatDate(new Date()),
-            toUserId: info.toUserId
-          })
+        const obj = this.commentList.find((item) => item.id === info.id);
+        console.log(obj);
+        obj.replyList.unshift({
+          id: result.id,
+          blogCommentId: info.id,
+          userId: this.$store.state.userInfo.userId,
+          content: info.content,
+          avatar: this.$store.state.userInfo.avatar,
+          userName: this.$store.state.userInfo.userName,
+          toUserName: info.toUserName,
+          createTime: formatDate(new Date()),
+          toUserId: info.toUserId,
+        });
         callback("添加成功");
       }
     },
-
   },
   mounted() {
     // 获取博客详情
@@ -460,12 +458,10 @@ export default {
       }
     }
 
-
     div[contenteditable]:empty:not(:focus):before {
       content: attr(placeholder);
       color: #aaa;
     }
-
   }
 
   .float {
@@ -503,7 +499,6 @@ export default {
         color: #666;
       }
     }
-
   }
 }
 </style>
@@ -529,5 +524,13 @@ img {
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
+}
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+code {
+  background: #fafafa;
+  padding: 5px;
 }
 </style>
