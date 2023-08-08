@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors')
 // 将 cors 注册为全局中间件
 app.use(cors({
-    origin: ['http://127.0.0.1:8080', 'http://127.0.0.1:8081','http://localhost:8081','http://localhost:8080'],//可设置多个跨域
+    origin: ['http://127.0.0.1:8080', 'http://127.0.0.1:8081', 'http://localhost:8081', 'http://localhost:8080'],//可设置多个跨域
     credentials: true//允许客户端携带验证信息
 }))
 
@@ -17,8 +17,8 @@ const requestLimit = '5120kb';
 
 
 // 解析表单的中间件
-app.use(express.urlencoded({extended: false, limit: requestLimit}));
-app.use(bodyParser.json({limit: requestLimit}));
+app.use(express.urlencoded({ extended: false, limit: requestLimit }));
+app.use(bodyParser.json({ limit: requestLimit }));
 // 解析post请求数据
 // app.use(express.urlencoded({ extended: true }))
 // app.use(express.json())
@@ -26,7 +26,7 @@ app.use(bodyParser.json({limit: requestLimit}));
 // app.use(cors({ origin: "http://localhost:8081" }))
 // 导入配置文件
 const config = require('./config')
-const {NO_LOGIN} = require('./common/errorCode');
+const { NO_LOGIN } = require('./common/errorCode');
 // 解析 token 的中间件
 const expressJWT = require('express-jwt')
 // 暴露静态资源
@@ -34,7 +34,7 @@ app.use(express.static('public'))
 
 // 使用 .unless({ path: [/^\/api\//] }) 指定哪些接口不需要进行 Token 的身份认证
 // app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api\//] }))
-app.use(expressJWT({secret: config.jwtSecretKey}).unless({path: ['/api/login', '/api/register', '/api/imgUpload', '/api/email/send', '/api/test', '/api/get', /^\/images\/.*/]}))
+app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: ['/api/login', '/api/register', '/api/imgUpload', '/api/email/send',/\/api\/lin\//, /^\/images\/.*/] }))
 // , /^\/api\/question\//
 
 
@@ -44,7 +44,7 @@ app.use(require('./utils/respond.js'));
 // 错误中间件
 app.use(function (err, req, res, next) {
     // 捕获身份认证失败的错误
-    if (err.name === 'UnauthorizedError') return res.send({...NO_LOGIN});
+    if (err.name === 'UnauthorizedError') return res.send({ ...NO_LOGIN });
     // google需要配置，否则报错cors error
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     // 允许的地址 http://127.0.0.1:9000 这样的格式

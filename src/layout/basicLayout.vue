@@ -14,21 +14,30 @@
             >{{ item.name }}
           </router-link>
           <router-link
-              :to="`/userCenter/${userInfo?.userId}`"
-              :class="['navitem',userInfo?.userId && userInfo?.userId == $route.params.id? 'active' : ''] "
-          >个人中心
+            :to="`/userCenter/${userInfo?.userId}`"
+            :class="[
+              'navitem',
+              userInfo?.userId && userInfo?.userId == $route.params.id
+                ? 'active'
+                : '',
+            ]"
+            >个人中心
           </router-link>
         </div>
         <div class="search">
           <el-input
-              v-if="$route.name != '搜索'"
+            v-if="$route.name != '搜索'"
             placeholder="请输入内容"
             v-model="content"
             class="input-with-select"
             clearable
-              @keyup.enter.native="search"
+            @keyup.enter.native="search"
           >
-            <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+            <el-button
+              slot="append"
+              icon="el-icon-search"
+              @click="search"
+            ></el-button>
           </el-input>
         </div>
         <div class="user">
@@ -46,11 +55,11 @@
             >添加问题</router-link
           >
           <router-link
-              to="/addDynamic"
-              target="_blank"
-              class="addBlog"
-              v-if="$route.path == '/dynamic'"
-          >添加动态</router-link
+            to="/addDynamic"
+            target="_blank"
+            class="addBlog"
+            v-if="$route.path == '/dynamic'"
+            >添加动态</router-link
           >
           欢迎进入，
           <div></div>
@@ -99,9 +108,9 @@ export default {
           path: "/question",
         },
         {
-          name:"动态",
-          path: "/dynamic"
-        }
+          name: "动态",
+          path: "/dynamic",
+        },
       ],
       // 导航选中路径
       activePath: "",
@@ -111,7 +120,7 @@ export default {
   watch: {
     // 监听路由高亮当前所在页面
     $route(to, from) {
-      console.log(111)
+      console.log(111);
       // console.log(from); //从哪来
       this.activePath = to.meta.activePath; //到哪去
     },
@@ -132,12 +141,14 @@ export default {
     // 退出登录
     logout() {
       this.$Message.success("退出成功");
+      // 去掉 localStorage 中 token 的信息
+      localStorage.removeItem("token");
       this.$router.push("/login");
+      // this.$store.dispatch("SETUSERINFO", {});
     },
-    search(){
-
-      this.$router.push(`/search/blog?text=${this.content}`)
-    }
+    search() {
+      this.$router.push(`/search/blog?text=${this.content}`);
+    },
   },
 };
 </script>
@@ -180,7 +191,7 @@ export default {
             //background-image:-webkit-linear-gradient(bottom,red,#fd8403,yellow);
             //-webkit-background-clip:text;
             //-webkit-text-fill-color:transparent;
-            background: linear-gradient(to left, #F902FF, #00DBDE);
+            background: linear-gradient(to left, #f902ff, #00dbde);
             -webkit-background-clip: text;
             color: transparent;
           }
@@ -265,8 +276,6 @@ export default {
     line-height: 25px;
   }
 }
-
-
 </style>
 <style>
 ::-webkit-scrollbar {

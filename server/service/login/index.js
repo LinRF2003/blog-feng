@@ -18,7 +18,7 @@ const config = require('../../config');
 
 // 引入数据库文件   
 const db = require('../../db/index')
-const {sha1} = require("mysql/lib/protocol/Auth");
+
 
 exports.main = (req, res) => {
     const { email, password } = req.body;

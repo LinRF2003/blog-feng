@@ -87,7 +87,7 @@ export default {
       canSend: true, // 是否可以发送验证码请求
       captchaSecond: 0,// 倒计时剩余秒数
       timer: null, // 定时器
-      // 表单验证规程
+      // 表单验证规则
       rules: {
         email: [
           {
@@ -152,7 +152,7 @@ export default {
           }
           this.$router.push("/login");
         } else {
-          this.$Message.warning(result.desc);
+          this.$Message.warning(result.message);
         }
       });
 
@@ -178,7 +178,7 @@ export default {
         clearInterval(this.timer);
         this.timer = null;
         this.canSend = true;
-        this.captchaSecond = 60;
+        // this.captchaSecond = 60;
       }
     }
   },
@@ -214,7 +214,7 @@ export default {
     .register {
       color: #333;
       position: absolute;
-      top: 300px;
+      top: 295px;
       right: 20px;
       font-size: 12px;
     }

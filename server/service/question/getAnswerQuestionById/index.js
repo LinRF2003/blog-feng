@@ -16,7 +16,7 @@ exports.main = async (req, res) => {
     pageSize = parseInt(pageSize);
     pageNo = parseInt(pageNo);
 
-    // 定义sql语句 获取评论过的博客信息
+    // 定义sql语句 获取回答过的信息
     const sql = `select distinct questionId from question_answer where userId = ${id}`
     db.query(sql, async (err, results) => {
         if (err) {

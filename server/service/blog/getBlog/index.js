@@ -1,4 +1,4 @@
-// 引入数据库文件   
+// 引入数据库文件
 const db = require('../../../db/index')
 
 const {
@@ -20,11 +20,11 @@ exports.main = async (req, res) => {
     }
     let sql = '';
     if (order === 'hot') {
-        sql = `select * from blog where isDelete = 0 and tags like '%${tag}%' and fatherTags like '%${fatherTag}%' order by views desc, createTime desc limit ?,?;
+        sql = `select id,userId,userName,avatar,title,cover,summary,likeCount,views,commentCount,createTime from blog where isDelete = 0 and tags like '%${tag}%' and fatherTags like '%${fatherTag}%' order by views desc, createTime desc limit ?,?;
                      select count(*) count from blog where isDelete = 0 and tags like '%${tag}%' and fatherTags like '%${fatherTag}%';`
 
     } else {
-        sql = `select * from blog where isDelete = 0 and tags like '%${tag}%' and fatherTags like '%${fatherTag}%' order by createTime desc limit ?,?;
+        sql = `select id,userId,userName,avatar,title,cover,summary,likeCount,views,commentCount,createTime from blog where isDelete = 0 and tags like '%${tag}%' and fatherTags like '%${fatherTag}%' order by createTime desc limit ?,?;
         select count(*) count from blog where isDelete = 0 and tags like '%${tag}%' and fatherTags like '%${fatherTag}%'`
     }
     await getPage(res, sql, pageNo, pageSize);

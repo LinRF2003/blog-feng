@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 
 Vue.config.productionTip = false
-import { Button,Form,FormItem,Input,Checkbox,Radio,RadioGroup,Image,Select,Option,Upload,Tag,Dialog,Divider,Loading,Pagination,DatePicker,Dropdown,DropdownMenu,DropdownItem,Tabs,TabPane} from 'element-ui';
+import { Button, Form, FormItem, Input, Checkbox, Radio, RadioGroup, Image, Select, Option, Upload, Tag, Dialog, Divider, Loading, Pagination, DatePicker, Dropdown, DropdownMenu, DropdownItem, Tabs, TabPane } from 'element-ui';
 Vue.use(Button);
 Vue.use(Tabs);
 Vue.use(TabPane);
@@ -37,6 +37,10 @@ Vue.prototype.$Request = Request;
 // 引入封装的message
 import Message from '@/utils/Message';
 Vue.prototype.$Message = Message;
+// 引入全局上传文件的路径
+import { UploadAction } from './utils/config';
+Vue.prototype.$UploadAction = UploadAction;
+
 
 // 引入markdonw编辑器
 import MarkdownEditor from "@/components/MarkdownEditor";

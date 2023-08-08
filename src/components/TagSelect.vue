@@ -70,7 +70,7 @@ export default {
   },
   data() {
     return {
-      currentFatherTag: "python", // 当前父标签
+      currentFatherTag: "前端", // 当前父标签
       dialogVisibleTags: true, // 标签选中框是否显示
       tags: [], // 标签列表
       // tagsMap: new Map(), // 选中的标签列表

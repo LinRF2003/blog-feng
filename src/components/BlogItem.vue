@@ -3,35 +3,38 @@
     <div class="top">
       <div class="avatar">
         <el-image
-            v-if="blogInfo?.avatar"
-            class="avatar-image"
-            :lazy="true"
-            :src="blogInfo?.avatar"
-            :preview-src-list="[blogInfo?.avatar]"
+          v-if="blogInfo?.avatar"
+          class="avatar-image"
+          :lazy="true"
+          :src="blogInfo?.avatar"
+          :preview-src-list="[blogInfo?.avatar]"
         ></el-image>
       </div>
-      <router-link class="name" :to="`/userCenter/${blogInfo.userId}`">{{ blogInfo.userName }}</router-link>
+      <router-link class="name" :to="`/userCenter/${blogInfo.userId}`">{{
+        blogInfo.userName
+      }}</router-link>
       <el-divider class="divider" direction="vertical"></el-divider>
       <div class="time">{{ blogInfo.createTime }}</div>
     </div>
     <div class="content">
       <div class="left" v-if="blogInfo.cover">
         <el-image
-            class="image"
-            :lazy="true"
-            :src="blogInfo.cover"
-            :preview-src-list="[blogInfo.cover]"
+          class="image"
+          :lazy="true"
+          :src="blogInfo.cover"
+          :preview-src-list="[blogInfo.cover]"
         ></el-image>
       </div>
       <div class="right">
-        <a class="title" target="_blank" @click="addViews">{{ blogInfo.title }}</a>
+        <a class="title" target="_blank" @click="addViews">{{
+          blogInfo.title
+        }}</a>
         <div class="summary">{{ blogInfo.summary }}</div>
         <div class="bottom">
           <div class="view">{{ blogInfo.views }} 浏览</div>
-          <a
-              :class="['like', isLike ? 'active' : '']"
-              @click="changeLike"
-          >{{ blogInfo.likeCount }} 赞</a>
+          <a :class="['like', isLike ? 'active' : '']" @click="changeLike"
+            >{{ blogInfo.likeCount }} 赞</a
+          >
           <div class="comment">{{ blogInfo.commentCount }} 评论</div>
         </div>
       </div>
@@ -44,12 +47,12 @@ export default {
   name: "",
   data() {
     return {
-      choose: true,  // 是否可执行点赞/取消点赞请求
-      isLike: false  // 是否已点赞
+      choose: true, // 是否可执行点赞/取消点赞请求
+      isLike: false, // 是否已点赞
     };
   },
   props: {
-    blogInfo: {type: Object, required: true},
+    blogInfo: { type: Object, required: true },
     like: {
       type: Boolean,
     },
@@ -57,7 +60,7 @@ export default {
   methods: {
     // 增加浏览量
     addViews() {
-      this.$Request("/blog/addViews", {id: this.blogInfo.id});
+      this.$Request("/blog/addViews", { id: this.blogInfo.id });
       // 新页面打开
       // let routeData = this.$router.resolve({
       //   name: "博客详情",
@@ -66,9 +69,15 @@ export default {
       // });
       // window.open(routeData.href, "_blank");
       // 新窗口打开
-      window.open(this.$router.resolve({name: "博客详情", params: { id: this.blogInfo.id },query:{uid:this.$store.state.userInfo.id}}).href, "_blank");
+      window.open(
+        this.$router.resolve({
+          name: "博客详情",
+          params: { id: this.blogInfo.id },
+          query: { uid: this.$store.state.userInfo.id },
+        }).href,
+        "_blank"
+      );
       // window.open(this.$router.resolve(`blogdetail/${this.blogInfo.id}?uid=${this.$store.state.userInfo.userId}`).href, "_blank");
-
 
       // 原页面打开
       // this.$nextTick(() => {  // 使用 $nextTick，等待组件更新后再执行跳转
@@ -101,9 +110,10 @@ export default {
     // },
     // 改变点赞
     async changeLike() {
-      if (!this.choose) return;  // 如果不能执行点赞/取消点赞请求，则直接返回
+      if (!this.choose) return; // 如果不能执行点赞/取消点赞请求，则直接返回
       this.choose = false;
-      let result = await this.$Request("/blog/changeLikeNum", {  // 发送点赞/取消点赞的异步请求
+      let result = await this.$Request("/blog/changeLikeNum", {
+        // 发送点赞/取消点赞的异步请求
         count: !this.isLike ? 1 : -1,
         id: this.blogInfo.id,
       });
@@ -113,9 +123,9 @@ export default {
       }
       let o = Date.now();
       this.$nextTick(() => {
-        console.log(o)
-        console.log(Date.now() - o)
-        this.choose = true;  // 使用 $nextTick，等待组件更新后再允许执行点赞/取消点赞请求
+        console.log(o);
+        console.log(Date.now() - o);
+        this.choose = true; // 使用 $nextTick，等待组件更新后再允许执行点赞/取消点赞请求
       });
     },
   },
@@ -173,11 +183,11 @@ export default {
     .left {
       overflow: hidden;
       background: #f4f4f4;
-
+      min-height: 100px;
+      min-width: 100px;
       .image {
         text-align: center;
-        //width: 160px;
-        height: 100px;
+        width: 100px;
       }
     }
 
@@ -230,7 +240,6 @@ export default {
         }
       }
     }
-
   }
 }
 </style>

@@ -18,7 +18,7 @@ exports.main = (req, res) => {
     let sql;
     if (category === 'blog') {
         // 定义sql
-        sql = `select * from blog where concat(title,content,summary,fatherTags,tags) like '%${content}%' and isDelete = 0 order by createTime desc limit ?,?;
+        sql = `select id,userId,userName,avatar,title,cover,summary,likeCount,views,commentCount,createTime from blog where concat(title,content,summary,fatherTags,tags) like '%${content}%' and isDelete = 0 order by createTime desc limit ?,?;
     select count(*) count from blog where concat(title,content,summary,fatherTags,tags) like '%${content}%' and isDelete = 0;`
     } else if (category === 'question') {
         // 定义sql

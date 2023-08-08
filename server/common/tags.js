@@ -36,6 +36,22 @@ exports.tags = [
             {
                 id: 10005,
                 name: '前端',
+            },
+            {
+                id: 10006,
+                name: 'css',
+            },
+            {
+                id: 10007,
+                name: 'React'
+            },
+            {
+                id: 10008,
+                name: 'Vue'
+            },
+            {
+                id: 10009,
+                name: 'Node'
             }
         ]
     },

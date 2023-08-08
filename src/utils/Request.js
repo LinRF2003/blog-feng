@@ -1,8 +1,8 @@
 import axios from 'axios';
-
+import { BASEURL } from "../utils/config"
 //创建axios的一个实例
 let request = axios.create({
-    baseURL: 'http://127.0.0.1:3030/api',//接口统一域名
+    baseURL: BASEURL,//接口统一域名
     timeout: 5000,//设置超时
     withCredentials: true,//关键
     headers: {
@@ -14,7 +14,7 @@ let request = axios.create({
 request.interceptors.request.use(function (config) {
     // 取出token
     const token = window.localStorage.getItem("token");
-    if(token){
+    if (token) {
         config.headers.Authorization = token;
     }
     return config;

@@ -4,7 +4,7 @@
 
   <el-upload
       class="avatar-uploader"
-      action="http://127.0.0.1:3030/api/imgUpload"
+      :action="$UploadAction"
       :show-file-list="false"
       :on-success="handleAvatarSuccess"
       :before-upload="beforeAvatarUpload"

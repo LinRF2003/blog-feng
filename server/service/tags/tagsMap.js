@@ -1,4 +1,16 @@
 exports.categoryTags = {
+    前端: {
+        tags: [
+            'html',
+            'css',
+            'javascript',
+            'typescript',
+            'react',
+            'nodejs',
+            'vue',
+            'angular',
+        ],
+    },
     python: {
         tags: ['django', 'scrapy', 'tornado', 'flask'],
     },
@@ -40,17 +52,7 @@ exports.categoryTags = {
     php: {
         tags: ['apache',],
     },
-    前端: {
-        tags: [
-            'html',
-            'css',
-            'javascript',
-            'typescript',
-            'nodejs',
-            'vue',
-            'angular',
-        ],
-    },
+
     ios: {
         tags: ['swift',],
     },

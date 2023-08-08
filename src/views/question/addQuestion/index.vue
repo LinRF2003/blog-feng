@@ -111,7 +111,18 @@ export default {
     },
     // 提交问题
     async submitQuestion() {
-      console.log(this.markdownContent)
+      if(!this.content){
+        this.$Message.warning("内容不能为空");
+        return;
+      }
+      if(!this.title){
+        this.$Message.warning("标题不能为空")
+        return;
+      }
+      if(this.tags.length < 1){
+        this.$Message.warning("标签不能为空")
+        return;
+      }
       let result = await this.$Request("/question/add", {
         title: this.title,
         content: this.content,
