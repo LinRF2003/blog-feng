@@ -8,8 +8,6 @@ const getPage = async (res,sql, pageNo, pageSize) => {
             console.log(err)
             return res.err(SYSTEM_ERROR);
         }
-        // console.log('methoid')
-        // console.log(results)
         let totalCount = results[1][0].count;// 符合条件的总条数
         if (totalCount === 0) {
             return res.success({

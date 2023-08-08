@@ -115,7 +115,13 @@ router.post("/dynamic/delComment", require("../service/dynamic/deleteDynamicComm
 // Lin-Blog 相关接口
 // 获取博客分类
 router.post("/lin/getCategory", require("../service/lin-blog/getBlogCategoty/index").main)
+// 获取博客
 router.post("/lin/getBlog", require("../service/lin-blog/getBlog/index").main)
-
+// 获取分类数据及博客
+router.post("/lin/getCategoryDetail", require("../service/lin-blog/getCategoryDetail/index").main)
+// 获取阅读量前十的博客
+router.post("/lin/getHot", require("../service/lin-blog/getHotBlog/index").main)
+// 搜索博客
+router.post("/lin/search", require("../service/lin-blog/searchBlog/index").main)
 
 module.exports = router
