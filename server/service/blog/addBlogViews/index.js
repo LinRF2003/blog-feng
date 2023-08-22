@@ -1,5 +1,5 @@
 // 引入数据库文件   
-const { SYSTEM_ERROR } = require('../../../common/errorCode');
+const { SYSTEM_ERROR, PARAMS_ERROR } = require('../../../common/errorCode');
 const db = require('../../../db/index')
 
 /**

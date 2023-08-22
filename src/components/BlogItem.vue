@@ -2,13 +2,15 @@
   <div class="blog-item">
     <div class="top">
       <div class="avatar">
-        <el-image
-          v-if="blogInfo?.avatar"
-          class="avatar-image"
-          :lazy="true"
-          :src="blogInfo?.avatar"
-          :preview-src-list="[blogInfo?.avatar]"
-        ></el-image>
+<!--        <el-image-->
+<!--          v-if="blogInfo?.avatar"-->
+<!--          class="avatar-image"-->
+<!--          :lazy="true"-->
+<!--          :src="blogInfo?.avatar"-->
+<!--          :preview-src-list="[blogInfo?.avatar]"-->
+<!--        ></el-image>-->
+        <img :src="blogInfo?.avatar" alt="">
+
       </div>
       <router-link class="name" :to="`/userCenter/${blogInfo.userId}`">{{
         blogInfo.userName
@@ -18,26 +20,27 @@
     </div>
     <div class="content">
       <div class="left" v-if="blogInfo.cover">
-        <el-image
-          class="image"
-          :lazy="true"
-          :src="blogInfo.cover"
-          :preview-src-list="[blogInfo.cover]"
-        ></el-image>
+<!--        <el-image-->
+<!--          class="image"-->
+<!--          :lazy="true"-->
+<!--          :src="blogInfo.cover"-->
+<!--          :preview-src-list="[blogInfo.cover]"-->
+<!--        ></el-image>-->
+        <img :src="blogInfo?.cover" alt="" class="image">
       </div>
-      <div class="right">
+      <a class="right">
         <a class="title" target="_blank" @click="addViews">{{
           blogInfo.title
         }}</a>
-        <div class="summary">{{ blogInfo.summary }}</div>
-        <div class="bottom">
-          <div class="view">{{ blogInfo.views }} 浏览</div>
-          <a :class="['like', isLike ? 'active' : '']" @click="changeLike"
+        <div class="summary"  @click="addViews">{{ blogInfo.summary }}</div>
+        <div class="bottom" @click="addViews">
+          <div class="view" @click="addViews">{{ blogInfo.views }} 浏览</div>
+          <a :class="['like', isLike ? 'active' : '']" @click.stop.prevent="changeLike"
             >{{ blogInfo.likeCount }} 赞</a
           >
-          <div class="comment">{{ blogInfo.commentCount }} 评论</div>
+          <div class="comment" @click="addViews">{{ blogInfo.commentCount }} 评论</div>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </template>
@@ -110,6 +113,7 @@ export default {
     // },
     // 改变点赞
     async changeLike() {
+
       if (!this.choose) return; // 如果不能执行点赞/取消点赞请求，则直接返回
       this.choose = false;
       let result = await this.$Request("/blog/changeLikeNum", {
@@ -184,6 +188,7 @@ export default {
       overflow: hidden;
       background: #f4f4f4;
       min-height: 100px;
+      max-height: 100px;
       min-width: 100px;
       .image {
         text-align: center;
@@ -192,14 +197,17 @@ export default {
     }
 
     .right {
+      width: 100%;
       min-width: 160px;
       min-height: 100px;
+      max-height: 100px;
       margin-left: 10px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
 
       .title {
+        width: 100%;
         font-size: 18px;
         font-weight: bold;
         color: var(--main-color);
@@ -215,6 +223,8 @@ export default {
       }
 
       .summary {
+        cursor: pointer;
+        width: 100%;
         font-size: 14px;
         color: #666;
         overflow: hidden;

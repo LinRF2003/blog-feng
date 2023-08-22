@@ -25,12 +25,12 @@
     <PaginationItem
         v-if="!loading"
         :pageNo="pageNo"
-        :pageSize="2"
+        :pageSize="pageSize"
         :totalCount="totalCount"
         :pageTotal="pageTotal"
         @changePageNo="changePageNo"
     ></PaginationItem>
-    <Null v-if="blogList.length == 0 && !loading"></Null>
+    <Null v-if="blogList.length === 0 && !loading"></Null>
   </div>
 </template>
 
@@ -139,6 +139,7 @@ export default {
     }
 
     .operate {
+      margin-left: 10px;
       display: flex;
       align-items: center;
       width: 20%;

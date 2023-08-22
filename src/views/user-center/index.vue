@@ -80,24 +80,24 @@
     </div>
 
     <div class="right">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tabs v-model="activeName">
         <el-tab-pane label="博客" name="blog">
           <BLog @changeCount="changeCount"></BLog>
         </el-tab-pane>
         <el-tab-pane label="评论" name="comment">
-          <Comment @changeCount="changeCount" v-if="currentSelectName === 'comment'"></Comment>
+          <Comment @changeCount="changeCount"></Comment>
         </el-tab-pane>
         <el-tab-pane label="点赞" name="like">
-          <like @changeCount="changeCount" v-if="currentSelectName === 'like'"></like>
+          <like @changeCount="changeCount"></like>
         </el-tab-pane>
         <el-tab-pane label="问答" name="question">
-          <Question @changeCount="changeCount" v-if="currentSelectName === 'question'"></Question>
+          <Question @changeCount="changeCount"></Question>
         </el-tab-pane>
         <el-tab-pane label="回答" name="answer">
-          <Answer @changeCount="changeCount" v-if="currentSelectName === 'answer'"></Answer>
+          <Answer @changeCount="changeCount"></Answer>
         </el-tab-pane>
         <el-tab-pane label="动态" name="dynamic" >
-          <Dynamic @changeCount="changeCount" v-if="currentSelectName === 'dynamic'"></Dynamic>
+          <Dynamic @changeCount="changeCount"></Dynamic>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -138,9 +138,6 @@ export default {
     Dynamic
   },
   methods: {
-    handleClick(e) {
-      this.currentSelectName = e.name;
-    },
     // 改变数量
     changeCount(type, count) {
       if (type === 'blog') {

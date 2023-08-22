@@ -123,5 +123,7 @@ router.post("/lin/getCategoryDetail", require("../service/lin-blog/getCategoryDe
 router.post("/lin/getHot", require("../service/lin-blog/getHotBlog/index").main)
 // 搜索博客
 router.post("/lin/search", require("../service/lin-blog/searchBlog/index").main)
+// 获取分类下的博客数量
+router.post("/lin/getCount", require("../service/lin-blog/getBlogCountByCategory/index").main)
 
 module.exports = router

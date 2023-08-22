@@ -76,10 +76,11 @@ export default {
   methods: {
     // 搜索方法
     async search() {
-      this.loading = true;
+  
       if (this.content === '') {
         return this.$Message.warning("请求数据不能为空");
       }
+          this.loading = true;
       // 搜索内容与之前相同，不做改变
       if (this.content === this.$route.query.text && this.activeName === this.$route.params.category && this.pageNo === this.$route.query.pageNo) {
         return;

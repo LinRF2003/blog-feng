@@ -9,13 +9,20 @@ exports.main = async (req, res) => {
     } = req.body;
     pageSize = parseInt(pageSize);
     pageNo = parseInt(pageNo);
+    const categoryData = categoryList.find(item => {
+        return item.name === tags
+    }) || {};
 
-    let sql = `select id,title,cover,summary,views,commentCount,createTime,tags from blog where tags  REGEXP "${tags}" and userId = 24 and isDelete = 0 limit ?,?;
-                     select count(*) count from blog where tags  REGEXP "${tags}" and userId = 24 and isDelete = 0;`
+    if (tags === 'Node.js') {
+        tags = 'nodejs'
+    }
+
+    let sql = `select id,title,cover,summary,views,commentCount,createTime,tags from blog where tags  like "%${tags}%" and userId = 24 and isDelete = 0 limit ?,?;
+                     select count(*) count from blog where tags  like "%${tags}%" and userId = 24 and isDelete = 0;`
 
     // 博客列表数据
     let blogData = {};
-    // 定义一个 Promise，查询评论回复并将结果存入对应的评论对象中
+    // 定义一个 Promise，查询分类下的博客列表
     const promise = new Promise((resolve, reject) => {
 
         db.query(sql, [(pageNo - 1) * pageSize, pageSize], (err, results) => {
@@ -26,7 +33,22 @@ exports.main = async (req, res) => {
                 console.log(err)
                 return res.err(SYSTEM_ERROR);
             }
+
             let totalCount = results[1][0].count;// 符合条件的总条数
+            // 查询 java 数据时需要把 javascript 的数据去除
+            if (tags === 'Java') {
+                const result = [];
+                results[0].forEach(item => {
+                    if (item.tags.indexOf('javascript') !== -1) {
+                        totalCount -= 1;
+                    } else {
+                        result.push(item);
+                    }
+                })
+                results[0] = result
+            }
+
+
             if (totalCount === 0) {
                 blogData = {
                     pageNo,
@@ -50,8 +72,6 @@ exports.main = async (req, res) => {
         })
     });
     await promise;
-    const categoryData = categoryList.find(item => {
-        return item.name === tags
-    }) || {};
+
     return res.successs({ blogData, categoryData })
 }

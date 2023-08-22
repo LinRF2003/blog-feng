@@ -34,7 +34,7 @@ app.use(express.static('public'))
 
 // 使用 .unless({ path: [/^\/api\//] }) 指定哪些接口不需要进行 Token 的身份认证
 // app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api\//] }))
-app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: ['/api/login', '/api/register', '/api/imgUpload', '/api/email/send',/\/api\/lin\//, /^\/images\/.*/] }))
+app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: ['/api/login', '/api/register', '/api/imgUpload', '/api/email/send', /\/api\/lin\//, /^\/images\/.*/, '/api/blog/getDetail'] }))
 // , /^\/api\/question\//
 
 

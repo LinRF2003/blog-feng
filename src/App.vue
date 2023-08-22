@@ -1,6 +1,9 @@
 <template>
-  <div>
+  <div class="app">
     <router-view></router-view>
+    <el-backtop  target=".app">
+      <i class="el-icon-caret-top"></i>
+    </el-backtop>
   </div>
 </template>
 
@@ -21,4 +24,8 @@ export default {
 </script>
 
 <style>
+.app{
+  height: 100vh;
+  overflow-x: hidden;
+}
 </style>

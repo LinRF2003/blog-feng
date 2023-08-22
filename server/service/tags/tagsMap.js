@@ -6,7 +6,7 @@ exports.categoryTags = {
             'javascript',
             'typescript',
             'react',
-            'nodejs',
+            'node.js',
             'vue',
             'angular',
         ],

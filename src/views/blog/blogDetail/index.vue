@@ -1,5 +1,6 @@
 <template>
   <div class="container" v-loading.fullscreen.lock="loading">
+
     <!-- 内容区域 -->
     <div class="left">
       <div class="blog-title">{{ blogInfo.title }}</div>
@@ -84,6 +85,7 @@
         <div class="count">{{ blogInfo.commentCount }}</div>
       </a>
     </div>
+
   </div>
 </template>
 
@@ -114,7 +116,7 @@ export default {
     CommentItem,
   },
   methods: {
-    // 根据路由博客id获取博客详情
+// 根据路由博客id获取博客详情
     async getBlogDetail() {
       this.loading = true;
       let result = await this.$Request("/blog/getDetail", {

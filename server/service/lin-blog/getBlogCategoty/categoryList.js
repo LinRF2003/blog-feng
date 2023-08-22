@@ -28,5 +28,15 @@ exports.categoryList = [
         url: "Node.js.png",
         name: "Node.js",
         desc: "介绍一些关于 Node 的内容",
+    },
+    {
+        url: "java.png",
+        name: "Java",
+        desc: "介绍一些关于 Java 的内容",
+    },
+    {
+        url: "Python.png",
+        name: "Python",
+        desc: "介绍一些关于 Python 的内容",
     }
 ]

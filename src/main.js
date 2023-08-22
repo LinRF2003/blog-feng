@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 
 Vue.config.productionTip = false
-import { Button, Form, FormItem, Input, Checkbox, Radio, RadioGroup, Image, Select, Option, Upload, Tag, Dialog, Divider, Loading, Pagination, DatePicker, Dropdown, DropdownMenu, DropdownItem, Tabs, TabPane } from 'element-ui';
+import { Button, Form, FormItem, Input, Checkbox, Radio, RadioGroup, Image, Select, Option, Upload, Tag, Dialog, Divider, Loading, Pagination, DatePicker, Dropdown, DropdownMenu, DropdownItem, Tabs, TabPane,Backtop } from 'element-ui';
 Vue.use(Button);
 Vue.use(Tabs);
 Vue.use(TabPane);
@@ -25,6 +25,7 @@ Vue.use(DatePicker);
 Vue.use(Dropdown);
 Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
+Vue.use(Backtop);
 // 引入路由
 import router from './router/index.js'
 // 引入vuex
