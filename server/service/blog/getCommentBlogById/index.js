@@ -1,4 +1,4 @@
-// 引入数据库文件   
+// 引入数据库文件
 const db = require('../../../db/index')
 const {PARAMS_ERROR, SYSTEM_ERROR} = require("../../../common/errorCode");
 const {getPage} = require("../../methods");
@@ -33,9 +33,10 @@ exports.main = (req, res) => {
         for (const item of results) {
             idStr += `${item.blogId},`
         }
+        // 把最后的逗号去掉
         idStr = idStr.substring(0, idStr.length - 1)
         console.log(idStr)
-        const pageSql = `select * from blog where id in (${idStr}) and isDelete = 0 order by views desc, createTime desc limit ?,?;
+        const pageSql = `select id,userId,userName,avatar,title,cover,summary,likeCount,views,commentCount,createTime from blog where id in (${idStr}) and isDelete = 0 order by views desc, createTime desc limit ?,?;
                     select count(*) count from blog where id in (${idStr}) and  isDelete = 0;`
         await getPage(res, pageSql, pageNo, pageSize)
     })

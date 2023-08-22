@@ -33,7 +33,7 @@ exports.main = (req, res) => {
             })
         }
         let likeBlogStr = likeBlog.substring(1,likeBlog.length-1)
-        const pageSql = `select * from blog where id in (${likeBlogStr}) and isDelete = 0 order by views desc, createTime desc limit ?,?;
+        const pageSql = `select id,userId,userName,avatar,title,cover,summary,likeCount,views,commentCount,createTime from blog where id in (${likeBlogStr}) and isDelete = 0 order by views desc, createTime desc limit ?,?;
                     select count(*) count from blog where id in (${likeBlogStr}) and  isDelete = 0;`
         await getPage(res, pageSql, pageNo, pageSize)
 
